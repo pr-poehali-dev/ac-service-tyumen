@@ -68,14 +68,14 @@ export default function ContactsSection() {
             <div className="w-7 h-7 rounded-lg bg-neon-blue flex items-center justify-center">
               <Icon name="Zap" size={14} className="text-[#0A0E17]" />
             </div>
-            <span className="font-oswald font-bold tracking-wide">ТЕХСЕРВИС<span className="text-neon-blue">.</span>PRO</span>
+            <span className="font-oswald font-bold tracking-wide">СТРАЙК<span className="text-neon-blue"> </span>СЕРВИС</span>
           </div>
           <div className="flex flex-wrap gap-6 text-sm text-white/40">
             {NAV_ITEMS.map(n => (
               <a key={n.href} href={n.href} className="hover:text-white transition-colors">{n.label}</a>
             ))}
           </div>
-          <div className="text-xs text-white/25">© 2026 ТехСервис.PRO. Все права защищены.</div>
+          <div className="text-xs text-white/25">© 2026 Страйк Сервис. Все права защищены.</div>
         </div>
       </footer>
     </>

@@ -12,7 +12,7 @@ export default function Navbar() {
           <div className="w-8 h-8 rounded-lg bg-neon-blue flex items-center justify-center glow-blue">
             <Icon name="Zap" size={16} className="text-[#0A0E17]" />
           </div>
-          <span className="font-oswald font-bold text-lg tracking-wide">ТЕХСЕРВИС<span className="text-neon-blue">.</span>PRO</span>
+          <span className="font-oswald font-bold text-lg tracking-wide">СТРАЙК<span className="text-neon-blue"> </span>СЕРВИС</span>
         </a>
 
         <nav className="hidden lg:flex items-center gap-8">
