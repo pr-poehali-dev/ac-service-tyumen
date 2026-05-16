@@ -1,0 +1,281 @@
+import Icon from "@/components/ui/icon";
+import { useInView } from "./useInView";
+import {
+  HERO_IMG, TEAM_IMG, WORK_IMG,
+  SERVICES, PORTFOLIO, REVIEWS, BLOG_POSTS, TICKER_ITEMS,
+} from "./data";
+
+export default function HeroSections() {
+  const heroSection = useInView(0.1);
+  const servicesSection = useInView(0.1);
+  const portfolioSection = useInView(0.1);
+  const aboutSection = useInView(0.1);
+  const blogSection = useInView(0.1);
+  const reviewsSection = useInView(0.1);
+
+  return (
+    <>
+      {/* HERO */}
+      <section id="hero" ref={heroSection.ref} className="relative min-h-screen flex items-center pt-16 overflow-hidden">
+        <div className="absolute inset-0 grid-pattern opacity-40" />
+        <div className="absolute inset-0 bg-gradient-to-br from-[#0A0E17] via-[#0A0E17]/90 to-transparent" />
+
+        <div className="absolute right-0 top-0 w-full lg:w-3/5 h-full">
+          <img src={HERO_IMG} alt="" className="w-full h-full object-cover opacity-25" />
+          <div className="absolute inset-0 bg-gradient-to-r from-[#0A0E17] via-[#0A0E17]/60 to-transparent" />
+        </div>
+
+        <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-neon-blue/5 rounded-full blur-[100px] animate-float" />
+        <div className="absolute bottom-1/4 right-1/3 w-64 h-64 bg-neon-green/5 rounded-full blur-[80px] animate-float" style={{ animationDelay: '3s' }} />
+
+        <div className="relative max-w-7xl mx-auto px-6 py-24">
+          <div className="max-w-2xl">
+            <div className={`section-tag mb-6 ${heroSection.inView ? 'animate-fade-in-up' : 'opacity-0'}`}>
+              <span className="w-1.5 h-1.5 rounded-full bg-neon-green inline-block" />
+              Работаем 24/7
+            </div>
+
+            <h1 className={`font-oswald text-5xl lg:text-7xl font-black leading-none mb-6 ${heroSection.inView ? 'animate-fade-in-up delay-100' : 'opacity-0'}`}>
+              ПРОФЕССИОНАЛЬНЫЙ<br />
+              <span className="text-neon-blue text-glow-blue">ТЕХНИЧЕСКИЙ</span><br />
+              СЕРВИС
+            </h1>
+
+            <p className={`text-lg text-white/65 leading-relaxed mb-10 max-w-lg ${heroSection.inView ? 'animate-fade-in-up delay-200' : 'opacity-0'}`}>
+              Обслуживаем промышленное, коммерческое и медицинское оборудование. Выезд специалиста за 2 часа. Гарантия на все виды работ.
+            </p>
+
+            <div className={`flex flex-wrap gap-4 mb-16 ${heroSection.inView ? 'animate-fade-in-up delay-300' : 'opacity-0'}`}>
+              <a href="#booking" className="btn-primary px-8 py-3.5 rounded-xl text-base flex items-center gap-2">
+                <Icon name="CalendarCheck" size={18} />
+                Записаться на сервис
+              </a>
+              <a href="#services" className="btn-outline px-8 py-3.5 rounded-xl text-base flex items-center gap-2">
+                Наши услуги
+                <Icon name="ArrowRight" size={18} />
+              </a>
+            </div>
+
+            <div className={`grid grid-cols-3 gap-6 ${heroSection.inView ? 'animate-fade-in-up delay-400' : 'opacity-0'}`}>
+              {[
+                { num: "15", label: "лет опыта", suffix: "+" },
+                { num: "1200", label: "клиентов", suffix: "+" },
+                { num: "2", label: "часа выезд", suffix: "" },
+              ].map((s, i) => (
+                <div key={i}>
+                  <div className="font-oswald text-3xl lg:text-4xl font-black text-neon-blue">
+                    {s.num}<span className="text-neon-green">{s.suffix}</span>
+                  </div>
+                  <div className="text-sm text-white/50 mt-1">{s.label}</div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+
+        <div className="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 text-white/30 text-xs">
+          <span className="tracking-widest uppercase text-[10px]">Прокрути</span>
+          <div className="w-px h-10 bg-gradient-to-b from-neon-blue/40 to-transparent animate-pulse" />
+        </div>
+      </section>
+
+      {/* TICKER */}
+      <div className="relative overflow-hidden border-y border-neon-blue/20 bg-neon-blue/5 py-3">
+        <div className="flex animate-marquee whitespace-nowrap">
+          {[...TICKER_ITEMS, ...TICKER_ITEMS].map((item, i) => (
+            <span key={i} className="mx-8 font-oswald text-sm font-semibold tracking-[0.15em] text-white/40">
+              {item} <span className="text-neon-blue mx-4">◆</span>
+            </span>
+          ))}
+        </div>
+      </div>
+
+      {/* SERVICES */}
+      <section id="services" ref={servicesSection.ref} className="py-24 relative">
+        <div className="absolute top-0 right-0 w-96 h-96 bg-neon-blue/5 rounded-full blur-[120px]" />
+        <div className="max-w-7xl mx-auto px-6">
+          <div className={`mb-16 ${servicesSection.inView ? 'animate-fade-in-up' : 'opacity-0'}`}>
+            <div className="section-tag mb-4">Что мы делаем</div>
+            <h2 className="font-oswald text-4xl lg:text-5xl font-black">НАШИ <span className="text-neon-blue">УСЛУГИ</span></h2>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
+            {SERVICES.map((s, i) => (
+              <div key={i} className={`card-service rounded-2xl p-7 ${servicesSection.inView ? 'animate-fade-in-up' : 'opacity-0'}`}
+                style={{ animationDelay: `${i * 0.1}s` }}>
+                <div className="w-12 h-12 rounded-xl bg-neon-blue/10 border border-neon-blue/20 flex items-center justify-center mb-5">
+                  <Icon name={s.icon} size={22} className="text-neon-blue" />
+                </div>
+                <h3 className="font-oswald text-xl font-bold mb-3">{s.title}</h3>
+                <p className="text-white/55 text-sm leading-relaxed mb-6">{s.desc}</p>
+                <div className="flex items-center justify-between pt-4 border-t border-white/8">
+                  <span className="text-neon-green font-semibold text-sm">{s.price}</span>
+                  <a href="#booking" className="text-neon-blue/70 text-xs hover:text-neon-blue transition-colors flex items-center gap-1">
+                    Записаться <Icon name="ArrowRight" size={12} />
+                  </a>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* PORTFOLIO */}
+      <section id="portfolio" ref={portfolioSection.ref} className="py-24 bg-white/[0.02]">
+        <div className="max-w-7xl mx-auto px-6">
+          <div className={`mb-16 ${portfolioSection.inView ? 'animate-fade-in-up' : 'opacity-0'}`}>
+            <div className="section-tag mb-4">Наши работы</div>
+            <h2 className="font-oswald text-4xl lg:text-5xl font-black">ПОРТФОЛИО</h2>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
+            {PORTFOLIO.map((p, i) => (
+              <div key={i} className={`card-service rounded-2xl overflow-hidden group cursor-pointer ${portfolioSection.inView ? 'animate-fade-in-up' : 'opacity-0'}`}
+                style={{ animationDelay: `${i * 0.1}s` }}>
+                <div className="h-44 relative overflow-hidden">
+                  <img src={WORK_IMG} alt="" className="w-full h-full object-cover opacity-40 group-hover:opacity-60 group-hover:scale-105 transition-all duration-500" />
+                  <div className="absolute top-4 left-4">
+                    <span className="text-xs font-semibold uppercase tracking-widest text-neon-green bg-neon-green/10 border border-neon-green/30 px-3 py-1 rounded-full">
+                      {p.tag}
+                    </span>
+                  </div>
+                </div>
+                <div className="p-6">
+                  <div className="text-white/40 text-xs uppercase tracking-widest mb-2">{p.category}</div>
+                  <h3 className="font-oswald text-xl font-bold mb-2">{p.title}</h3>
+                  <p className="text-white/55 text-sm">{p.desc}</p>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ABOUT */}
+      <section id="about" ref={aboutSection.ref} className="py-24 relative overflow-hidden">
+        <div className="absolute bottom-0 left-0 w-[500px] h-[500px] bg-neon-green/4 rounded-full blur-[150px]" />
+        <div className="max-w-7xl mx-auto px-6">
+          <div className="grid lg:grid-cols-2 gap-16 items-center">
+            <div className={`${aboutSection.inView ? 'animate-fade-in-up' : 'opacity-0'}`}>
+              <div className="section-tag mb-6">О компании</div>
+              <h2 className="font-oswald text-4xl lg:text-5xl font-black mb-8 leading-tight">
+                15 ЛЕТ ДЕЛАЕМ<br />
+                <span className="text-neon-blue">ТЕХНИКУ</span><br />
+                НАДЁЖНОЙ
+              </h2>
+              <p className="text-white/60 leading-relaxed mb-6">
+                Мы — команда сертифицированных инженеров и технических специалистов с опытом работы в промышленном, коммерческом и медицинском секторах.
+              </p>
+              <p className="text-white/60 leading-relaxed mb-10">
+                За 15 лет работы мы обслужили более 1200 клиентов и провели свыше 50 000 сервисных выездов. Наша цель — чтобы ваше оборудование работало без сбоев.
+              </p>
+
+              <div className="grid grid-cols-2 gap-4 mb-10">
+                {[
+                  { icon: "Award", text: "Сертифицированные специалисты" },
+                  { icon: "Clock", text: "Выезд в течение 2 часов" },
+                  { icon: "Shield", text: "Гарантия на все работы" },
+                  { icon: "Headphones", text: "Поддержка 24/7/365" },
+                ].map((f, i) => (
+                  <div key={i} className="flex items-center gap-3 p-3 rounded-xl bg-white/3 border border-white/6">
+                    <Icon name={f.icon} size={18} className="text-neon-blue flex-shrink-0" />
+                    <span className="text-sm text-white/70">{f.text}</span>
+                  </div>
+                ))}
+              </div>
+
+              <a href="#booking" className="btn-primary inline-flex items-center gap-2 px-8 py-3.5 rounded-xl">
+                Записаться на консультацию
+                <Icon name="ArrowRight" size={18} />
+              </a>
+            </div>
+
+            <div className={`relative ${aboutSection.inView ? 'animate-fade-in-up delay-200' : 'opacity-0'}`}>
+              <div className="absolute -inset-4 bg-neon-blue/10 rounded-3xl blur-xl" />
+              <img src={TEAM_IMG} alt="Команда" className="relative rounded-3xl w-full h-96 lg:h-[520px] object-cover border border-neon-blue/20" />
+              <div className="absolute bottom-6 left-6 right-6 glass rounded-2xl p-5">
+                <div className="flex items-center gap-4">
+                  <div className="flex -space-x-2">
+                    {["АС", "МК", "ДП", "ЕВ"].map((k, idx) => (
+                      <div key={idx} className="w-9 h-9 rounded-full bg-gradient-to-br from-neon-blue to-neon-green border-2 border-[#0A0E17] flex items-center justify-center text-xs font-bold text-[#0A0E17]">
+                        {k}
+                      </div>
+                    ))}
+                  </div>
+                  <div>
+                    <div className="font-semibold text-sm">50+ специалистов</div>
+                    <div className="text-xs text-white/50">в команде по всей России</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* BLOG */}
+      <section id="blog" ref={blogSection.ref} className="py-24 bg-white/[0.02]">
+        <div className="max-w-7xl mx-auto px-6">
+          <div className={`flex flex-wrap items-end justify-between gap-6 mb-16 ${blogSection.inView ? 'animate-fade-in-up' : 'opacity-0'}`}>
+            <div>
+              <div className="section-tag mb-4">Знания</div>
+              <h2 className="font-oswald text-4xl lg:text-5xl font-black">БЛОГ</h2>
+            </div>
+            <a href="#" className="btn-outline px-6 py-2.5 rounded-xl text-sm flex items-center gap-2">
+              Все статьи <Icon name="ArrowRight" size={16} />
+            </a>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
+            {BLOG_POSTS.map((post, i) => (
+              <article key={i} className={`card-service rounded-2xl p-7 cursor-pointer ${blogSection.inView ? 'animate-fade-in-up' : 'opacity-0'}`}
+                style={{ animationDelay: `${i * 0.15}s` }}>
+                <div className="flex items-center justify-between mb-4">
+                  <span className="section-tag text-xs">{post.category}</span>
+                  <span className="text-white/30 text-xs">{post.read} чтения</span>
+                </div>
+                <h3 className="font-oswald text-lg font-bold leading-tight mb-4">{post.title}</h3>
+                <div className="flex items-center justify-between pt-4 border-t border-white/8">
+                  <span className="text-white/40 text-xs">{post.date}</span>
+                  <span className="text-neon-blue text-xs flex items-center gap-1">
+                    Читать <Icon name="ArrowRight" size={12} />
+                  </span>
+                </div>
+              </article>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* REVIEWS */}
+      <section id="reviews" ref={reviewsSection.ref} className="py-24 relative">
+        <div className="absolute top-1/2 right-0 w-96 h-96 bg-neon-blue/5 rounded-full blur-[100px]" />
+        <div className="max-w-7xl mx-auto px-6">
+          <div className={`mb-16 ${reviewsSection.inView ? 'animate-fade-in-up' : 'opacity-0'}`}>
+            <div className="section-tag mb-4">Клиенты о нас</div>
+            <h2 className="font-oswald text-4xl lg:text-5xl font-black">ОТЗЫВЫ</h2>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+            {REVIEWS.map((r, i) => (
+              <div key={i} className={`card-service rounded-2xl p-7 ${reviewsSection.inView ? 'animate-fade-in-up' : 'opacity-0'}`}
+                style={{ animationDelay: `${i * 0.12}s` }}>
+                <div className="flex text-neon-green text-lg mb-5">{"★".repeat(r.stars)}</div>
+                <p className="text-white/70 leading-relaxed mb-6 text-[15px]">«{r.text}»</p>
+                <div className="flex items-center gap-3 pt-4 border-t border-white/8">
+                  <div className="w-10 h-10 rounded-full bg-gradient-to-br from-neon-blue to-neon-green flex items-center justify-center text-xs font-bold text-[#0A0E17]">
+                    {r.name.split(" ").map(n => n[0]).join("")}
+                  </div>
+                  <div>
+                    <div className="font-semibold text-sm">{r.name}</div>
+                    <div className="text-white/40 text-xs">{r.role}</div>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+    </>
+  );
+}
