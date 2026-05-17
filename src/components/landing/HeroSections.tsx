@@ -227,14 +227,31 @@ export default function HeroSections() {
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4 sm:gap-5">
             {BLOG_POSTS.map((post, i) => (
-              <article key={i} className={`card-service rounded-2xl p-5 sm:p-7 cursor-pointer ${blogSection.inView ? 'animate-fade-in-up' : 'opacity-0'}`}
+              <article key={i} className={`card-service rounded-2xl p-5 sm:p-7 cursor-pointer flex flex-col ${blogSection.inView ? 'animate-fade-in-up' : 'opacity-0'}`}
                 style={{ animationDelay: `${i * 0.15}s` }}>
                 <div className="flex items-center justify-between mb-4">
                   <span className="section-tag text-xs">{post.category}</span>
                   <span className="text-foreground/50 text-xs">{post.read} чтения</span>
                 </div>
-                <h3 className="font-oswald text-lg font-bold leading-tight mb-4">{post.title}</h3>
-                <div className="flex items-center justify-between pt-4 border-t border-border">
+                <h3 className="font-oswald text-lg font-bold leading-tight mb-3">{post.title}</h3>
+                <p className="text-foreground/65 text-sm leading-relaxed mb-4">{post.seoText}</p>
+
+                <div className="mb-5">
+                  <div className="text-[10px] uppercase tracking-widest text-foreground/45 mb-2.5 flex items-center gap-1.5">
+                    <Icon name="Search" size={11} className="text-neon-blue" />
+                    Популярные запросы
+                  </div>
+                  <ul className="space-y-1.5">
+                    {post.seoQueries.map((q, qi) => (
+                      <li key={qi} className="flex items-start gap-2 text-xs text-foreground/70">
+                        <span className="text-neon-green mt-1 shrink-0">•</span>
+                        <span>{q}</span>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+
+                <div className="flex items-center justify-between pt-4 border-t border-border mt-auto">
                   <span className="text-foreground/50 text-xs">{post.date}</span>
                   <span className="text-neon-blue text-xs flex items-center gap-1">
                     Читать <Icon name="ArrowRight" size={12} />
