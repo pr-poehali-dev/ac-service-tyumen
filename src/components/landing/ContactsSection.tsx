@@ -20,7 +20,7 @@ export default function ContactsSection() {
             {[
               { icon: "Phone", title: "Телефон", value: "+7 (495) 123-45-67", sub: "Пн–Вс, 00:00–24:00", href: "tel:+74951234567" },
               { icon: "Mail", title: "Email", value: "info@techservice.ru", sub: "Ответим за 2 часа", href: "mailto:info@techservice.ru" },
-              { icon: "MapPin", title: "Адрес", value: "Москва, ул. Тверская, 1", sub: "Головной офис", href: "#" },
+              { icon: "MapPin", title: "Адрес", value: "Тюмень, ул. Республики, 1", sub: "Головной офис", href: "#" },
               { icon: "MessageCircle", title: "Telegram", value: "@techservice_pro", sub: "Быстрая связь", href: "https://t.me/techservice_pro" },
             ].map((c, i) => (
               <a key={i} href={c.href}
