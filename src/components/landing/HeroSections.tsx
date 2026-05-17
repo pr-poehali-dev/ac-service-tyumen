@@ -1,4 +1,5 @@
 import Icon from "@/components/ui/icon";
+import { Link } from "react-router-dom";
 import { useInView } from "./useInView";
 import {
   HERO_IMG, TEAM_IMG, WORK_IMG,
@@ -99,20 +100,20 @@ export default function HeroSections() {
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-5">
             {SERVICES.map((s, i) => (
-              <div key={i} className={`card-service rounded-2xl p-5 sm:p-7 ${servicesSection.inView ? 'animate-fade-in-up' : 'opacity-0'}`}
+              <Link to={`/uslugi/${s.slug}`} key={i} className={`card-service rounded-2xl p-5 sm:p-7 block group ${servicesSection.inView ? 'animate-fade-in-up' : 'opacity-0'}`}
                 style={{ animationDelay: `${i * 0.1}s` }}>
-                <div className="w-12 h-12 rounded-xl bg-neon-blue/10 border border-neon-blue/20 flex items-center justify-center mb-5">
+                <div className="w-12 h-12 rounded-xl bg-neon-blue/10 border border-neon-blue/20 flex items-center justify-center mb-5 group-hover:bg-neon-blue/20 transition-colors">
                   <Icon name={s.icon} size={22} className="text-neon-blue" />
                 </div>
-                <h3 className="font-oswald text-xl font-bold mb-3">{s.title}</h3>
+                <h3 className="font-oswald text-xl font-bold mb-3 group-hover:text-neon-blue transition-colors">{s.title}</h3>
                 <p className="text-foreground/65 text-sm leading-relaxed mb-6">{s.desc}</p>
                 <div className="flex items-center justify-between pt-4 border-t border-border">
                   <span className="text-neon-green font-semibold text-sm">{s.price}</span>
-                  <a href="#booking" className="text-neon-blue/70 text-xs hover:text-neon-blue transition-colors flex items-center gap-1">
-                    Записаться <Icon name="ArrowRight" size={12} />
-                  </a>
+                  <span className="text-neon-blue/70 text-xs group-hover:text-neon-blue transition-colors flex items-center gap-1">
+                    Подробнее <Icon name="ArrowRight" size={12} />
+                  </span>
                 </div>
-              </div>
+              </Link>
             ))}
           </div>
         </div>
