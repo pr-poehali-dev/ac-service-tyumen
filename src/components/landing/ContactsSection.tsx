@@ -37,21 +37,27 @@ export default function ContactsSection() {
           </div>
 
           <div className={`relative overflow-hidden rounded-3xl p-10 lg:p-14 ${contactsSection.inView ? 'animate-fade-in-up delay-400' : 'opacity-0'}`}
-            style={{ background: 'linear-gradient(135deg, rgba(13,148,136,0.12) 0%, rgba(20,184,166,0.08) 100%)', border: '1px solid rgba(13,148,136,0.25)' }}>
-            <div className="absolute top-0 right-0 w-64 h-64 bg-neon-blue/10 rounded-full blur-[80px]" />
+            style={{ background: 'linear-gradient(135deg, #0d9488 0%, #0f766e 60%, #115e59 100%)', boxShadow: '0 30px 80px -20px rgba(13,148,136,0.55)' }}>
+            <div className="absolute -top-20 -right-20 w-96 h-96 bg-white/10 rounded-full blur-[100px]" />
+            <div className="absolute -bottom-24 -left-16 w-80 h-80 bg-white/5 rounded-full blur-[90px]" />
+            <div className="absolute inset-0 grid-pattern opacity-15" />
             <div className="relative flex flex-wrap items-center justify-between gap-8">
               <div>
-                <h3 className="font-oswald text-3xl lg:text-4xl font-black mb-3">ГОТОВЫ НАЧАТЬ?</h3>
-                <p className="text-foreground/65 max-w-md">
+                <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/15 border border-white/25 text-white text-xs font-semibold uppercase tracking-[0.15em] mb-4">
+                  <span className="w-1.5 h-1.5 rounded-full bg-white animate-pulse" />
+                  Свободные слоты сегодня
+                </div>
+                <h3 className="font-oswald text-3xl lg:text-5xl font-black mb-3 text-white">ГОТОВЫ НАЧАТЬ?</h3>
+                <p className="text-white/85 max-w-md text-base lg:text-lg">
                   Оставьте заявку — мастер перезвонит в течение 30 минут и согласует удобное время выезда
                 </p>
               </div>
               <div className="flex flex-wrap gap-3">
-                <a href="#booking" className="btn-primary px-8 py-4 rounded-xl flex items-center gap-2">
+                <a href="#booking" className="bg-white text-[#0f766e] hover:bg-white/95 px-8 py-4 rounded-xl flex items-center gap-2 font-oswald font-semibold uppercase tracking-wider text-sm transition-all hover:-translate-y-0.5 hover:shadow-2xl">
                   <Icon name="CalendarCheck" size={18} />
                   Записаться онлайн
                 </a>
-                <a href="tel:+74951234567" className="btn-outline px-8 py-4 rounded-xl flex items-center gap-2">
+                <a href="tel:+74951234567" className="border-2 border-white/60 text-white hover:bg-white/10 px-8 py-4 rounded-xl flex items-center gap-2 font-oswald font-semibold uppercase tracking-wider text-sm transition-all hover:-translate-y-0.5">
                   <Icon name="Phone" size={18} />
                   Позвонить
                 </a>
