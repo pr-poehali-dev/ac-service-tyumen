@@ -4,40 +4,40 @@
 
 @layer base {
   :root {
-    --background: 220 10% 10%;
-    --foreground: 180 15% 96%;
+    --background: 210 20% 96%;
+    --foreground: 220 25% 15%;
 
-    --card: 220 10% 14%;
-    --card-foreground: 180 15% 96%;
+    --card: 0 0% 100%;
+    --card-foreground: 220 25% 15%;
 
-    --popover: 220 10% 14%;
-    --popover-foreground: 180 15% 96%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 220 25% 15%;
 
-    --primary: 178 70% 48%;
-    --primary-foreground: 220 15% 10%;
+    --primary: 178 70% 38%;
+    --primary-foreground: 0 0% 100%;
 
-    --secondary: 220 8% 18%;
-    --secondary-foreground: 180 15% 96%;
+    --secondary: 210 15% 90%;
+    --secondary-foreground: 220 25% 15%;
 
-    --muted: 220 8% 18%;
-    --muted-foreground: 215 10% 65%;
+    --muted: 210 15% 92%;
+    --muted-foreground: 215 12% 40%;
 
-    --accent: 178 60% 55%;
-    --accent-foreground: 220 15% 10%;
+    --accent: 178 60% 45%;
+    --accent-foreground: 0 0% 100%;
 
     --destructive: 0 84.2% 60.2%;
-    --destructive-foreground: 210 40% 98%;
+    --destructive-foreground: 0 0% 100%;
 
-    --border: 220 8% 22%;
-    --input: 220 8% 22%;
-    --ring: 178 70% 48%;
+    --border: 210 15% 85%;
+    --input: 210 15% 88%;
+    --ring: 178 70% 38%;
 
     --radius: 0.75rem;
 
-    --neon-blue: #2dd4bf;
-    --neon-green: #5eead4;
-    --dark-bg: #15181c;
-    --card-bg: #1f2328;
+    --neon-blue: #0d9488;
+    --neon-green: #14b8a6;
+    --dark-bg: #f1f5f7;
+    --card-bg: #ffffff;
   }
 }
 
@@ -53,7 +53,7 @@
   body {
     @apply bg-background text-foreground;
     font-family: "Golos Text", sans-serif;
-    background-color: #15181c;
+    background-color: #f1f5f7;
     overflow-x: hidden;
   }
 
@@ -104,10 +104,10 @@
   }
 
   .glass {
-    background: rgba(31, 35, 40, 0.65);
+    background: rgba(255, 255, 255, 0.7);
     backdrop-filter: blur(16px);
     -webkit-backdrop-filter: blur(16px);
-    border: 1px solid rgba(45, 212, 191, 0.12);
+    border: 1px solid rgba(13, 148, 136, 0.15);
   }
 
   .grid-pattern {
@@ -157,8 +157,8 @@
   }
 
   .btn-primary {
-    background: linear-gradient(135deg, var(--neon-blue), #0d9488);
-    color: #15181c;
+    background: linear-gradient(135deg, var(--neon-blue), #0f766e);
+    color: #ffffff;
     font-family: "Oswald", sans-serif;
     font-weight: 600;
     letter-spacing: 0.06em;
@@ -226,8 +226,8 @@
   }
 
   .card-service {
-    background: rgba(31, 35, 40, 0.7);
-    border: 1px solid rgba(45, 212, 191, 0.1);
+    background: rgba(255, 255, 255, 0.85);
+    border: 1px solid rgba(13, 148, 136, 0.15);
     transition: all 0.4s ease;
     position: relative;
     overflow: hidden;
@@ -266,7 +266,7 @@
     font-family: "Golos Text", sans-serif;
     font-size: 0.875rem;
     font-weight: 500;
-    color: rgba(255, 255, 255, 0.7);
+    color: rgba(30, 41, 59, 0.75);
     transition: color 0.25s ease;
     position: relative;
   }
@@ -284,7 +284,7 @@
   }
 
   .nav-link:hover {
-    color: #fff;
+    color: #0f172a;
   }
 
   .nav-link:hover::after {
@@ -360,17 +360,17 @@
   cursor: pointer;
   transition: all 0.2s ease;
   font-size: 0.875rem;
-  color: rgba(255, 255, 255, 0.7);
+  color: rgba(30, 41, 59, 0.75);
 }
 
 .calendar-day:hover:not(.disabled):not(.selected) {
-  background: rgba(45, 212, 191, 0.15);
-  color: white;
+  background: rgba(13, 148, 136, 0.12);
+  color: #0f172a;
 }
 
 .calendar-day.selected {
   background: var(--neon-blue);
-  color: #15181c;
+  color: #ffffff;
   font-weight: 700;
 }
 
@@ -385,20 +385,20 @@
 }
 
 .time-slot {
-  border: 1px solid rgba(45, 212, 191, 0.2);
+  border: 1px solid rgba(13, 148, 136, 0.25);
   border-radius: 8px;
   padding: 8px 12px;
   font-size: 0.875rem;
   cursor: pointer;
   transition: all 0.2s ease;
-  color: rgba(255, 255, 255, 0.7);
+  color: rgba(30, 41, 59, 0.75);
   text-align: center;
 }
 
 .time-slot:hover:not(.taken) {
   border-color: var(--neon-blue);
-  background: rgba(45, 212, 191, 0.1);
-  color: white;
+  background: rgba(13, 148, 136, 0.1);
+  color: #0f172a;
 }
 
 .time-slot.selected {
@@ -419,7 +419,7 @@
   width: 6px;
 }
 ::-webkit-scrollbar-track {
-  background: #15181c;
+  background: #e5edf0;
 }
 ::-webkit-scrollbar-thumb {
   background: rgba(45, 212, 191, 0.3);
