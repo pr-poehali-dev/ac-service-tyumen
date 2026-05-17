@@ -351,16 +351,23 @@
 
 /* Calendar custom styles */
 .calendar-day {
-  width: 40px;
-  height: 40px;
+  width: 100%;
+  max-width: 40px;
+  aspect-ratio: 1 / 1;
   display: flex;
   align-items: center;
   justify-content: center;
   border-radius: 8px;
   cursor: pointer;
   transition: all 0.2s ease;
-  font-size: 0.875rem;
+  font-size: 0.8125rem;
   color: rgba(30, 41, 59, 0.75);
+}
+
+@media (min-width: 640px) {
+  .calendar-day {
+    font-size: 0.875rem;
+  }
 }
 
 .calendar-day:hover:not(.disabled):not(.selected) {
@@ -387,12 +394,19 @@
 .time-slot {
   border: 1px solid rgba(13, 148, 136, 0.25);
   border-radius: 8px;
-  padding: 8px 12px;
-  font-size: 0.875rem;
+  padding: 8px 6px;
+  font-size: 0.8125rem;
   cursor: pointer;
   transition: all 0.2s ease;
   color: rgba(30, 41, 59, 0.75);
   text-align: center;
+}
+
+@media (min-width: 640px) {
+  .time-slot {
+    padding: 8px 12px;
+    font-size: 0.875rem;
+  }
 }
 
 .time-slot:hover:not(.taken) {

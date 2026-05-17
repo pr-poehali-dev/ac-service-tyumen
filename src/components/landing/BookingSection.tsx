@@ -47,18 +47,18 @@ export default function BookingSection() {
   };
 
   return (
-    <section id="booking" ref={bookingSection.ref} className="py-24 bg-muted/40">
-      <div className="max-w-7xl mx-auto px-6">
-        <div className={`mb-16 text-center ${bookingSection.inView ? 'animate-fade-in-up' : 'opacity-0'}`}>
+    <section id="booking" ref={bookingSection.ref} className="py-16 sm:py-24 bg-muted/40">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6">
+        <div className={`mb-10 sm:mb-16 text-center ${bookingSection.inView ? 'animate-fade-in-up' : 'opacity-0'}`}>
           <div className="section-tag mb-4 mx-auto w-fit">Онлайн-запись</div>
-          <h2 className="font-oswald text-4xl lg:text-5xl font-black mb-4">
+          <h2 className="font-oswald text-3xl sm:text-4xl lg:text-5xl font-black mb-4">
             ЗАПИСЬ НА <span className="text-neon-blue">ОБСЛУЖИВАНИЕ</span>
           </h2>
-          <p className="text-foreground/60 max-w-lg mx-auto">Выберите удобную дату и время — мастер приедет точно в срок</p>
+          <p className="text-foreground/60 max-w-lg mx-auto text-sm sm:text-base">Выберите удобную дату и время — мастер приедет точно в срок</p>
         </div>
 
         {bookSent ? (
-          <div className="max-w-lg mx-auto text-center glass rounded-3xl p-12">
+          <div className="max-w-lg mx-auto text-center glass rounded-3xl p-6 sm:p-12">
             <div className="w-20 h-20 rounded-full bg-neon-green/15 border border-neon-green/40 flex items-center justify-center mx-auto mb-6 glow-green">
               <Icon name="CheckCircle" size={36} className="text-neon-green" />
             </div>
@@ -77,9 +77,9 @@ export default function BookingSection() {
             </button>
           </div>
         ) : (
-          <div className="grid lg:grid-cols-2 gap-8 max-w-5xl mx-auto">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 lg:gap-8 max-w-5xl mx-auto">
             {/* Calendar */}
-            <div className={`glass rounded-3xl p-7 ${bookingSection.inView ? 'animate-fade-in-up' : 'opacity-0'}`}>
+            <div className={`glass rounded-3xl p-4 sm:p-7 ${bookingSection.inView ? 'animate-fade-in-up' : 'opacity-0'}`}>
               <h3 className="font-oswald text-xl font-bold mb-6 flex items-center gap-2">
                 <Icon name="Calendar" size={20} className="text-neon-blue" />
                 Выберите дату
@@ -124,7 +124,7 @@ export default function BookingSection() {
                     <Icon name="Clock" size={15} className="text-neon-blue" />
                     Доступное время — {bookDay} {MONTHS[bookMonth]}
                   </h4>
-                  <div className="grid grid-cols-4 gap-2">
+                  <div className="grid grid-cols-3 sm:grid-cols-4 gap-2">
                     {TIME_SLOTS.map(t => (
                       <button key={t} disabled={TAKEN_SLOTS.includes(t)}
                         onClick={() => setBookTime(t)}
@@ -138,7 +138,7 @@ export default function BookingSection() {
             </div>
 
             {/* Form */}
-            <div className={`glass rounded-3xl p-7 ${bookingSection.inView ? 'animate-fade-in-up delay-200' : 'opacity-0'}`}>
+            <div className={`glass rounded-3xl p-4 sm:p-7 ${bookingSection.inView ? 'animate-fade-in-up delay-200' : 'opacity-0'}`}>
               <h3 className="font-oswald text-xl font-bold mb-6 flex items-center gap-2">
                 <Icon name="ClipboardList" size={20} className="text-neon-blue" />
                 Ваши данные
@@ -187,7 +187,7 @@ export default function BookingSection() {
                 </div>
                 <button type="submit"
                   disabled={!bookDay || !bookTime}
-                  className={`w-full py-4 rounded-xl font-oswald font-semibold tracking-wide text-sm transition-all duration-300 flex items-center justify-center gap-2
+                  className={`w-full py-3 sm:py-4 rounded-xl font-oswald font-semibold tracking-wide text-sm transition-all duration-300 flex items-center justify-center gap-2
                     ${bookDay && bookTime ? "btn-primary" : "bg-muted text-foreground/35 cursor-not-allowed border border-border"}`}>
                   <Icon name="Send" size={16} />
                   {!bookDay ? "Сначала выберите дату" : !bookTime ? "Выберите время" : "Отправить заявку"}
