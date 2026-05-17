@@ -29,20 +29,20 @@ export default function ContactsSection() {
                 <div className="w-11 h-11 rounded-xl bg-neon-blue/10 border border-neon-blue/20 flex items-center justify-center mb-4 group-hover:bg-neon-blue/20 transition-colors">
                   <Icon name={c.icon} size={20} className="text-neon-blue" />
                 </div>
-                <div className="text-white/40 text-xs uppercase tracking-widest mb-1">{c.title}</div>
+                <div className="text-foreground/50 text-xs uppercase tracking-widest mb-1">{c.title}</div>
                 <div className="font-semibold text-sm mb-1">{c.value}</div>
-                <div className="text-white/40 text-xs">{c.sub}</div>
+                <div className="text-foreground/50 text-xs">{c.sub}</div>
               </a>
             ))}
           </div>
 
           <div className={`relative overflow-hidden rounded-3xl p-10 lg:p-14 ${contactsSection.inView ? 'animate-fade-in-up delay-400' : 'opacity-0'}`}
-            style={{ background: 'linear-gradient(135deg, rgba(0,200,255,0.12) 0%, rgba(57,255,20,0.06) 100%)', border: '1px solid rgba(0,200,255,0.2)' }}>
+            style={{ background: 'linear-gradient(135deg, rgba(13,148,136,0.12) 0%, rgba(20,184,166,0.08) 100%)', border: '1px solid rgba(13,148,136,0.25)' }}>
             <div className="absolute top-0 right-0 w-64 h-64 bg-neon-blue/10 rounded-full blur-[80px]" />
             <div className="relative flex flex-wrap items-center justify-between gap-8">
               <div>
                 <h3 className="font-oswald text-3xl lg:text-4xl font-black mb-3">ГОТОВЫ НАЧАТЬ?</h3>
-                <p className="text-white/55 max-w-md">
+                <p className="text-foreground/65 max-w-md">
                   Оставьте заявку — мастер перезвонит в течение 30 минут и согласует удобное время выезда
                 </p>
               </div>
@@ -62,20 +62,20 @@ export default function ContactsSection() {
       </section>
 
       {/* FOOTER */}
-      <footer className="border-t border-white/8 py-10">
+      <footer className="border-t border-border py-10">
         <div className="max-w-7xl mx-auto px-6 flex flex-wrap items-center justify-between gap-6">
           <div className="flex items-center gap-2">
             <div className="w-7 h-7 rounded-lg bg-neon-blue flex items-center justify-center">
-              <Icon name="Zap" size={14} className="text-[#0A0E17]" />
+              <Icon name="Zap" size={14} className="text-white" />
             </div>
             <span className="font-oswald font-bold tracking-wide">СТРАЙК<span className="text-neon-blue"> </span>СЕРВИС</span>
           </div>
-          <div className="flex flex-wrap gap-6 text-sm text-white/40">
+          <div className="flex flex-wrap gap-6 text-sm text-foreground/55">
             {NAV_ITEMS.map(n => (
-              <a key={n.href} href={n.href} className="hover:text-white transition-colors">{n.label}</a>
+              <a key={n.href} href={n.href} className="hover:text-foreground transition-colors">{n.label}</a>
             ))}
           </div>
-          <div className="text-xs text-white/25">© 2026 Страйк Сервис. Все права защищены.</div>
+          <div className="text-xs text-foreground/40">© 2026 Страйк Сервис. Все права защищены.</div>
         </div>
       </footer>
     </>

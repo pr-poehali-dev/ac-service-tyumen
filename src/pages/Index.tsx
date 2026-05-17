@@ -5,7 +5,7 @@ import ContactsSection from "@/components/landing/ContactsSection";
 
 export default function Index() {
   return (
-    <div className="min-h-screen bg-[#0A0E17] text-white font-golos overflow-x-hidden">
+    <div className="min-h-screen bg-background text-foreground font-golos overflow-x-hidden">
       <Navbar />
       <HeroSections />
       <BookingSection />

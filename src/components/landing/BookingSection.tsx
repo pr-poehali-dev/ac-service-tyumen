@@ -47,14 +47,14 @@ export default function BookingSection() {
   };
 
   return (
-    <section id="booking" ref={bookingSection.ref} className="py-24 bg-white/[0.02]">
+    <section id="booking" ref={bookingSection.ref} className="py-24 bg-muted/40">
       <div className="max-w-7xl mx-auto px-6">
         <div className={`mb-16 text-center ${bookingSection.inView ? 'animate-fade-in-up' : 'opacity-0'}`}>
           <div className="section-tag mb-4 mx-auto w-fit">Онлайн-запись</div>
           <h2 className="font-oswald text-4xl lg:text-5xl font-black mb-4">
             ЗАПИСЬ НА <span className="text-neon-blue">ОБСЛУЖИВАНИЕ</span>
           </h2>
-          <p className="text-white/50 max-w-lg mx-auto">Выберите удобную дату и время — мастер приедет точно в срок</p>
+          <p className="text-foreground/60 max-w-lg mx-auto">Выберите удобную дату и время — мастер приедет точно в срок</p>
         </div>
 
         {bookSent ? (
@@ -63,7 +63,7 @@ export default function BookingSection() {
               <Icon name="CheckCircle" size={36} className="text-neon-green" />
             </div>
             <h3 className="font-oswald text-2xl font-bold mb-3">Заявка принята!</h3>
-            <p className="text-white/55 mb-2">Мы перезвоним вам в течение 30 минут для подтверждения.</p>
+            <p className="text-foreground/65 mb-2">Мы перезвоним вам в течение 30 минут для подтверждения.</p>
             {bookDay && bookTime && (
               <div className="mt-6 p-4 bg-neon-blue/10 border border-neon-blue/20 rounded-xl">
                 <div className="text-neon-blue font-semibold">
@@ -86,18 +86,18 @@ export default function BookingSection() {
               </h3>
 
               <div className="flex items-center justify-between mb-5">
-                <button onClick={prevMonth} className="p-2 rounded-lg hover:bg-white/5 transition-colors">
-                  <Icon name="ChevronLeft" size={18} className="text-white/60" />
+                <button onClick={prevMonth} className="p-2 rounded-lg hover:bg-muted transition-colors">
+                  <Icon name="ChevronLeft" size={18} className="text-foreground/70" />
                 </button>
                 <span className="font-oswald font-semibold text-lg">{MONTHS[bookMonth]} {bookYear}</span>
-                <button onClick={nextMonth} className="p-2 rounded-lg hover:bg-white/5 transition-colors">
-                  <Icon name="ChevronRight" size={18} className="text-white/60" />
+                <button onClick={nextMonth} className="p-2 rounded-lg hover:bg-muted transition-colors">
+                  <Icon name="ChevronRight" size={18} className="text-foreground/70" />
                 </button>
               </div>
 
               <div className="grid grid-cols-7 mb-2">
                 {["Пн", "Вт", "Ср", "Чт", "Пт", "Сб", "Вс"].map(d => (
-                  <div key={d} className="text-center text-xs text-white/30 font-semibold py-2">{d}</div>
+                  <div key={d} className="text-center text-xs text-foreground/50 font-semibold py-2">{d}</div>
                 ))}
               </div>
 
@@ -120,7 +120,7 @@ export default function BookingSection() {
 
               {bookDay && (
                 <div className="mt-6">
-                  <h4 className="font-semibold text-sm mb-3 flex items-center gap-2 text-white/80">
+                  <h4 className="font-semibold text-sm mb-3 flex items-center gap-2 text-foreground/85">
                     <Icon name="Clock" size={15} className="text-neon-blue" />
                     Доступное время — {bookDay} {MONTHS[bookMonth]}
                   </h4>
@@ -147,7 +147,7 @@ export default function BookingSection() {
               {bookDay && bookTime && (
                 <div className="mb-6 p-3 bg-neon-blue/10 border border-neon-blue/25 rounded-xl flex items-center gap-3">
                   <Icon name="CalendarCheck" size={18} className="text-neon-blue" />
-                  <span className="text-sm text-white/80">
+                  <span className="text-sm text-foreground/85">
                     <span className="text-neon-blue font-semibold">{bookDay} {MONTHS[bookMonth]}</span> в <span className="text-neon-blue font-semibold">{bookTime}</span>
                   </span>
                 </div>
@@ -155,40 +155,40 @@ export default function BookingSection() {
 
               <form onSubmit={handleBookSubmit} className="space-y-4">
                 <div>
-                  <label className="block text-xs text-white/50 mb-1.5 font-medium">Ваше имя *</label>
+                  <label className="block text-xs text-foreground/60 mb-1.5 font-medium">Ваше имя *</label>
                   <input required value={bookForm.name}
                     onChange={e => setBookForm(f => ({ ...f, name: e.target.value }))}
                     placeholder="Александр Иванов"
-                    className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-sm text-white placeholder-white/25 focus:outline-none focus:border-neon-blue/50 focus:bg-neon-blue/5 transition-all" />
+                    className="w-full bg-card border border-border rounded-xl px-4 py-3 text-sm text-foreground placeholder-foreground/35 focus:outline-none focus:border-neon-blue/60 focus:bg-neon-blue/5 transition-all" />
                 </div>
                 <div>
-                  <label className="block text-xs text-white/50 mb-1.5 font-medium">Телефон *</label>
+                  <label className="block text-xs text-foreground/60 mb-1.5 font-medium">Телефон *</label>
                   <input required value={bookForm.phone}
                     onChange={e => setBookForm(f => ({ ...f, phone: e.target.value }))}
                     placeholder="+7 (___) ___-__-__"
-                    className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-sm text-white placeholder-white/25 focus:outline-none focus:border-neon-blue/50 focus:bg-neon-blue/5 transition-all" />
+                    className="w-full bg-card border border-border rounded-xl px-4 py-3 text-sm text-foreground placeholder-foreground/35 focus:outline-none focus:border-neon-blue/60 focus:bg-neon-blue/5 transition-all" />
                 </div>
                 <div>
-                  <label className="block text-xs text-white/50 mb-1.5 font-medium">Вид услуги</label>
+                  <label className="block text-xs text-foreground/60 mb-1.5 font-medium">Вид услуги</label>
                   <select value={bookForm.service}
                     onChange={e => setBookForm(f => ({ ...f, service: e.target.value }))}
-                    className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-sm text-white focus:outline-none focus:border-neon-blue/50 focus:bg-neon-blue/5 transition-all appearance-none">
-                    <option value="" className="bg-[#1a2035]">Выберите услугу...</option>
-                    {SERVICES.map(s => <option key={s.title} value={s.title} className="bg-[#1a2035]">{s.title}</option>)}
+                    className="w-full bg-card border border-border rounded-xl px-4 py-3 text-sm text-foreground focus:outline-none focus:border-neon-blue/60 focus:bg-neon-blue/5 transition-all appearance-none">
+                    <option value="">Выберите услугу...</option>
+                    {SERVICES.map(s => <option key={s.title} value={s.title}>{s.title}</option>)}
                   </select>
                 </div>
                 <div>
-                  <label className="block text-xs text-white/50 mb-1.5 font-medium">Комментарий</label>
+                  <label className="block text-xs text-foreground/60 mb-1.5 font-medium">Комментарий</label>
                   <textarea value={bookForm.comment}
                     onChange={e => setBookForm(f => ({ ...f, comment: e.target.value }))}
                     placeholder="Опишите проблему или пожелания..."
                     rows={3}
-                    className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-sm text-white placeholder-white/25 focus:outline-none focus:border-neon-blue/50 focus:bg-neon-blue/5 transition-all resize-none" />
+                    className="w-full bg-card border border-border rounded-xl px-4 py-3 text-sm text-foreground placeholder-foreground/35 focus:outline-none focus:border-neon-blue/60 focus:bg-neon-blue/5 transition-all resize-none" />
                 </div>
                 <button type="submit"
                   disabled={!bookDay || !bookTime}
                   className={`w-full py-4 rounded-xl font-oswald font-semibold tracking-wide text-sm transition-all duration-300 flex items-center justify-center gap-2
-                    ${bookDay && bookTime ? "btn-primary" : "bg-white/5 text-white/25 cursor-not-allowed border border-white/10"}`}>
+                    ${bookDay && bookTime ? "btn-primary" : "bg-muted text-foreground/35 cursor-not-allowed border border-border"}`}>
                   <Icon name="Send" size={16} />
                   {!bookDay ? "Сначала выберите дату" : !bookTime ? "Выберите время" : "Отправить заявку"}
                 </button>
