@@ -1,12 +1,14 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { Link, useParams, Navigate } from "react-router-dom";
 import Icon from "@/components/ui/icon";
 import Navbar from "@/components/landing/Navbar";
 import { BLOG_POSTS } from "@/components/landing/data";
+import { toast } from "sonner";
 
 export default function BlogPostPage() {
   const { slug } = useParams<{ slug: string }>();
   const post = BLOG_POSTS.find(p => p.slug === slug);
+  const [copied, setCopied] = useState(false);
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -15,6 +17,27 @@ export default function BlogPostPage() {
   if (!post) return <Navigate to="/" replace />;
 
   const otherPosts = BLOG_POSTS.filter(p => p.slug !== slug);
+  const pageUrl = typeof window !== "undefined" ? window.location.href : "";
+  const shareText = `${post.title} — Страйк Сервис`;
+
+  const shareLinks = [
+    { name: "Telegram", icon: "Send", color: "#0088cc", url: `https://t.me/share/url?url=${encodeURIComponent(pageUrl)}&text=${encodeURIComponent(shareText)}` },
+    { name: "ВКонтакте", icon: "Share2", color: "#0077ff", url: `https://vk.com/share.php?url=${encodeURIComponent(pageUrl)}&title=${encodeURIComponent(shareText)}` },
+    { name: "WhatsApp", icon: "MessageCircle", color: "#25d366", url: `https://api.whatsapp.com/send?text=${encodeURIComponent(shareText + " " + pageUrl)}` },
+    { name: "Одноклассники", icon: "Users", color: "#ee8208", url: `https://connect.ok.ru/offer?url=${encodeURIComponent(pageUrl)}&title=${encodeURIComponent(shareText)}` },
+    { name: "Email", icon: "Mail", color: "#0d9488", url: `mailto:?subject=${encodeURIComponent(shareText)}&body=${encodeURIComponent(pageUrl)}` },
+  ];
+
+  const handleCopy = async () => {
+    try {
+      await navigator.clipboard.writeText(pageUrl);
+      setCopied(true);
+      toast.success("Ссылка скопирована");
+      setTimeout(() => setCopied(false), 2000);
+    } catch {
+      toast.error("Не удалось скопировать");
+    }
+  };
 
   return (
     <div className="min-h-screen bg-background text-foreground overflow-x-hidden">
@@ -48,6 +71,23 @@ export default function BlogPostPage() {
           <div className="relative mb-8">
             <div className="absolute -inset-3 bg-neon-blue/10 rounded-3xl blur-xl" />
             <img src={post.image} alt={post.title} className="relative rounded-2xl w-full h-64 sm:h-96 object-cover border border-neon-blue/20" />
+          </div>
+
+          <div className="flex flex-wrap items-center gap-2.5 p-4 rounded-2xl bg-muted/40 border border-border">
+            <span className="text-[10px] uppercase tracking-widest text-foreground/45 flex items-center gap-1.5 mr-2">
+              <Icon name="Share2" size={12} className="text-neon-blue" />
+              Поделиться
+            </span>
+            {shareLinks.map((s) => (
+              <a key={s.name} href={s.url} target="_blank" rel="noopener noreferrer" aria-label={s.name}
+                className="w-10 h-10 rounded-xl bg-background border border-border hover:border-neon-blue/40 hover:-translate-y-0.5 transition-all flex items-center justify-center">
+                <Icon name={s.icon} size={16} style={{ color: s.color }} />
+              </a>
+            ))}
+            <button onClick={handleCopy} aria-label="Скопировать ссылку"
+              className="w-10 h-10 rounded-xl bg-background border border-border hover:border-neon-blue/40 hover:-translate-y-0.5 transition-all flex items-center justify-center">
+              <Icon name={copied ? "Check" : "Link"} size={16} className={copied ? "text-neon-green" : "text-neon-blue"} />
+            </button>
           </div>
         </div>
       </section>
@@ -83,6 +123,25 @@ export default function BlogPostPage() {
                 </li>
               ))}
             </ul>
+          </div>
+
+          <div className="mt-8 p-6 sm:p-8 rounded-2xl bg-gradient-to-br from-neon-blue/10 to-neon-green/5 border border-neon-blue/20">
+            <h3 className="font-oswald text-xl sm:text-2xl font-black mb-2">Понравилась статья?</h3>
+            <p className="text-foreground/70 text-sm mb-5">Поделитесь с друзьями — пригодится тем, кто пользуется кондиционером</p>
+            <div className="flex flex-wrap gap-2.5">
+              {shareLinks.map((s) => (
+                <a key={s.name} href={s.url} target="_blank" rel="noopener noreferrer"
+                  className="flex items-center gap-2 px-4 py-2.5 rounded-xl bg-background border border-border hover:border-neon-blue/40 hover:-translate-y-0.5 transition-all text-sm">
+                  <Icon name={s.icon} size={16} style={{ color: s.color }} />
+                  <span>{s.name}</span>
+                </a>
+              ))}
+              <button onClick={handleCopy}
+                className="flex items-center gap-2 px-4 py-2.5 rounded-xl bg-background border border-border hover:border-neon-blue/40 hover:-translate-y-0.5 transition-all text-sm">
+                <Icon name={copied ? "Check" : "Link"} size={16} className={copied ? "text-neon-green" : "text-neon-blue"} />
+                <span>{copied ? "Скопировано" : "Скопировать ссылку"}</span>
+              </button>
+            </div>
           </div>
         </div>
       </article>
