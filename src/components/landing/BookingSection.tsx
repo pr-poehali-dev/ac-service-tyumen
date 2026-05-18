@@ -49,8 +49,12 @@ export default function BookingSection() {
   };
 
   return (
-    <section id="booking" ref={bookingSection.ref} className="py-16 sm:py-24 bg-muted/40">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6">
+    <section id="booking" ref={bookingSection.ref} className="py-16 sm:py-24 bg-muted/40 relative overflow-hidden">
+      <div className="absolute inset-0 opacity-15">
+        <img src="https://cdn.poehali.dev/projects/1ca52ef0-91c2-41c6-b9e5-c074d8171504/files/a85d0d06-15be-4de1-8f7a-964f7ba2c076.jpg" alt="" className="w-full h-full object-cover" />
+        <div className="absolute inset-0 bg-gradient-to-b from-background via-background/70 to-background" />
+      </div>
+      <div className="relative max-w-7xl mx-auto px-4 sm:px-6">
         <div className={`mb-10 sm:mb-16 text-center ${bookingSection.inView ? 'animate-fade-in-up' : 'opacity-0'}`}>
           <div className="section-tag mb-4 mx-auto w-fit">Онлайн-запись</div>
           <h2 className="font-oswald text-3xl sm:text-4xl lg:text-5xl font-black mb-4">
