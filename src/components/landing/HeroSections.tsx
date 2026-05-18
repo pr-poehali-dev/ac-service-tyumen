@@ -171,7 +171,7 @@ export default function HeroSections() {
                   { icon: "Award", text: "Сертифицированные специалисты" },
                   { icon: "Clock", text: "Выезд в течение 2 часов" },
                   { icon: "Shield", text: "Гарантия на все работы" },
-                  { icon: "Headphones", text: "Поддержка 24/7/365" },
+                  { icon: "Headphones", text: "Поддержка 365 дней" },
                 ].map((f, i) => (
                   <div key={i} className="flex items-center gap-3 p-3 rounded-xl bg-card border border-border">
                     <Icon name={f.icon} size={18} className="text-neon-blue flex-shrink-0" />
