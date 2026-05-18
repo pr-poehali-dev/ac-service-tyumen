@@ -155,7 +155,7 @@ export default function HeroSections() {
             <div className={`${aboutSection.inView ? 'animate-fade-in-up' : 'opacity-0'}`}>
               <div className="section-tag mb-5 sm:mb-6">О компании</div>
               <h2 className="font-oswald text-3xl sm:text-4xl lg:text-5xl font-black mb-6 sm:mb-8 leading-tight">
-                15 ЛЕТ ДЕЛАЕМ<br />
+                10 ЛЕТ ДЕЛАЕМ<br />
                 <span className="text-neon-blue">ТЕХНИКУ</span><br />
                 НАДЁЖНОЙ
               </h2>
@@ -163,7 +163,7 @@ export default function HeroSections() {
                 Мы — команда сертифицированных инженеров и технических специалистов с опытом работы в промышленном, коммерческом и медицинском секторах.
               </p>
               <p className="text-foreground/70 leading-relaxed mb-8 sm:mb-10 text-sm sm:text-base">
-                За 15 лет работы мы обслужили более 1200 клиентов и провели свыше 50 000 сервисных выездов. Наша цель — чтобы ваше оборудование работало без сбоев.
+                За 10 лет работы мы обслужили более 1200 клиентов и провели свыше 50 000 сервисных выездов. Наша цель — чтобы ваше оборудование работало без сбоев.
               </p>
 
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4 mb-8 sm:mb-10">
