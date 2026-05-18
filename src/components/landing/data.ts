@@ -173,7 +173,7 @@ export const PORTFOLIO = [
   { category: "Госучреждение", title: "ПФР, ИФНС, ФССП по Тюменской области", desc: "Обслуживание климатических систем административных зданий", tag: "Госсектор", image: "https://cdn.poehali.dev/projects/1ca52ef0-91c2-41c6-b9e5-c074d8171504/files/45520bd2-80a5-457c-8b08-8b0cdf5335a2.jpg" },
   { category: "Пищевое", title: "Тюменский молочный комбинат", desc: "Поддержка производственной линии 24/7", tag: "Пищепром", image: "https://cdn.poehali.dev/projects/1ca52ef0-91c2-41c6-b9e5-c074d8171504/files/e4b1a48b-6a6a-4294-89f4-eeed514082b9.jpg" },
   { category: "Логистика", title: "Логопарк «Тюмень-Восточный»", desc: "Обслуживание 80 единиц складской техники", tag: "Логистика", image: "https://cdn.poehali.dev/projects/1ca52ef0-91c2-41c6-b9e5-c074d8171504/files/9ef4b23d-0d8a-4c71-915e-3334928715a4.jpg" },
-  { category: "Энергетика", title: "ПС «Тюменьэнерго»", desc: "Техобслуживание трансформаторных подстанций", tag: "Энергетика", image: "https://cdn.poehali.dev/projects/1ca52ef0-91c2-41c6-b9e5-c074d8171504/files/e00c0b35-3166-4d8f-aa67-288afe2a940f.jpg" },
+  { category: "Медицина", title: "Мед. учреждения г. Тюмени", desc: "Сертифицированный сервис климатических систем в клиниках", tag: "Медицина", image: "https://cdn.poehali.dev/projects/1ca52ef0-91c2-41c6-b9e5-c074d8171504/files/a9811180-e6dd-4ed9-a111-8b3e3fcbfec1.jpg" },
 ];
 
 export const REVIEWS = [
