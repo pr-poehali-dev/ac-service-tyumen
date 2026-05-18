@@ -43,7 +43,13 @@ export default function ContactsSection() {
             className={`mb-10 sm:mb-12 rounded-3xl overflow-hidden border border-border ${contactsSection.inView ? 'animate-fade-in-up delay-300' : 'opacity-0'}`}
           >
             <meta itemProp="name" content="Страйк Сервис" />
+            <meta itemProp="description" content="Обслуживание, монтаж и ремонт кондиционеров и систем вентиляции в Тюмени. Выезд за 2 часа, гарантия на все работы." />
+            <meta itemProp="image" content="https://cdn.poehali.dev/projects/1ca52ef0-91c2-41c6-b9e5-c074d8171504/files/9d752c0a-3126-44f4-a2c7-ff8ccba804b5.jpg" />
+            <meta itemProp="url" content="https://strike-service.ru" />
             <meta itemProp="telephone" content="+7 (495) 123-45-67" />
+            <meta itemProp="email" content="info@techservice.ru" />
+            <meta itemProp="priceRange" content="₽₽" />
+            <meta itemProp="sameAs" content="https://t.me/techservice_pro" />
             <div itemProp="address" itemScope itemType="https://schema.org/PostalAddress" className="sr-only">
               <span itemProp="streetAddress">ул. Широтная, 165 к.3</span>
               <span itemProp="addressLocality">Тюмень</span>
@@ -51,6 +57,16 @@ export default function ContactsSection() {
               <span itemProp="postalCode">625049</span>
               <span itemProp="addressCountry">RU</span>
             </div>
+            <div itemProp="geo" itemScope itemType="https://schema.org/GeoCoordinates" className="sr-only">
+              <meta itemProp="latitude" content="57.156" />
+              <meta itemProp="longitude" content="65.638" />
+            </div>
+            <div itemProp="openingHoursSpecification" itemScope itemType="https://schema.org/OpeningHoursSpecification" className="sr-only">
+              <meta itemProp="dayOfWeek" content="Monday Tuesday Wednesday Thursday Friday Saturday Sunday" />
+              <meta itemProp="opens" content="00:00" />
+              <meta itemProp="closes" content="23:59" />
+            </div>
+            <meta itemProp="areaServed" content="Тюмень, Тюменская область" />
             <iframe
               title="Страйк Сервис — г. Тюмень, ул. Широтная, 165 к.3"
               src="https://yandex.ru/map-widget/v1/?ll=65.638%2C57.156&mode=search&text=%D0%B3.%20%D0%A2%D1%8E%D0%BC%D0%B5%D0%BD%D1%8C%2C%20%D1%83%D0%BB.%20%D0%A8%D0%B8%D1%80%D0%BE%D1%82%D0%BD%D0%B0%D1%8F%2C%20165%20%D0%BA.3&z=16"
