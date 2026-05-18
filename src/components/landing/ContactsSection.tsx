@@ -63,6 +63,12 @@ export default function ContactsSection() {
                   Позвонить
                 </a>
               </div>
+              <p className="text-white/65 text-xs leading-relaxed max-w-md lg:basis-full">
+                Нажимая «Записаться онлайн» или «Позвонить», вы соглашаетесь с{" "}
+                <Link to="/privacy" className="text-white underline hover:text-white/85">
+                  обработкой персональных данных
+                </Link>
+              </p>
             </div>
           </div>
         </div>
