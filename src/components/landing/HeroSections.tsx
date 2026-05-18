@@ -55,7 +55,7 @@ export default function HeroSections() {
             <div className={`grid grid-cols-3 gap-3 sm:gap-6 ${heroSection.inView ? 'animate-fade-in-up delay-400' : 'opacity-0'}`}>
               {[
                 { num: "10", label: "лет опыта", suffix: "+" },
-                { num: "1200", label: "клиентов", suffix: "+" },
+                { num: "5000", label: "клиентов", suffix: "+" },
                 { num: "2", label: "часа выезд", suffix: "" },
               ].map((s, i) => (
                 <div key={i}>
@@ -163,7 +163,7 @@ export default function HeroSections() {
                 Мы — команда сертифицированных инженеров и технических специалистов с опытом работы в промышленном, коммерческом и медицинском секторах.
               </p>
               <p className="text-foreground/70 leading-relaxed mb-8 sm:mb-10 text-sm sm:text-base">
-                За 10 лет работы мы обслужили более 1200 клиентов и провели свыше 50 000 сервисных выездов. Наша цель — чтобы ваше оборудование работало без сбоев.
+                За 10 лет работы мы обслужили более 5000 клиентов и провели свыше 50 000 сервисных выездов. Наша цель — чтобы ваше оборудование работало без сбоев.
               </p>
 
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4 mb-8 sm:mb-10">
