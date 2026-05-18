@@ -43,6 +43,27 @@ export default function BlogPostPage() {
     <div className="min-h-screen bg-background text-foreground overflow-x-hidden">
       <Navbar />
 
+      <div itemScope itemType="https://schema.org/Article">
+        <meta itemProp="headline" content={post.title} />
+        <meta itemProp="description" content={post.seoText} />
+        <meta itemProp="image" content={post.image} />
+        <meta itemProp="datePublished" content={post.date} />
+        <meta itemProp="dateModified" content={post.date} />
+        <meta itemProp="articleSection" content={post.category} />
+        <meta itemProp="keywords" content={post.seoQueries.join(", ")} />
+        <meta itemProp="inLanguage" content="ru-RU" />
+        <meta itemProp="mainEntityOfPage" content={pageUrl} />
+        <div itemProp="author" itemScope itemType="https://schema.org/Organization" className="hidden">
+          <meta itemProp="name" content="Страйк Сервис" />
+          <meta itemProp="url" content="https://strike-service.ru" />
+        </div>
+        <div itemProp="publisher" itemScope itemType="https://schema.org/Organization" className="hidden">
+          <meta itemProp="name" content="Страйк Сервис" />
+          <div itemProp="logo" itemScope itemType="https://schema.org/ImageObject">
+            <meta itemProp="url" content="https://cdn.poehali.dev/projects/1ca52ef0-91c2-41c6-b9e5-c074d8171504/files/9d752c0a-3126-44f4-a2c7-ff8ccba804b5.jpg" />
+          </div>
+        </div>
+
       <section className="relative pt-28 sm:pt-32 pb-12 sm:pb-16 overflow-hidden">
         <div className="absolute inset-0 grid-pattern opacity-30" />
         <div className="absolute top-0 right-0 w-96 h-96 bg-neon-blue/5 rounded-full blur-[120px]" />
@@ -200,6 +221,7 @@ export default function BlogPostPage() {
           </div>
         </div>
       </section>
+      </div>
 
       <footer className="border-t border-border py-8">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 text-center text-xs text-foreground/40">
