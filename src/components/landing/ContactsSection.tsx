@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import Icon from "@/components/ui/icon";
 import { useInView } from "./useInView";
 import { NAV_ITEMS } from "./data";
@@ -80,6 +81,7 @@ export default function ContactsSection() {
             {NAV_ITEMS.map(n => (
               <a key={n.href} href={n.href} className="hover:text-foreground transition-colors">{n.label}</a>
             ))}
+            <Link to="/privacy" className="hover:text-foreground transition-colors">Согласие на обработку ПД</Link>
           </div>
           <div className="text-xs text-foreground/40">© 2026 Страйк Сервис. Все права защищены.</div>
         </div>

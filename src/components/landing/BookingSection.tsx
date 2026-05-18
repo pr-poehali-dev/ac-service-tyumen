@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { Link } from "react-router-dom";
 import Icon from "@/components/ui/icon";
 import { useInView } from "./useInView";
 import { SERVICES, MONTHS, TIME_SLOTS, TAKEN_SLOTS } from "./data";
@@ -11,6 +12,7 @@ export default function BookingSection() {
   const [bookDay, setBookDay] = useState<number | null>(null);
   const [bookTime, setBookTime] = useState<string | null>(null);
   const [bookForm, setBookForm] = useState({ name: "", phone: "", service: "", comment: "" });
+  const [bookAgree, setBookAgree] = useState(false);
   const [bookSent, setBookSent] = useState(false);
 
   const today = new Date();
@@ -71,7 +73,7 @@ export default function BookingSection() {
                 </div>
               </div>
             )}
-            <button onClick={() => { setBookSent(false); setBookDay(null); setBookTime(null); setBookForm({ name: "", phone: "", service: "", comment: "" }); }}
+            <button onClick={() => { setBookSent(false); setBookDay(null); setBookTime(null); setBookForm({ name: "", phone: "", service: "", comment: "" }); setBookAgree(false); }}
               className="btn-outline mt-6 px-6 py-2.5 rounded-xl text-sm">
               Записаться снова
             </button>
@@ -185,12 +187,27 @@ export default function BookingSection() {
                     rows={3}
                     className="w-full bg-card border border-border rounded-xl px-4 py-3 text-sm text-foreground placeholder-foreground/35 focus:outline-none focus:border-neon-blue/60 focus:bg-neon-blue/5 transition-all resize-none" />
                 </div>
+                <label className="flex items-start gap-3 cursor-pointer select-none">
+                  <input
+                    type="checkbox"
+                    required
+                    checked={bookAgree}
+                    onChange={e => setBookAgree(e.target.checked)}
+                    className="mt-1 w-4 h-4 rounded border-border accent-neon-blue cursor-pointer flex-shrink-0"
+                  />
+                  <span className="text-xs text-foreground/65 leading-relaxed">
+                    Я даю согласие на обработку персональных данных в соответствии с{" "}
+                    <Link to="/privacy" target="_blank" className="text-neon-blue hover:underline">
+                      Федеральным законом от 27.07.2006 № 152-ФЗ «О персональных данных»
+                    </Link>
+                  </span>
+                </label>
                 <button type="submit"
-                  disabled={!bookDay || !bookTime}
+                  disabled={!bookDay || !bookTime || !bookAgree}
                   className={`w-full py-3 sm:py-4 rounded-xl font-oswald font-semibold tracking-wide text-sm transition-all duration-300 flex items-center justify-center gap-2
-                    ${bookDay && bookTime ? "btn-primary" : "bg-muted text-foreground/35 cursor-not-allowed border border-border"}`}>
+                    ${bookDay && bookTime && bookAgree ? "btn-primary" : "bg-muted text-foreground/35 cursor-not-allowed border border-border"}`}>
                   <Icon name="Send" size={16} />
-                  {!bookDay ? "Сначала выберите дату" : !bookTime ? "Выберите время" : "Отправить заявку"}
+                  {!bookDay ? "Сначала выберите дату" : !bookTime ? "Выберите время" : !bookAgree ? "Подтвердите согласие" : "Отправить заявку"}
                 </button>
               </form>
             </div>
