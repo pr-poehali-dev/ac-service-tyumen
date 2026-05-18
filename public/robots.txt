@@ -1,3 +1,12 @@
+User-agent: *
+Allow: /
+Disallow: /privacy
+
+User-agent: Yandex
+Allow: /
+Disallow: /privacy
+Host: straikservis.ru
+
 User-agent: Googlebot
 Allow: /
 
@@ -10,5 +19,4 @@ Allow: /
 User-agent: facebookexternalhit
 Allow: /
 
-User-agent: *
-Allow: /
+Sitemap: https://straikservis.ru/sitemap.xml
