@@ -172,7 +172,7 @@ export const PORTFOLIO = [
   { category: "Коммерческое", title: "Кафе, Рестораны, ТРЦ г. Тюмени", desc: "Десятки заведений общепита и торговли под обслуживанием", tag: "Торговля", image: "https://cdn.poehali.dev/projects/1ca52ef0-91c2-41c6-b9e5-c074d8171504/files/a9456a95-5748-4c66-abdf-92211dcab566.jpg" },
   { category: "Госучреждение", title: "ПФР, ИФНС, ФССП по Тюменской области", desc: "Доверие государственных структур региона", tag: "Госсектор", image: "https://cdn.poehali.dev/projects/1ca52ef0-91c2-41c6-b9e5-c074d8171504/files/45520bd2-80a5-457c-8b08-8b0cdf5335a2.jpg" },
   { category: "Пищевое", title: "Тюменский молочный комбинат", desc: "Бесперебойная работа производства круглый год", tag: "Пищепром", image: "https://cdn.poehali.dev/projects/1ca52ef0-91c2-41c6-b9e5-c074d8171504/files/e4b1a48b-6a6a-4294-89f4-eeed514082b9.jpg" },
-  { category: "Логистика", title: "Логопарк «Тюмень-Восточный»", desc: "Климат и сервис на крупных складских комплексах", tag: "Логистика", image: "https://cdn.poehali.dev/projects/1ca52ef0-91c2-41c6-b9e5-c074d8171504/files/9ef4b23d-0d8a-4c71-915e-3334928715a4.jpg" },
+  { category: "Бизнес", title: "Склады, Офисные здания, Серверные г. Тюмени", desc: "Климат для бизнеса и критичной IT-инфраструктуры", tag: "Бизнес", image: "https://cdn.poehali.dev/projects/1ca52ef0-91c2-41c6-b9e5-c074d8171504/files/d198d890-8fb2-4bef-8740-0fc06495e7d5.jpg" },
   { category: "Медицина", title: "Мед. учреждения г. Тюмени", desc: "Чистый воздух и стабильный климат в клиниках города", tag: "Медицина", image: "https://cdn.poehali.dev/projects/1ca52ef0-91c2-41c6-b9e5-c074d8171504/files/a9811180-e6dd-4ed9-a111-8b3e3fcbfec1.jpg" },
 ];
 
