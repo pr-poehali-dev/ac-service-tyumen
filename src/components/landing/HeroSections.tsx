@@ -33,7 +33,7 @@ export default function HeroSections() {
           <div className="max-w-2xl">
             <div className={`section-tag mb-5 sm:mb-6 ${heroSection.inView ? 'animate-fade-in-up' : 'opacity-0'}`}>
               <span className="w-1.5 h-1.5 rounded-full bg-neon-green inline-block" />
-              Работаем 24/7
+              Работаем 365 дней
             </div>
 
             <h1 className={`font-oswald text-4xl sm:text-5xl lg:text-7xl font-black leading-[1.05] mb-3 sm:mb-4 ${heroSection.inView ? 'animate-fade-in-up delay-100' : 'opacity-0'}`}>Обслуживание кондиционеров и вентиляции в Тюмени</h1>
