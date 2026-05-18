@@ -42,7 +42,7 @@ export default function HeroSections() {
               СЕРВИС
             </h1>
 
-            <p className={`text-base sm:text-lg text-foreground/70 leading-relaxed mb-8 sm:mb-10 max-w-lg ${heroSection.inView ? 'animate-fade-in-up delay-200' : 'opacity-0'}`}>Обслуживаем бытовые сплит-системы, кассетного, напольно-потолочного типа в квартирах/коттеджах/кафе/ресторанах/магазинах/больницах/ . Дезинфекция систем вентиляции в медицинских учреждениях (есть лицензия на эти виды работ). Выезд специалиста в течении 2 ч. Гарантия на все виды работ.</p>
+            <p className={`text-base sm:text-lg text-foreground/70 leading-relaxed mb-8 sm:mb-10 max-w-lg ${heroSection.inView ? 'animate-fade-in-up delay-200' : 'opacity-0'}`}>Монтаж, сезонное ТО, чистка и дезинфекция систем для квартир, офисов, ресторанов и торговых центров.  Дезинфекция систем вентиляции в медицинских учреждениях (есть лицензия на эти виды работ). Выезд специалиста в течении 2 ч. Гарантия на все виды работ.</p>
 
             <div className={`flex flex-col sm:flex-row flex-wrap gap-3 sm:gap-4 mb-12 sm:mb-16 ${heroSection.inView ? 'animate-fade-in-up delay-300' : 'opacity-0'}`}>
               <a href="#booking" className="btn-primary px-6 sm:px-8 py-3.5 rounded-xl text-sm sm:text-base flex items-center justify-center gap-2">
