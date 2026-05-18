@@ -170,10 +170,10 @@ export const SERVICES = [
 export const PORTFOLIO = [
   { category: "Клиенты", title: "5000 довольных клиентов в г. Тюмени", desc: "Тысячи семей и компаний доверили нам свой климат", tag: "Тюмень", image: "https://cdn.poehali.dev/projects/1ca52ef0-91c2-41c6-b9e5-c074d8171504/files/08740594-a1fe-47e8-ad78-10a9b60c0051.jpg" },
   { category: "Коммерческое", title: "Кафе, Рестораны, ТРЦ г. Тюмени", desc: "Десятки заведений общепита и торговли под обслуживанием", tag: "Торговля", image: "https://cdn.poehali.dev/projects/1ca52ef0-91c2-41c6-b9e5-c074d8171504/files/a9456a95-5748-4c66-abdf-92211dcab566.jpg" },
-  { category: "Госучреждение", title: "ПФР, ИФНС, ФССП по Тюменской области", desc: "Обслуживание климатических систем административных зданий", tag: "Госсектор", image: "https://cdn.poehali.dev/projects/1ca52ef0-91c2-41c6-b9e5-c074d8171504/files/45520bd2-80a5-457c-8b08-8b0cdf5335a2.jpg" },
-  { category: "Пищевое", title: "Тюменский молочный комбинат", desc: "Поддержка производственной линии 24/7", tag: "Пищепром", image: "https://cdn.poehali.dev/projects/1ca52ef0-91c2-41c6-b9e5-c074d8171504/files/e4b1a48b-6a6a-4294-89f4-eeed514082b9.jpg" },
-  { category: "Логистика", title: "Логопарк «Тюмень-Восточный»", desc: "Обслуживание 80 единиц складской техники", tag: "Логистика", image: "https://cdn.poehali.dev/projects/1ca52ef0-91c2-41c6-b9e5-c074d8171504/files/9ef4b23d-0d8a-4c71-915e-3334928715a4.jpg" },
-  { category: "Медицина", title: "Мед. учреждения г. Тюмени", desc: "Сертифицированный сервис климатических систем в клиниках", tag: "Медицина", image: "https://cdn.poehali.dev/projects/1ca52ef0-91c2-41c6-b9e5-c074d8171504/files/a9811180-e6dd-4ed9-a111-8b3e3fcbfec1.jpg" },
+  { category: "Госучреждение", title: "ПФР, ИФНС, ФССП по Тюменской области", desc: "Доверие государственных структур региона", tag: "Госсектор", image: "https://cdn.poehali.dev/projects/1ca52ef0-91c2-41c6-b9e5-c074d8171504/files/45520bd2-80a5-457c-8b08-8b0cdf5335a2.jpg" },
+  { category: "Пищевое", title: "Тюменский молочный комбинат", desc: "Бесперебойная работа производства круглый год", tag: "Пищепром", image: "https://cdn.poehali.dev/projects/1ca52ef0-91c2-41c6-b9e5-c074d8171504/files/e4b1a48b-6a6a-4294-89f4-eeed514082b9.jpg" },
+  { category: "Логистика", title: "Логопарк «Тюмень-Восточный»", desc: "Климат и сервис на крупных складских комплексах", tag: "Логистика", image: "https://cdn.poehali.dev/projects/1ca52ef0-91c2-41c6-b9e5-c074d8171504/files/9ef4b23d-0d8a-4c71-915e-3334928715a4.jpg" },
+  { category: "Медицина", title: "Мед. учреждения г. Тюмени", desc: "Чистый воздух и стабильный климат в клиниках города", tag: "Медицина", image: "https://cdn.poehali.dev/projects/1ca52ef0-91c2-41c6-b9e5-c074d8171504/files/a9811180-e6dd-4ed9-a111-8b3e3fcbfec1.jpg" },
 ];
 
 export const REVIEWS = [
