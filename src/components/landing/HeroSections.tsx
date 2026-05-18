@@ -41,7 +41,7 @@ export default function HeroSections() {
 
             <p className={`text-base sm:text-lg text-foreground/70 leading-relaxed mb-8 sm:mb-10 max-w-lg ${heroSection.inView ? 'animate-fade-in-up delay-200' : 'opacity-0'}`}>Монтаж, сезонное ТО, чистка и дезинфекция систем для квартир, офисов, ресторанов и торговых центров.  Дезинфекция систем вентиляции в медицинских учреждениях (есть лицензия на эти виды работ). Выезд специалиста в течении 2 ч. Гарантия на все виды работ.</p>
 
-            <div className={`flex flex-col sm:flex-row flex-wrap gap-3 sm:gap-4 mb-12 sm:mb-16 ${heroSection.inView ? 'animate-fade-in-up delay-300' : 'opacity-0'}`}>
+            <div className={`flex flex-col sm:flex-row flex-wrap gap-3 sm:gap-4 mb-3 sm:mb-4 ${heroSection.inView ? 'animate-fade-in-up delay-300' : 'opacity-0'}`}>
               <a href="#booking" className="btn-primary px-6 sm:px-8 py-3.5 rounded-xl text-sm sm:text-base flex items-center justify-center gap-2">
                 <Icon name="CalendarCheck" size={18} />
                 Записаться на сервис
@@ -51,6 +51,12 @@ export default function HeroSections() {
                 <Icon name="ArrowRight" size={18} />
               </a>
             </div>
+            <p className={`text-xs text-foreground/50 mb-12 sm:mb-16 max-w-lg leading-relaxed ${heroSection.inView ? 'animate-fade-in-up delay-300' : 'opacity-0'}`}>
+              Нажимая «Записаться на сервис», вы соглашаетесь с{" "}
+              <Link to="/privacy" className="text-neon-blue hover:underline">
+                обработкой персональных данных
+              </Link>
+            </p>
 
             <div className={`grid grid-cols-3 gap-3 sm:gap-6 ${heroSection.inView ? 'animate-fade-in-up delay-400' : 'opacity-0'}`}>
               {[
