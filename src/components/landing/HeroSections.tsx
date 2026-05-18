@@ -165,9 +165,7 @@ export default function HeroSections() {
                 <span className="text-neon-blue">ТЕХНИКУ</span><br />
                 НАДЁЖНОЙ
               </h2>
-              <p className="text-foreground/70 leading-relaxed mb-5 sm:mb-6 text-sm sm:text-base">
-                Мы — команда сертифицированных инженеров и технических специалистов с опытом работы в промышленном, коммерческом и медицинском секторах.
-              </p>
+              <p className="text-foreground/70 leading-relaxed mb-5 sm:mb-6 text-sm sm:text-base">Мы — команда  технических специалистов с опытом работы в промышленном, коммерческом и медицинском секторах.</p>
               <p className="text-foreground/70 leading-relaxed mb-8 sm:mb-10 text-sm sm:text-base">
                 За 10 лет работы мы обслужили более 5000 клиентов и провели свыше 50 000 сервисных выездов. Наша цель — чтобы ваше оборудование работало без сбоев.
               </p>
