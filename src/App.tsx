@@ -9,6 +9,7 @@ import Service from "./pages/Service";
 import BlogPost from "./pages/BlogPost";
 import Privacy from "./pages/Privacy";
 import NotFound from "./pages/NotFound";
+import CookieBanner from "./components/CookieBanner";
 
 const queryClient = new QueryClient();
 
@@ -18,6 +19,7 @@ const App = () => (
       <Toaster />
       <Sonner />
       <BrowserRouter>
+        <CookieBanner />
         <Routes>
           <Route path="/" element={<Index />} />
           <Route path="/uslugi/:slug" element={<Service />} />
