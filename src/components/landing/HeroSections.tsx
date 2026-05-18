@@ -190,7 +190,7 @@ export default function HeroSections() {
 
             <div className={`relative ${aboutSection.inView ? 'animate-fade-in-up delay-200' : 'opacity-0'}`}>
               <div className="absolute -inset-4 bg-neon-blue/10 rounded-3xl blur-xl" />
-              <img src={TEAM_IMG} alt="Команда" className="relative rounded-3xl w-full h-64 sm:h-96 lg:h-[520px] object-cover border border-neon-blue/20" />
+              <img src="https://cdn.poehali.dev/projects/1ca52ef0-91c2-41c6-b9e5-c074d8171504/files/20694840-b1c0-4b64-b965-d7c51e7e3d7e.jpg" alt="Технический специалист обслуживает кондиционер" className="relative rounded-3xl w-full h-64 sm:h-96 lg:h-[520px] object-cover border border-neon-blue/20" />
               <div className="absolute bottom-6 left-6 right-6 glass rounded-2xl p-5">
                 <div className="flex items-center gap-4">
                   <div className="flex -space-x-2">
