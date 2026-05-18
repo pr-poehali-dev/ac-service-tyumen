@@ -36,7 +36,7 @@ export default function HeroSections() {
               Работаем 24/7
             </div>
 
-            <h1 className={`font-oswald text-4xl sm:text-5xl lg:text-7xl font-black leading-[1.05] mb-5 sm:mb-6 ${heroSection.inView ? 'animate-fade-in-up delay-100' : 'opacity-0'}`}>Обслуживание кондиционеров и вентиляции в Тюмени-Аккуратно и точно в срок.</h1>
+            <h1 className={`font-oswald text-4xl sm:text-5xl lg:text-7xl font-black leading-[1.05] mb-5 sm:mb-6 ${heroSection.inView ? 'animate-fade-in-up delay-100' : 'opacity-0'}`}>Обслуживание кондиционеров и вентиляции в Тюмени-<span className="text-2xl sm:text-3xl lg:text-4xl">Аккуратно и точно в срок.</span></h1>
 
             <p className={`text-base sm:text-lg text-foreground/70 leading-relaxed mb-8 sm:mb-10 max-w-lg ${heroSection.inView ? 'animate-fade-in-up delay-200' : 'opacity-0'}`}>Монтаж, сезонное ТО, чистка и дезинфекция систем для квартир, офисов, ресторанов и торговых центров.  Дезинфекция систем вентиляции в медицинских учреждениях (есть лицензия на эти виды работ). Выезд специалиста в течении 2 ч. Гарантия на все виды работ.</p>
 
