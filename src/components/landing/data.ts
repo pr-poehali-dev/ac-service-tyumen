@@ -169,11 +169,11 @@ export const SERVICES = [
 
 export const PORTFOLIO = [
   { category: "Клиенты", title: "5000 довольных клиентов в г. Тюмени", desc: "Тысячи семей и компаний доверили нам свой климат", tag: "Тюмень", image: "https://cdn.poehali.dev/projects/1ca52ef0-91c2-41c6-b9e5-c074d8171504/files/08740594-a1fe-47e8-ad78-10a9b60c0051.jpg" },
-  { category: "Коммерческое", title: "ТЦ «Галерея»", desc: "Обслуживание инженерных систем 45 000 м²", tag: "Торговля" },
+  { category: "Коммерческое", title: "ТРЦ «Кристалл», Тюмень", desc: "Обслуживание инженерных систем 45 000 м²", tag: "Торговля", image: "https://cdn.poehali.dev/projects/1ca52ef0-91c2-41c6-b9e5-c074d8171504/files/ad2da75b-1f10-44e9-8da5-44c6de689178.jpg" },
   { category: "Госучреждение", title: "ПФР, ИФНС, ФССП по Тюменской области", desc: "Обслуживание климатических систем административных зданий", tag: "Госсектор", image: "https://cdn.poehali.dev/projects/1ca52ef0-91c2-41c6-b9e5-c074d8171504/files/45520bd2-80a5-457c-8b08-8b0cdf5335a2.jpg" },
-  { category: "Пищевое", title: "Комбинат «ВкусПром»", desc: "Поддержка производственной линии 24/7", tag: "Пищепром" },
-  { category: "Логистика", title: "Склад «ПолярЛог»", desc: "Обслуживание 80 единиц складской техники", tag: "Логистика" },
-  { category: "Энергетика", title: "ПС «ЭлектроСеть»", desc: "Техобслуживание трансформаторных подстанций", tag: "Энергетика" },
+  { category: "Пищевое", title: "Тюменский молочный комбинат", desc: "Поддержка производственной линии 24/7", tag: "Пищепром", image: "https://cdn.poehali.dev/projects/1ca52ef0-91c2-41c6-b9e5-c074d8171504/files/e4b1a48b-6a6a-4294-89f4-eeed514082b9.jpg" },
+  { category: "Логистика", title: "Логопарк «Тюмень-Восточный»", desc: "Обслуживание 80 единиц складской техники", tag: "Логистика", image: "https://cdn.poehali.dev/projects/1ca52ef0-91c2-41c6-b9e5-c074d8171504/files/9ef4b23d-0d8a-4c71-915e-3334928715a4.jpg" },
+  { category: "Энергетика", title: "ПС «Тюменьэнерго»", desc: "Техобслуживание трансформаторных подстанций", tag: "Энергетика", image: "https://cdn.poehali.dev/projects/1ca52ef0-91c2-41c6-b9e5-c074d8171504/files/e00c0b35-3166-4d8f-aa67-288afe2a940f.jpg" },
 ];
 
 export const REVIEWS = [
