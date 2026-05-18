@@ -21,7 +21,7 @@ export default function ContactsSection() {
             {[
               { icon: "Phone", title: "Телефон", value: "+7 (495) 123-45-67", sub: "Пн–Вс, 00:00–24:00", href: "tel:+74951234567" },
               { icon: "Mail", title: "Email", value: "info@techservice.ru", sub: "Ответим за 2 часа", href: "mailto:info@techservice.ru" },
-              { icon: "MapPin", title: "Адрес", value: "Тюмень, ул. Республики, 1", sub: "Головной офис", href: "#" },
+              { icon: "MapPin", title: "Адрес", value: "г. Тюмень, ул. Широтная, 165 к.3", sub: "Головной офис", href: "https://yandex.ru/maps/?text=%D0%B3.%20%D0%A2%D1%8E%D0%BC%D0%B5%D0%BD%D1%8C%2C%20%D1%83%D0%BB.%20%D0%A8%D0%B8%D1%80%D0%BE%D1%82%D0%BD%D0%B0%D1%8F%2C%20165%20%D0%BA.3" },
               { icon: "MessageCircle", title: "Telegram", value: "@techservice_pro", sub: "Быстрая связь", href: "https://t.me/techservice_pro" },
             ].map((c, i) => (
               <a key={i} href={c.href}
@@ -35,6 +35,32 @@ export default function ContactsSection() {
                 <div className="text-foreground/50 text-xs">{c.sub}</div>
               </a>
             ))}
+          </div>
+
+          <div
+            itemScope
+            itemType="https://schema.org/LocalBusiness"
+            className={`mb-10 sm:mb-12 rounded-3xl overflow-hidden border border-border ${contactsSection.inView ? 'animate-fade-in-up delay-300' : 'opacity-0'}`}
+          >
+            <meta itemProp="name" content="Страйк Сервис" />
+            <meta itemProp="telephone" content="+7 (495) 123-45-67" />
+            <div itemProp="address" itemScope itemType="https://schema.org/PostalAddress" className="sr-only">
+              <span itemProp="streetAddress">ул. Широтная, 165 к.3</span>
+              <span itemProp="addressLocality">Тюмень</span>
+              <span itemProp="addressRegion">Тюменская область</span>
+              <span itemProp="postalCode">625049</span>
+              <span itemProp="addressCountry">RU</span>
+            </div>
+            <iframe
+              title="Страйк Сервис — г. Тюмень, ул. Широтная, 165 к.3"
+              src="https://yandex.ru/map-widget/v1/?ll=65.638%2C57.156&mode=search&text=%D0%B3.%20%D0%A2%D1%8E%D0%BC%D0%B5%D0%BD%D1%8C%2C%20%D1%83%D0%BB.%20%D0%A8%D0%B8%D1%80%D0%BE%D1%82%D0%BD%D0%B0%D1%8F%2C%20165%20%D0%BA.3&z=16"
+              width="100%"
+              height="400"
+              frameBorder="0"
+              allowFullScreen
+              loading="lazy"
+              className="block w-full h-[320px] sm:h-[400px]"
+            />
           </div>
 
           <div className={`relative overflow-hidden rounded-3xl p-6 sm:p-10 lg:p-14 ${contactsSection.inView ? 'animate-fade-in-up delay-400' : 'opacity-0'}`}
