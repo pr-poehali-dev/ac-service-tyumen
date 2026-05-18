@@ -269,7 +269,7 @@ export default function HeroSections() {
             <h2 className="font-oswald text-3xl sm:text-4xl lg:text-5xl font-black">ОТЗЫВЫ</h2>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-5">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-5">
             {REVIEWS.map((r, i) => (
               <div key={i} className={`card-service rounded-2xl p-5 sm:p-7 ${reviewsSection.inView ? 'animate-fade-in-up' : 'opacity-0'}`}
                 style={{ animationDelay: `${i * 0.12}s` }}>
