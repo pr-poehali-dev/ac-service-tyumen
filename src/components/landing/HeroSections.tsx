@@ -129,7 +129,7 @@ export default function HeroSections() {
               <div key={i} className={`card-service rounded-2xl overflow-hidden group cursor-pointer ${portfolioSection.inView ? 'animate-fade-in-up' : 'opacity-0'}`}
                 style={{ animationDelay: `${i * 0.1}s` }}>
                 <div className="h-44 relative overflow-hidden">
-                  <img src={WORK_IMG} alt="" className="w-full h-full object-cover opacity-75 group-hover:opacity-95 group-hover:scale-105 transition-all duration-500" />
+                  <img src={p.image || WORK_IMG} alt="" className="w-full h-full object-cover opacity-75 group-hover:opacity-95 group-hover:scale-105 transition-all duration-500" />
                   <div className="absolute top-4 left-4">
                     <span className="text-xs font-semibold uppercase tracking-widest text-neon-green bg-neon-green/10 border border-neon-green/30 px-3 py-1 rounded-full">
                       {p.tag}
