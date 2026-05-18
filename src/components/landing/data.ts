@@ -1,4 +1,4 @@
-export const HERO_IMG = "https://cdn.poehali.dev/projects/1ca52ef0-91c2-41c6-b9e5-c074d8171504/files/e7a12b38-603c-4b7e-aa71-c81471d5a276.jpg";
+export const HERO_IMG = "https://cdn.poehali.dev/projects/1ca52ef0-91c2-41c6-b9e5-c074d8171504/files/9d752c0a-3126-44f4-a2c7-ff8ccba804b5.jpg";
 export const TEAM_IMG = "https://cdn.poehali.dev/projects/1ca52ef0-91c2-41c6-b9e5-c074d8171504/files/086dbf83-d7c3-46f3-8cc0-7d6b81f1c0d2.jpg";
 export const WORK_IMG = "https://cdn.poehali.dev/projects/1ca52ef0-91c2-41c6-b9e5-c074d8171504/files/07cb9d08-f736-4d24-88b9-2d451b59fcff.jpg";
 
