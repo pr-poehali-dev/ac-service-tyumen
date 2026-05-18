@@ -54,7 +54,7 @@ export default function HeroSections() {
 
             <div className={`grid grid-cols-3 gap-3 sm:gap-6 ${heroSection.inView ? 'animate-fade-in-up delay-400' : 'opacity-0'}`}>
               {[
-                { num: "15", label: "лет опыта", suffix: "+" },
+                { num: "10", label: "лет опыта", suffix: "+" },
                 { num: "1200", label: "клиентов", suffix: "+" },
                 { num: "2", label: "часа выезд", suffix: "" },
               ].map((s, i) => (
