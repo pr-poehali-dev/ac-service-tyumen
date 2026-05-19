@@ -116,7 +116,7 @@ export default function HeroSections() {
                 <meta itemProp="image" content={s.image} />
                 <div itemProp="provider" itemScope itemType="https://schema.org/LocalBusiness" className="hidden">
                   <meta itemProp="name" content="Страйк Сервис" />
-                  <meta itemProp="telephone" content="+7 (495) 123-45-67" />
+                  <meta itemProp="telephone" content="+7 (932) 624-06-66" />
                   <div itemProp="address" itemScope itemType="https://schema.org/PostalAddress">
                     <meta itemProp="streetAddress" content="ул. Широтная, 165 к.3" />
                     <meta itemProp="addressLocality" content="Тюмень" />

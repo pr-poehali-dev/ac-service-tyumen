@@ -232,8 +232,8 @@ export function downloadCommercialOffer() {
   <div class="header-right">
     <b>ООО «Страйк Сервис»</b><br>
     г. Тюмень, ул. Широтная, 165 к.3<br>
-    +7 (495) 123-45-67<br>
-    info@techservice.ru<br>
+    +7 (932) 624-06-66<br>
+    Straikpro72.tmn@yandex.ru<br>
     straikservis.ru
   </div>
 </div>
@@ -274,8 +274,8 @@ export function downloadCommercialOffer() {
 <div class="contacts">
   <h3>Связаться с нами</h3>
   <div class="contacts-grid">
-    <div><b>Телефон:</b> +7 (495) 123-45-67</div>
-    <div><b>Email:</b> info@techservice.ru</div>
+    <div><b>Телефон:</b> +7 (932) 624-06-66</div>
+    <div><b>Email:</b> Straikpro72.tmn@yandex.ru</div>
     <div><b>Адрес:</b> г. Тюмень, ул. Широтная, 165 к.3</div>
     <div><b>Сайт:</b> straikservis.ru</div>
   </div>

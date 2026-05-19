@@ -19,10 +19,10 @@ export default function ContactsSection() {
 
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-5 mb-10 sm:mb-12">
             {[
-              { icon: "Phone", title: "Телефон", value: "+7 (495) 123-45-67", sub: "Пн–Вс, 00:00–24:00", href: "tel:+74951234567" },
-              { icon: "Mail", title: "Email", value: "info@techservice.ru", sub: "Ответим за 2 часа", href: "mailto:info@techservice.ru" },
+              { icon: "Phone", title: "Телефон", value: "+7 (932) 624-06-66", sub: "Пн–Вс, 00:00–24:00", href: "tel:+79326240666" },
+              { icon: "Mail", title: "Email", value: "Straikpro72.tmn@yandex.ru", sub: "Ответим за 2 часа", href: "mailto:Straikpro72.tmn@yandex.ru" },
               { icon: "MapPin", title: "Адрес", value: "г. Тюмень, ул. Широтная, 165 к.3", sub: "Головной офис", href: "https://yandex.ru/maps/?text=%D0%B3.%20%D0%A2%D1%8E%D0%BC%D0%B5%D0%BD%D1%8C%2C%20%D1%83%D0%BB.%20%D0%A8%D0%B8%D1%80%D0%BE%D1%82%D0%BD%D0%B0%D1%8F%2C%20165%20%D0%BA.3" },
-              { icon: "MessageCircle", title: "Telegram", value: "@techservice_pro", sub: "Быстрая связь", href: "https://t.me/techservice_pro" },
+              { icon: "MessageCircle", title: "Telegram", value: "@straikservis", sub: "Быстрая связь", href: "https://t.me/straikservis" },
             ].map((c, i) => (
               <a key={i} href={c.href}
                 className={`card-service rounded-2xl p-5 sm:p-6 block group ${contactsSection.inView ? 'animate-fade-in-up' : 'opacity-0'}`}
@@ -46,10 +46,10 @@ export default function ContactsSection() {
             <meta itemProp="description" content="Обслуживание, монтаж и ремонт кондиционеров и систем вентиляции в Тюмени. Выезд за 2 часа, гарантия на все работы." />
             <meta itemProp="image" content="https://cdn.poehali.dev/projects/1ca52ef0-91c2-41c6-b9e5-c074d8171504/files/9d752c0a-3126-44f4-a2c7-ff8ccba804b5.jpg" />
             <meta itemProp="url" content="https://strike-service.ru" />
-            <meta itemProp="telephone" content="+7 (495) 123-45-67" />
-            <meta itemProp="email" content="info@techservice.ru" />
+            <meta itemProp="telephone" content="+7 (932) 624-06-66" />
+            <meta itemProp="email" content="Straikpro72.tmn@yandex.ru" />
             <meta itemProp="priceRange" content="₽₽" />
-            <meta itemProp="sameAs" content="https://t.me/techservice_pro" />
+            <meta itemProp="sameAs" content="https://t.me/straikservis" />
             <meta itemProp="legalName" content='ООО "Страйк Сервис"' />
             <meta itemProp="taxID" content="7203487449" />
             <meta itemProp="vatID" content="7203487449" />
@@ -105,7 +105,7 @@ export default function ContactsSection() {
                   <Icon name="CalendarCheck" size={18} />
                   Записаться онлайн
                 </a>
-                <a href="tel:+74951234567" className="border-2 border-white/60 text-white hover:bg-white/10 px-6 sm:px-8 py-3.5 sm:py-4 rounded-xl flex items-center justify-center gap-2 font-oswald font-semibold uppercase tracking-wider text-sm transition-all hover:-translate-y-0.5">
+                <a href="tel:+79326240666" className="border-2 border-white/60 text-white hover:bg-white/10 px-6 sm:px-8 py-3.5 sm:py-4 rounded-xl flex items-center justify-center gap-2 font-oswald font-semibold uppercase tracking-wider text-sm transition-all hover:-translate-y-0.5">
                   <Icon name="Phone" size={18} />
                   Позвонить
                 </a>

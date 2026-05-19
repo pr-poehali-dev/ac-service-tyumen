@@ -24,8 +24,8 @@ export default function Navbar() {
         </nav>
 
         <div className="flex items-center gap-2 sm:gap-3">
-          <a href="tel:+74951234567" className="hidden md:flex items-center gap-2 text-sm text-foreground/70 hover:text-neon-blue transition-colors">+7 932 624 06 66</a>
-          <a href="tel:+74951234567" className="md:hidden flex items-center justify-center w-9 h-9 rounded-lg bg-neon-blue/10 text-neon-blue">
+          <a href="tel:+79326240666" className="hidden md:flex items-center gap-2 text-sm text-foreground/70 hover:text-neon-blue transition-colors">+7 932 624 06 66</a>
+          <a href="tel:+79326240666" className="md:hidden flex items-center justify-center w-9 h-9 rounded-lg bg-neon-blue/10 text-neon-blue">
             <Icon name="Phone" size={16} />
           </a>
           <button

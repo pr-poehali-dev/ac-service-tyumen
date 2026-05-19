@@ -34,7 +34,7 @@ export default function ServicePage() {
         "@type": "LocalBusiness",
         "name": "Страйк Сервис",
         "url": "https://straikservis.ru/",
-        "telephone": "+74951234567",
+        "telephone": "+79326240666",
         "address": {
           "@type": "PostalAddress",
           "addressLocality": "Тюмень",
@@ -122,7 +122,7 @@ export default function ServicePage() {
                   <Icon name="CalendarCheck" size={18} />
                   Записаться на услугу
                 </Link>
-                <a href="tel:+74951234567" className="btn-outline px-6 sm:px-8 py-3.5 rounded-xl text-sm sm:text-base flex items-center justify-center gap-2">
+                <a href="tel:+79326240666" className="btn-outline px-6 sm:px-8 py-3.5 rounded-xl text-sm sm:text-base flex items-center justify-center gap-2">
                   <Icon name="Phone" size={18} />
                   Позвонить
                 </a>
@@ -211,7 +211,7 @@ export default function ServicePage() {
                   <Icon name="CalendarCheck" size={18} />
                   Записаться
                 </Link>
-                <a href="tel:+74951234567" className="border-2 border-white/60 text-white hover:bg-white/10 px-6 sm:px-8 py-3.5 rounded-xl flex items-center justify-center gap-2 font-oswald font-semibold uppercase tracking-wider text-sm transition-all hover:-translate-y-0.5">
+                <a href="tel:+79326240666" className="border-2 border-white/60 text-white hover:bg-white/10 px-6 sm:px-8 py-3.5 rounded-xl flex items-center justify-center gap-2 font-oswald font-semibold uppercase tracking-wider text-sm transition-all hover:-translate-y-0.5">
                   <Icon name="Phone" size={18} />
                   Позвонить
                 </a>

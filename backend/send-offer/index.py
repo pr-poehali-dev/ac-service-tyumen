@@ -89,8 +89,8 @@ def build_offer_html(name: str) -> str:
   <div style="background:linear-gradient(135deg,#0ea5e9 0%,#0284c7 100%);color:#fff;border-radius:10px;padding:18px 22px;margin-bottom:22px;">
     <h3 style="margin:0 0 10px;font-size:16px;">Связаться с нами</h3>
     <div style="font-size:14px;line-height:1.8;">
-      <div><b>Телефон:</b> +7 (495) 123-45-67</div>
-      <div><b>Email:</b> info@techservice.ru</div>
+      <div><b>Телефон:</b> +7 (932) 624-06-66</div>
+      <div><b>Email:</b> Straikpro72.tmn@yandex.ru</div>
       <div><b>Адрес:</b> г. Тюмень, ул. Широтная, 165 к.3</div>
       <div><b>Сайт:</b> straikservis.ru</div>
     </div>

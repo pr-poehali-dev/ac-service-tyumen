@@ -36,7 +36,7 @@ export default function Privacy() {
           <h2 className="font-oswald text-xl sm:text-2xl font-bold text-foreground mt-8 mb-3">1. Оператор</h2>
           <p>
             Оператором персональных данных является <strong>ООО «Страйк Сервис»</strong>,
-            адрес: г. Тюмень, ул. Широтная, 165 к.3, e-mail: info@techservice.ru, тел.: +7 (495) 123-45-67.
+            адрес: г. Тюмень, ул. Широтная, 165 к.3, e-mail: Straikpro72.tmn@yandex.ru, тел.: +7 (932) 624-06-66.
           </p>
           <div className="rounded-2xl border border-border bg-muted/40 p-4 sm:p-5 grid grid-cols-1 sm:grid-cols-2 gap-x-6 gap-y-3 text-sm not-prose">
             <div>
@@ -92,7 +92,7 @@ export default function Privacy() {
           <p>
             Согласие действует с момента его предоставления и до момента отзыва Пользователем.
             Согласие может быть отозвано в любой момент путём направления письменного заявления
-            на электронный адрес info@techservice.ru.
+            на электронный адрес Straikpro72.tmn@yandex.ru.
           </p>
 
           <h2 className="font-oswald text-xl sm:text-2xl font-bold text-foreground mt-8 mb-3">6. Безопасность</h2>
