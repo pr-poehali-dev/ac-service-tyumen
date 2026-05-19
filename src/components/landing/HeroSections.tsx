@@ -70,7 +70,7 @@ export default function HeroSections() {
                 <span className="text-sm font-semibold group-hover:text-amber-400 transition-colors">MAX</span>
               </a>
               <a
-                href="https://t.me/straikservis"
+                href="https://t.me/Semeon72"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="flex items-center gap-2 px-3 py-2 rounded-lg bg-card border border-border hover:border-neon-blue/50 transition-colors group"
