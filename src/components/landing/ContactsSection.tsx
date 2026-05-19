@@ -1,5 +1,6 @@
 import { Link } from "react-router-dom";
 import Icon from "@/components/ui/icon";
+import MaxIcon from "@/components/ui/max-icon";
 import { useInView } from "./useInView";
 import { NAV_ITEMS } from "./data";
 
@@ -17,21 +18,28 @@ export default function ContactsSection() {
             <h2 className="font-oswald text-3xl sm:text-4xl lg:text-5xl font-black">КОНТАКТЫ</h2>
           </div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-5 mb-10 sm:mb-12">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4 sm:gap-5 mb-10 sm:mb-12">
             {[
               { icon: "Phone", title: "Телефон", value: "+7 (932) 624-06-66", sub: "Пн–Вс, 00:00–24:00", href: "tel:+79326240666" },
               { icon: "Mail", title: "Email", value: "Straikpro72.tmn@yandex.ru", sub: "Ответим за 2 часа", href: "mailto:Straikpro72.tmn@yandex.ru" },
               { icon: "MapPin", title: "Адрес", value: "г. Тюмень, ул. Широтная, 165 к.3", sub: "Головной офис", href: "https://yandex.ru/maps/?text=%D0%B3.%20%D0%A2%D1%8E%D0%BC%D0%B5%D0%BD%D1%8C%2C%20%D1%83%D0%BB.%20%D0%A8%D0%B8%D1%80%D0%BE%D1%82%D0%BD%D0%B0%D1%8F%2C%20165%20%D0%BA.3" },
               { icon: "MessageCircle", title: "Telegram", value: "@straikservis", sub: "Быстрая связь", href: "https://t.me/straikservis" },
+              { icon: "max", title: "MAX", value: "+7 (932) 624-06-66", sub: "Российский мессенджер", href: "https://max.ru/79326240666" },
             ].map((c, i) => (
               <a key={i} href={c.href}
+                target={c.href.startsWith("http") ? "_blank" : undefined}
+                rel={c.href.startsWith("http") ? "noopener noreferrer" : undefined}
                 className={`card-service rounded-2xl p-5 sm:p-6 block group ${contactsSection.inView ? 'animate-fade-in-up' : 'opacity-0'}`}
                 style={{ animationDelay: `${i * 0.1}s` }}>
                 <div className="w-11 h-11 rounded-xl bg-neon-blue/10 border border-neon-blue/20 flex items-center justify-center mb-4 group-hover:bg-neon-blue/20 transition-colors">
-                  <Icon name={c.icon} size={20} className="text-neon-blue" />
+                  {c.icon === "max" ? (
+                    <MaxIcon size={22} />
+                  ) : (
+                    <Icon name={c.icon} size={20} className="text-neon-blue" />
+                  )}
                 </div>
                 <div className="text-foreground/50 text-xs uppercase tracking-widest mb-1">{c.title}</div>
-                <div className="font-semibold text-sm mb-1">{c.value}</div>
+                <div className="font-semibold text-sm mb-1 break-all">{c.value}</div>
                 <div className="text-foreground/50 text-xs">{c.sub}</div>
               </a>
             ))}
@@ -50,6 +58,7 @@ export default function ContactsSection() {
             <meta itemProp="email" content="Straikpro72.tmn@yandex.ru" />
             <meta itemProp="priceRange" content="₽₽" />
             <meta itemProp="sameAs" content="https://t.me/straikservis" />
+            <meta itemProp="sameAs" content="https://max.ru/79326240666" />
             <meta itemProp="legalName" content='ООО "Страйк Сервис"' />
             <meta itemProp="taxID" content="7203487449" />
             <meta itemProp="vatID" content="7203487449" />

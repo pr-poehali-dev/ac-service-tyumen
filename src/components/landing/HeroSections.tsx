@@ -1,5 +1,6 @@
 import { useState } from "react";
 import Icon from "@/components/ui/icon";
+import MaxIcon from "@/components/ui/max-icon";
 import { Link } from "react-router-dom";
 import { useInView } from "./useInView";
 import { downloadCommercialOffer } from "@/lib/commercialOffer";
@@ -53,6 +54,30 @@ export default function HeroSections() {
               <a href="#services" className="btn-outline px-6 sm:px-8 py-3.5 rounded-xl text-sm sm:text-base flex items-center justify-center gap-2">
                 Наши услуги
                 <Icon name="ArrowRight" size={18} />
+              </a>
+            </div>
+
+            <div className={`flex flex-wrap items-center gap-3 mb-3 ${heroSection.inView ? 'animate-fade-in-up delay-300' : 'opacity-0'}`}>
+              <span className="text-xs text-foreground/55 uppercase tracking-widest">Быстрая связь:</span>
+              <a
+                href="https://max.ru/79326240666"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex items-center gap-2 px-3 py-2 rounded-lg bg-card border border-border hover:border-amber-400/50 transition-colors group"
+                title="Написать в MAX"
+              >
+                <MaxIcon size={18} />
+                <span className="text-sm font-semibold group-hover:text-amber-400 transition-colors">MAX</span>
+              </a>
+              <a
+                href="https://t.me/straikservis"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex items-center gap-2 px-3 py-2 rounded-lg bg-card border border-border hover:border-neon-blue/50 transition-colors group"
+                title="Написать в Telegram"
+              >
+                <Icon name="Send" size={16} className="text-neon-blue" />
+                <span className="text-sm font-semibold group-hover:text-neon-blue transition-colors">Telegram</span>
               </a>
             </div>
             <p className={`text-xs text-foreground/50 mb-12 sm:mb-16 max-w-lg leading-relaxed ${heroSection.inView ? 'animate-fade-in-up delay-300' : 'opacity-0'}`}>
