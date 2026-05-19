@@ -11,6 +11,7 @@ import Privacy from "./pages/Privacy";
 import Admin from "./pages/Admin";
 import NotFound from "./pages/NotFound";
 import CookieBanner from "./components/CookieBanner";
+import FloatingChat from "./components/FloatingChat";
 
 const queryClient = new QueryClient();
 
@@ -21,6 +22,7 @@ const App = () => (
       <Sonner />
       <BrowserRouter>
         <CookieBanner />
+        <FloatingChat />
         <Routes>
           <Route path="/" element={<Index />} />
           <Route path="/uslugi/:slug" element={<Service />} />
