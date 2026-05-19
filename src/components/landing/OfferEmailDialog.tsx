@@ -3,7 +3,7 @@ import Icon from "@/components/ui/icon";
 import { Link } from "react-router-dom";
 import { downloadCommercialOffer } from "@/lib/commercialOffer";
 import func2url from "../../../backend/func2url.json";
-import { formatPhone } from "@/lib/phoneMask";
+import { formatPhone, isPhoneValid } from "@/lib/phoneMask";
 
 interface OfferEmailDialogProps {
   open: boolean;
@@ -41,6 +41,12 @@ export default function OfferEmailDialog({ open, onClose }: OfferEmailDialogProp
     if (!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email)) {
       setStatus("error");
       setErrorMsg("Введите корректный email");
+      return;
+    }
+
+    if (phone && !isPhoneValid(phone)) {
+      setStatus("error");
+      setErrorMsg("Введите телефон полностью");
       return;
     }
 

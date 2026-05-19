@@ -4,7 +4,7 @@ import Icon from "@/components/ui/icon";
 import { useInView } from "./useInView";
 import { SERVICES, MONTHS, TIME_SLOTS, TAKEN_SLOTS } from "./data";
 import func2url from "../../../backend/func2url.json";
-import { formatPhone } from "@/lib/phoneMask";
+import { formatPhone, isPhoneValid } from "@/lib/phoneMask";
 
 export default function BookingSection() {
   const bookingSection = useInView(0.1);
@@ -248,9 +248,9 @@ export default function BookingSection() {
                   </div>
                 )}
                 <button type="submit"
-                  disabled={!bookDay || !bookTime || !bookAgree || bookLoading}
+                  disabled={!bookDay || !bookTime || !bookAgree || !isPhoneValid(bookForm.phone) || !bookForm.name.trim() || bookLoading}
                   className={`w-full py-3 sm:py-4 rounded-xl font-oswald font-semibold tracking-wide text-sm transition-all duration-300 flex items-center justify-center gap-2
-                    ${bookDay && bookTime && bookAgree && !bookLoading ? "btn-primary" : "bg-muted text-foreground/35 cursor-not-allowed border border-border"}`}>
+                    ${bookDay && bookTime && bookAgree && isPhoneValid(bookForm.phone) && bookForm.name.trim() && !bookLoading ? "btn-primary" : "bg-muted text-foreground/35 cursor-not-allowed border border-border"}`}>
                   {bookLoading ? (
                     <>
                       <Icon name="Loader2" size={16} className="animate-spin" />
@@ -259,7 +259,7 @@ export default function BookingSection() {
                   ) : (
                     <>
                       <Icon name="Send" size={16} />
-                      {!bookDay ? "Сначала выберите дату" : !bookTime ? "Выберите время" : !bookAgree ? "Подтвердите согласие" : "Отправить заявку"}
+                      {!bookDay ? "Сначала выберите дату" : !bookTime ? "Выберите время" : !bookForm.name.trim() ? "Введите имя" : !isPhoneValid(bookForm.phone) ? "Введите телефон полностью" : !bookAgree ? "Подтвердите согласие" : "Отправить заявку"}
                     </>
                   )}
                 </button>
