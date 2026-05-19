@@ -134,17 +134,19 @@ def handler(event: dict, context) -> dict:
 
     booking_id = None
     db_url = os.environ.get("DATABASE_URL", "")
+
+    def esc(s: str) -> str:
+        return (s or "").replace("'", "''")
+
     if db_url:
         try:
             conn = psycopg2.connect(db_url)
             conn.autocommit = True
             with conn.cursor() as cur:
-                def esc(s: str) -> str:
-                    return s.replace("'", "''")
                 cur.execute(
-                    f"""INSERT INTO bookings (name, phone, service, comment, booking_date, booking_time, source)
+                    f"""INSERT INTO bookings (name, phone, service, comment, booking_date, booking_time, source, email_status)
                         VALUES ('{esc(name)}', '{esc(phone)}', '{esc(service)}', '{esc(comment)}',
-                                '{esc(date)}', '{esc(time_slot)}', 'site')
+                                '{esc(date)}', '{esc(time_slot)}', 'site', 'pending')
                         RETURNING id"""
                 )
                 row = cur.fetchone()
@@ -156,22 +158,42 @@ def handler(event: dict, context) -> dict:
     api_key = os.environ.get("SENDGRID_API_KEY", "")
     from_email = os.environ.get("SENDGRID_FROM_EMAIL", "")
 
+    email_status = "pending"
+    email_error = ""
+
     if not api_key or not from_email:
-        if booking_id:
-            return {"statusCode": 200, "headers": CORS_HEADERS, "body": json.dumps({"success": True, "id": booking_id, "warning": "saved_without_email"})}
-        return {"statusCode": 500, "headers": CORS_HEADERS, "body": json.dumps({"error": "Email service is not configured"})}
+        email_status = "not_configured"
+        email_error = "SENDGRID_API_KEY или SENDGRID_FROM_EMAIL не настроены"
+    else:
+        html = build_manager_html({
+            "name": name, "phone": phone, "service": service,
+            "comment": comment, "date": date, "time": time_slot,
+        })
+        ok, err = send_via_sendgrid(
+            api_key, from_email, MANAGER_EMAIL,
+            f"Новая заявка с сайта — {name} ({phone})",
+            html,
+        )
+        if ok:
+            email_status = "sent"
+        else:
+            email_status = "failed"
+            email_error = err
 
-    html = build_manager_html({
-        "name": name, "phone": phone, "service": service,
-        "comment": comment, "date": date, "time": time_slot,
-    })
+    if booking_id and db_url:
+        try:
+            conn = psycopg2.connect(db_url)
+            conn.autocommit = True
+            with conn.cursor() as cur:
+                cur.execute(
+                    f"""UPDATE bookings SET email_status='{esc(email_status)}', email_error='{esc(email_error)}'
+                        WHERE id={booking_id}"""
+                )
+            conn.close()
+        except Exception as e:
+            print(f"DB update error: {e}")
 
-    ok, err = send_via_sendgrid(
-        api_key, from_email, MANAGER_EMAIL,
-        f"Новая заявка с сайта — {name} ({phone})",
-        html,
-    )
-    if not ok and not booking_id:
-        return {"statusCode": 502, "headers": CORS_HEADERS, "body": json.dumps({"error": "Не удалось отправить заявку", "details": err})}
+    if email_status == "failed" and not booking_id:
+        return {"statusCode": 502, "headers": CORS_HEADERS, "body": json.dumps({"error": "Не удалось отправить заявку", "details": email_error})}
 
-    return {"statusCode": 200, "headers": CORS_HEADERS, "body": json.dumps({"success": True, "id": booking_id})}
+    return {"statusCode": 200, "headers": CORS_HEADERS, "body": json.dumps({"success": True, "id": booking_id, "email_status": email_status})}

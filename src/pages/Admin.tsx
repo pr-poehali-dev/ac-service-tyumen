@@ -21,7 +21,16 @@ interface Booking {
   status: string;
   source: string;
   created_at: string;
+  email_status: string;
+  email_error: string;
 }
+
+const EMAIL_STATUS_CONF: Record<string, { label: string; icon: string; color: string; tip: string }> = {
+  sent: { label: "Письмо отправлено", icon: "MailCheck", color: "text-emerald-400 border-emerald-500/30 bg-emerald-500/10", tip: "Уведомление успешно ушло на почту менеджеру" },
+  pending: { label: "Письмо в обработке", icon: "Mail", color: "text-foreground/60 border-border bg-muted/40", tip: "Статус ещё не обновился" },
+  failed: { label: "Письмо не отправлено", icon: "MailX", color: "text-rose-400 border-rose-500/30 bg-rose-500/10", tip: "Ошибка при отправке" },
+  not_configured: { label: "Почта не настроена", icon: "MailWarning", color: "text-amber-400 border-amber-500/30 bg-amber-500/10", tip: "Нужно добавить ключи SENDGRID_API_KEY и SENDGRID_FROM_EMAIL в настройки проекта" },
+};
 
 const PWD_KEY = "strike_admin_pwd";
 
@@ -247,7 +256,19 @@ export default function AdminPage() {
                         <a href={`tel:${b.phone}`} className="text-neon-blue text-xs sm:text-sm hover:underline">{b.phone}</a>
                       </div>
                     </div>
-                    <div className="flex items-center gap-2">
+                    <div className="flex items-center gap-2 flex-wrap">
+                      {(() => {
+                        const ec = EMAIL_STATUS_CONF[b.email_status] || EMAIL_STATUS_CONF.pending;
+                        return (
+                          <span
+                            title={b.email_error ? `${ec.tip}: ${b.email_error}` : ec.tip}
+                            className={`px-2 py-1 rounded-md text-[11px] font-medium border flex items-center gap-1 ${ec.color}`}
+                          >
+                            <Icon name={ec.icon} size={12} />
+                            <span className="hidden sm:inline">{ec.label}</span>
+                          </span>
+                        );
+                      })()}
                       <span className={`px-2.5 py-1 rounded-md text-[11px] uppercase tracking-wider font-semibold border ${statusConf.color}`}>
                         {statusConf.label}
                       </span>

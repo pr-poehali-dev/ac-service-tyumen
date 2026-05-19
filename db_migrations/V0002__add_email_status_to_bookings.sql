@@ -1,0 +1,3 @@
+ALTER TABLE bookings 
+  ADD COLUMN IF NOT EXISTS email_status VARCHAR(20) DEFAULT 'pending',
+  ADD COLUMN IF NOT EXISTS email_error TEXT;

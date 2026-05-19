@@ -55,7 +55,7 @@ def handler(event: dict, context) -> dict:
             with conn.cursor() as cur:
                 cur.execute(
                     f"""SELECT id, name, phone, service, comment, booking_date, booking_time,
-                               status, source, created_at
+                               status, source, created_at, email_status, email_error
                         FROM bookings {where}
                         ORDER BY created_at DESC
                         LIMIT 500"""
@@ -80,6 +80,8 @@ def handler(event: dict, context) -> dict:
                     "status": r[7] or "new",
                     "source": r[8] or "site",
                     "created_at": r[9].isoformat() if isinstance(r[9], datetime) else str(r[9]),
+                    "email_status": r[10] or "pending",
+                    "email_error": r[11] or "",
                 })
 
             conn.close()
