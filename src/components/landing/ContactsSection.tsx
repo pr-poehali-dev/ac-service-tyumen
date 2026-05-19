@@ -50,6 +50,11 @@ export default function ContactsSection() {
             <meta itemProp="email" content="info@techservice.ru" />
             <meta itemProp="priceRange" content="₽₽" />
             <meta itemProp="sameAs" content="https://t.me/techservice_pro" />
+            <meta itemProp="legalName" content='ООО "Страйк Сервис"' />
+            <meta itemProp="taxID" content="7203487449" />
+            <meta itemProp="vatID" content="7203487449" />
+            <meta itemProp="iso6523Code" content="0211:7203487449" />
+            <meta itemProp="identifier" content="ОГРН: 1197232021832" />
             <div itemProp="address" itemScope itemType="https://schema.org/PostalAddress" className="sr-only">
               <span itemProp="streetAddress">ул. Широтная, 165 к.3</span>
               <span itemProp="addressLocality">Тюмень</span>
@@ -118,20 +123,44 @@ export default function ContactsSection() {
 
       {/* FOOTER */}
       <footer className="border-t border-border py-8 sm:py-10">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 flex flex-col sm:flex-row sm:flex-wrap sm:items-center sm:justify-between gap-5 sm:gap-6">
-          <div className="flex items-center gap-2">
-            <div className="w-7 h-7 rounded-lg bg-neon-blue flex items-center justify-center">
-              <Icon name="Zap" size={14} className="text-white" />
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 flex flex-col gap-6">
+          <div className="flex flex-col sm:flex-row sm:flex-wrap sm:items-center sm:justify-between gap-5 sm:gap-6">
+            <div className="flex items-center gap-2">
+              <div className="w-7 h-7 rounded-lg bg-neon-blue flex items-center justify-center">
+                <Icon name="Zap" size={14} className="text-white" />
+              </div>
+              <span className="font-oswald font-bold tracking-wide">СТРАЙК<span className="text-neon-blue"> </span>СЕРВИС</span>
             </div>
-            <span className="font-oswald font-bold tracking-wide">СТРАЙК<span className="text-neon-blue"> </span>СЕРВИС</span>
+            <div className="flex flex-wrap gap-x-4 gap-y-2 sm:gap-6 text-xs sm:text-sm text-foreground/55">
+              {NAV_ITEMS.map(n => (
+                <a key={n.href} href={n.href} className="hover:text-foreground transition-colors">{n.label}</a>
+              ))}
+              <Link to="/privacy" className="hover:text-foreground transition-colors">Согласие на обработку ПД</Link>
+            </div>
+            <div className="text-xs text-foreground/40">© 2026 Страйк Сервис. Все права защищены.</div>
           </div>
-          <div className="flex flex-wrap gap-x-4 gap-y-2 sm:gap-6 text-xs sm:text-sm text-foreground/55">
-            {NAV_ITEMS.map(n => (
-              <a key={n.href} href={n.href} className="hover:text-foreground transition-colors">{n.label}</a>
-            ))}
-            <Link to="/privacy" className="hover:text-foreground transition-colors">Согласие на обработку ПД</Link>
+
+          <div className="border-t border-border/60 pt-6">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 text-xs sm:text-sm text-foreground/55">
+              <div>
+                <div className="text-foreground/40 text-[10px] uppercase tracking-widest mb-1">Юр. лицо</div>
+                <div className="text-foreground/80 font-medium">ООО «Страйк Сервис»</div>
+              </div>
+              <div>
+                <div className="text-foreground/40 text-[10px] uppercase tracking-widest mb-1">ИНН / КПП</div>
+                <div className="text-foreground/80 font-medium">7203487449 / 720301001</div>
+              </div>
+              <div>
+                <div className="text-foreground/40 text-[10px] uppercase tracking-widest mb-1">ОГРН</div>
+                <div className="text-foreground/80 font-medium">1197232021832</div>
+              </div>
+              <div>
+                <div className="text-foreground/40 text-[10px] uppercase tracking-widest mb-1">Лицензия</div>
+                <div className="text-foreground/80 font-medium break-words">72.ОЦ.04.003.Л.000033.04.26</div>
+                <div className="text-foreground/45 text-[11px] mt-0.5 break-words">ЕРУЛ № Л064-00111-72/04921336</div>
+              </div>
+            </div>
           </div>
-          <div className="text-xs text-foreground/40">© 2026 Страйк Сервис. Все права защищены.</div>
         </div>
       </footer>
     </>
