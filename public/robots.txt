@@ -1,10 +1,12 @@
 User-agent: *
 Allow: /
 Disallow: /privacy
+Disallow: /admin
 
 User-agent: Yandex
 Allow: /
 Disallow: /privacy
+Disallow: /admin
 Host: straikservis.ru
 
 User-agent: Googlebot

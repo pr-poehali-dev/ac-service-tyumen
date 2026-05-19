@@ -8,6 +8,7 @@ import Index from "./pages/Index";
 import Service from "./pages/Service";
 import BlogPost from "./pages/BlogPost";
 import Privacy from "./pages/Privacy";
+import Admin from "./pages/Admin";
 import NotFound from "./pages/NotFound";
 import CookieBanner from "./components/CookieBanner";
 
@@ -25,6 +26,7 @@ const App = () => (
           <Route path="/uslugi/:slug" element={<Service />} />
           <Route path="/blog/:slug" element={<BlogPost />} />
           <Route path="/privacy" element={<Privacy />} />
+          <Route path="/admin" element={<Admin />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
         </Routes>

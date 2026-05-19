@@ -5,6 +5,8 @@ import urllib.request
 import urllib.error
 from datetime import datetime
 
+import psycopg2
+
 
 MANAGER_EMAIL = "Straikpro72.tmn@yandex.ru"
 
@@ -130,10 +132,33 @@ def handler(event: dict, context) -> dict:
     if len(digits) < 10:
         return {"statusCode": 400, "headers": CORS_HEADERS, "body": json.dumps({"error": "Некорректный телефон"})}
 
+    booking_id = None
+    db_url = os.environ.get("DATABASE_URL", "")
+    if db_url:
+        try:
+            conn = psycopg2.connect(db_url)
+            conn.autocommit = True
+            with conn.cursor() as cur:
+                def esc(s: str) -> str:
+                    return s.replace("'", "''")
+                cur.execute(
+                    f"""INSERT INTO bookings (name, phone, service, comment, booking_date, booking_time, source)
+                        VALUES ('{esc(name)}', '{esc(phone)}', '{esc(service)}', '{esc(comment)}',
+                                '{esc(date)}', '{esc(time_slot)}', 'site')
+                        RETURNING id"""
+                )
+                row = cur.fetchone()
+                booking_id = row[0] if row else None
+            conn.close()
+        except Exception as e:
+            print(f"DB save error: {e}")
+
     api_key = os.environ.get("SENDGRID_API_KEY", "")
     from_email = os.environ.get("SENDGRID_FROM_EMAIL", "")
 
     if not api_key or not from_email:
+        if booking_id:
+            return {"statusCode": 200, "headers": CORS_HEADERS, "body": json.dumps({"success": True, "id": booking_id, "warning": "saved_without_email"})}
         return {"statusCode": 500, "headers": CORS_HEADERS, "body": json.dumps({"error": "Email service is not configured"})}
 
     html = build_manager_html({
@@ -146,7 +171,7 @@ def handler(event: dict, context) -> dict:
         f"Новая заявка с сайта — {name} ({phone})",
         html,
     )
-    if not ok:
+    if not ok and not booking_id:
         return {"statusCode": 502, "headers": CORS_HEADERS, "body": json.dumps({"error": "Не удалось отправить заявку", "details": err})}
 
-    return {"statusCode": 200, "headers": CORS_HEADERS, "body": json.dumps({"success": True})}
+    return {"statusCode": 200, "headers": CORS_HEADERS, "body": json.dumps({"success": True, "id": booking_id})}
