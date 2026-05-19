@@ -12,6 +12,70 @@ export default function ServicePage() {
     window.scrollTo(0, 0);
   }, [slug]);
 
+  useEffect(() => {
+    if (!service) return;
+
+    const priceMatch = service.price.match(/[\d\s]+/);
+    const priceNumber = priceMatch ? priceMatch[0].replace(/\s/g, "") : "0";
+
+    const schema = {
+      "@context": "https://schema.org",
+      "@type": "Service",
+      "serviceType": service.title,
+      "name": service.title,
+      "description": service.long,
+      "image": service.image,
+      "url": `https://straikservis.ru/uslugi/${service.slug}`,
+      "areaServed": {
+        "@type": "City",
+        "name": "Тюмень",
+      },
+      "provider": {
+        "@type": "LocalBusiness",
+        "name": "Страйк Сервис",
+        "url": "https://straikservis.ru/",
+        "telephone": "+74951234567",
+        "address": {
+          "@type": "PostalAddress",
+          "addressLocality": "Тюмень",
+          "addressCountry": "RU",
+        },
+      },
+      "offers": {
+        "@type": "Offer",
+        "price": priceNumber,
+        "priceCurrency": "RUB",
+        "availability": "https://schema.org/InStock",
+        "url": `https://straikservis.ru/uslugi/${service.slug}`,
+      },
+    };
+
+    const scriptEl = document.createElement("script");
+    scriptEl.type = "application/ld+json";
+    scriptEl.dataset.schema = "service";
+    scriptEl.text = JSON.stringify(schema);
+    document.head.appendChild(scriptEl);
+
+    const prevTitle = document.title;
+    document.title = `${service.title} в Тюмени — Страйк Сервис`;
+
+    const metaDesc = document.querySelector('meta[name="description"]');
+    const prevDesc = metaDesc?.getAttribute("content") || "";
+    if (metaDesc) metaDesc.setAttribute("content", service.desc);
+
+    const canonical = document.querySelector('link[rel="canonical"]');
+    const prevCanonical = canonical?.getAttribute("href") || "";
+    if (canonical) canonical.setAttribute("href", `https://straikservis.ru/uslugi/${service.slug}`);
+
+    return () => {
+      const el = document.querySelector('script[data-schema="service"]');
+      if (el) el.remove();
+      document.title = prevTitle;
+      if (metaDesc && prevDesc) metaDesc.setAttribute("content", prevDesc);
+      if (canonical && prevCanonical) canonical.setAttribute("href", prevCanonical);
+    };
+  }, [service]);
+
   if (!service) return <Navigate to="/" replace />;
 
   const otherServices = SERVICES.filter(s => s.slug !== slug).slice(0, 3);
