@@ -1,13 +1,16 @@
+import { useState } from "react";
 import Icon from "@/components/ui/icon";
 import { Link } from "react-router-dom";
 import { useInView } from "./useInView";
 import { downloadCommercialOffer } from "@/lib/commercialOffer";
+import OfferEmailDialog from "./OfferEmailDialog";
 import {
   HERO_IMG, TEAM_IMG, WORK_IMG,
   SERVICES, PORTFOLIO, REVIEWS, BLOG_POSTS, TICKER_ITEMS,
 } from "./data";
 
 export default function HeroSections() {
+  const [offerOpen, setOfferOpen] = useState(false);
   const heroSection = useInView(0.1);
   const servicesSection = useInView(0.1);
   const portfolioSection = useInView(0.1);
@@ -157,14 +160,24 @@ export default function HeroSections() {
                     </p>
                   </div>
                 </div>
-                <button
-                  type="button"
-                  onClick={downloadCommercialOffer}
-                  className="btn-primary px-6 sm:px-8 py-3.5 rounded-xl text-sm sm:text-base flex items-center justify-center gap-2 whitespace-nowrap"
-                >
-                  <Icon name="Download" size={18} />
-                  Получить КП
-                </button>
+                <div className="flex flex-col sm:flex-row gap-2 w-full lg:w-auto">
+                  <button
+                    type="button"
+                    onClick={() => setOfferOpen(true)}
+                    className="btn-primary px-6 sm:px-8 py-3.5 rounded-xl text-sm sm:text-base flex items-center justify-center gap-2 whitespace-nowrap"
+                  >
+                    <Icon name="Mail" size={18} />
+                    Получить на email
+                  </button>
+                  <button
+                    type="button"
+                    onClick={downloadCommercialOffer}
+                    className="btn-outline px-6 sm:px-8 py-3.5 rounded-xl text-sm sm:text-base flex items-center justify-center gap-2 whitespace-nowrap"
+                  >
+                    <Icon name="Download" size={18} />
+                    Скачать PDF
+                  </button>
+                </div>
               </div>
             </div>
           </div>
@@ -340,6 +353,8 @@ export default function HeroSections() {
           </div>
         </div>
       </section>
+
+      <OfferEmailDialog open={offerOpen} onClose={() => setOfferOpen(false)} />
     </>
   );
 }

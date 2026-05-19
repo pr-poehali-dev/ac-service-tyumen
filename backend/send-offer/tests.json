@@ -1,0 +1,25 @@
+{
+  "tests": [
+    {
+      "name": "OPTIONS CORS",
+      "method": "OPTIONS",
+      "path": "/",
+      "expectedStatus": 200
+    },
+    {
+      "name": "Invalid email",
+      "method": "POST",
+      "path": "/",
+      "body": {"name": "Тест", "email": "bademail"},
+      "expectedStatus": 400,
+      "bodyMatcher": "partial",
+      "expectedBody": {"error": "string"}
+    },
+    {
+      "name": "Method not allowed",
+      "method": "GET",
+      "path": "/",
+      "expectedStatus": 405
+    }
+  ]
+}

@@ -1,10 +1,11 @@
 import { useState } from "react";
 import Icon from "@/components/ui/icon";
 import { NAV_ITEMS } from "./data";
-import { downloadCommercialOffer } from "@/lib/commercialOffer";
+import OfferEmailDialog from "./OfferEmailDialog";
 
 export default function Navbar() {
   const [mobileOpen, setMobileOpen] = useState(false);
+  const [offerOpen, setOfferOpen] = useState(false);
 
   return (
     <header className="fixed top-0 left-0 right-0 z-50 glass border-b border-border">
@@ -29,12 +30,12 @@ export default function Navbar() {
           </a>
           <button
             type="button"
-            onClick={downloadCommercialOffer}
+            onClick={() => setOfferOpen(true)}
             className="hidden md:flex items-center gap-1.5 px-3 py-2 rounded-lg text-sm text-foreground/75 hover:text-neon-blue border border-border hover:border-neon-blue/50 transition-colors"
-            title="Скачать коммерческое предложение"
+            title="Получить коммерческое предложение"
           >
-            <Icon name="FileDown" size={15} />
-            КП
+            <Icon name="FileText" size={15} />
+            Получить КП
           </button>
           <a href="#booking" className="btn-primary px-5 py-2 rounded-lg text-sm hidden sm:block">
             Записаться
@@ -55,11 +56,11 @@ export default function Navbar() {
           ))}
           <button
             type="button"
-            onClick={() => { setMobileOpen(false); downloadCommercialOffer(); }}
+            onClick={() => { setMobileOpen(false); setOfferOpen(true); }}
             className="w-full flex items-center justify-center gap-2 px-5 py-3 rounded-lg mt-3 border border-border text-foreground/85 hover:border-neon-blue/50 hover:text-neon-blue transition-colors"
           >
-            <Icon name="FileDown" size={16} />
-            Скачать коммерческое предложение
+            <Icon name="FileText" size={16} />
+            Получить коммерческое предложение
           </button>
           <a href="#booking" onClick={() => setMobileOpen(false)}
             className="btn-primary block text-center px-5 py-3 rounded-lg mt-2">
@@ -67,6 +68,7 @@ export default function Navbar() {
           </a>
         </div>
       )}
+      <OfferEmailDialog open={offerOpen} onClose={() => setOfferOpen(false)} />
     </header>
   );
 }
