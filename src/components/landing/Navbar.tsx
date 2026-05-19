@@ -1,6 +1,7 @@
 import { useState } from "react";
 import Icon from "@/components/ui/icon";
 import { NAV_ITEMS } from "./data";
+import { downloadCommercialOffer } from "@/lib/commercialOffer";
 
 export default function Navbar() {
   const [mobileOpen, setMobileOpen] = useState(false);
@@ -26,6 +27,15 @@ export default function Navbar() {
           <a href="tel:+74951234567" className="md:hidden flex items-center justify-center w-9 h-9 rounded-lg bg-neon-blue/10 text-neon-blue">
             <Icon name="Phone" size={16} />
           </a>
+          <button
+            type="button"
+            onClick={downloadCommercialOffer}
+            className="hidden md:flex items-center gap-1.5 px-3 py-2 rounded-lg text-sm text-foreground/75 hover:text-neon-blue border border-border hover:border-neon-blue/50 transition-colors"
+            title="Скачать коммерческое предложение"
+          >
+            <Icon name="FileDown" size={15} />
+            КП
+          </button>
           <a href="#booking" className="btn-primary px-5 py-2 rounded-lg text-sm hidden sm:block">
             Записаться
           </a>
@@ -43,8 +53,16 @@ export default function Navbar() {
               {n.label}
             </a>
           ))}
+          <button
+            type="button"
+            onClick={() => { setMobileOpen(false); downloadCommercialOffer(); }}
+            className="w-full flex items-center justify-center gap-2 px-5 py-3 rounded-lg mt-3 border border-border text-foreground/85 hover:border-neon-blue/50 hover:text-neon-blue transition-colors"
+          >
+            <Icon name="FileDown" size={16} />
+            Скачать коммерческое предложение
+          </button>
           <a href="#booking" onClick={() => setMobileOpen(false)}
-            className="btn-primary block text-center px-5 py-3 rounded-lg mt-3">
+            className="btn-primary block text-center px-5 py-3 rounded-lg mt-2">
             Записаться на обслуживание
           </a>
         </div>
