@@ -1,6 +1,7 @@
 import Icon from "@/components/ui/icon";
 import { Link } from "react-router-dom";
 import { useInView } from "./useInView";
+import { downloadCommercialOffer } from "@/lib/commercialOffer";
 import {
   HERO_IMG, TEAM_IMG, WORK_IMG,
   SERVICES, PORTFOLIO, REVIEWS, BLOG_POSTS, TICKER_ITEMS,
@@ -138,6 +139,34 @@ export default function HeroSections() {
                 </div>
               </Link>
             ))}
+          </div>
+
+          <div className={`mt-10 sm:mt-14 ${servicesSection.inView ? 'animate-fade-in-up delay-500' : 'opacity-0'}`}>
+            <div className="relative overflow-hidden rounded-3xl p-6 sm:p-10 border border-neon-blue/30"
+              style={{ background: 'linear-gradient(135deg, rgba(14,165,233,0.12) 0%, rgba(14,165,233,0.04) 100%)' }}>
+              <div className="absolute -top-16 -right-16 w-72 h-72 bg-neon-blue/15 rounded-full blur-[100px]" />
+              <div className="relative flex flex-col lg:flex-row lg:items-center lg:justify-between gap-5">
+                <div className="flex items-start gap-4">
+                  <div className="w-12 h-12 shrink-0 rounded-xl bg-neon-blue/15 border border-neon-blue/30 flex items-center justify-center">
+                    <Icon name="FileText" size={22} className="text-neon-blue" />
+                  </div>
+                  <div>
+                    <h3 className="font-oswald text-xl sm:text-2xl font-black mb-1.5">КОММЕРЧЕСКОЕ ПРЕДЛОЖЕНИЕ</h3>
+                    <p className="text-foreground/65 text-sm sm:text-base max-w-xl">
+                      Скачайте полный перечень услуг с актуальными ценами и реквизитами организации в формате PDF
+                    </p>
+                  </div>
+                </div>
+                <button
+                  type="button"
+                  onClick={downloadCommercialOffer}
+                  className="btn-primary px-6 sm:px-8 py-3.5 rounded-xl text-sm sm:text-base flex items-center justify-center gap-2 whitespace-nowrap"
+                >
+                  <Icon name="Download" size={18} />
+                  Получить КП
+                </button>
+              </div>
+            </div>
           </div>
         </div>
       </section>
