@@ -1,14 +1,18 @@
 import json
 import os
 import re
-import urllib.request
-import urllib.error
+import smtplib
+import ssl
+from email.mime.text import MIMEText
+from email.mime.multipart import MIMEMultipart
+from email.utils import formataddr
 from datetime import datetime
 
 import psycopg2
 
 
 MANAGER_EMAIL = "Straikpro72.tmn@yandex.ru"
+FROM_NAME = "Страйк Сервис"
 
 CORS_HEADERS = {
     "Access-Control-Allow-Origin": "*",
@@ -28,35 +32,39 @@ def escape_html(s: str) -> str:
     )
 
 
-def send_via_sendgrid(api_key: str, from_email: str, to_email: str, subject: str, html: str, reply_to: str = None) -> tuple[bool, str]:
-    payload = {
-        "personalizations": [{"to": [{"email": to_email}], "subject": subject}],
-        "from": {"email": from_email, "name": "Страйк Сервис"},
-        "content": [{"type": "text/html", "value": html}],
-    }
-    if reply_to:
-        payload["reply_to"] = {"email": reply_to}
+def send_via_smtp(to_email: str, subject: str, html: str, reply_to: str = None) -> tuple[bool, str]:
+    host = os.environ.get("SMTP_HOST", "").strip()
+    port = int(os.environ.get("SMTP_PORT", "465") or 465)
+    user = os.environ.get("SMTP_USER", "").strip()
+    password = os.environ.get("SMTP_PASSWORD", "").strip()
 
-    data = json.dumps(payload).encode("utf-8")
-    req = urllib.request.Request(
-        "https://api.sendgrid.com/v3/mail/send",
-        data=data,
-        headers={
-            "Authorization": f"Bearer {api_key}",
-            "Content-Type": "application/json",
-        },
-        method="POST",
-    )
+    if not host or not user or not password:
+        return False, "SMTP не настроен (SMTP_HOST/SMTP_USER/SMTP_PASSWORD)"
+
+    msg = MIMEMultipart("alternative")
+    msg["Subject"] = subject
+    msg["From"] = formataddr((FROM_NAME, user))
+    msg["To"] = to_email
+    if reply_to:
+        msg["Reply-To"] = reply_to
+    msg.attach(MIMEText(html, "html", "utf-8"))
+
     try:
-        with urllib.request.urlopen(req, timeout=20) as resp:
-            if 200 <= resp.status < 300:
-                return True, "ok"
-            return False, f"SendGrid HTTP {resp.status}"
-    except urllib.error.HTTPError as e:
-        body = e.read().decode("utf-8", errors="ignore")
-        return False, f"SendGrid {e.code}: {body[:200]}"
+        if port == 465:
+            ctx = ssl.create_default_context()
+            with smtplib.SMTP_SSL(host, port, timeout=20, context=ctx) as server:
+                server.login(user, password)
+                server.sendmail(user, [to_email], msg.as_string())
+        else:
+            with smtplib.SMTP(host, port, timeout=20) as server:
+                server.starttls(context=ssl.create_default_context())
+                server.login(user, password)
+                server.sendmail(user, [to_email], msg.as_string())
+        return True, "ok"
+    except smtplib.SMTPAuthenticationError as e:
+        return False, f"SMTP auth error: {str(e)[:200]}"
     except Exception as e:
-        return False, f"Error: {e}"
+        return False, f"SMTP error: {str(e)[:200]}"
 
 
 def build_manager_html(data: dict) -> str:
@@ -155,22 +163,23 @@ def handler(event: dict, context) -> dict:
         except Exception as e:
             print(f"DB save error: {e}")
 
-    api_key = os.environ.get("SENDGRID_API_KEY", "")
-    from_email = os.environ.get("SENDGRID_FROM_EMAIL", "")
+    smtp_host = os.environ.get("SMTP_HOST", "")
+    smtp_user = os.environ.get("SMTP_USER", "")
+    smtp_pwd = os.environ.get("SMTP_PASSWORD", "")
 
     email_status = "pending"
     email_error = ""
 
-    if not api_key or not from_email:
+    if not smtp_host or not smtp_user or not smtp_pwd:
         email_status = "not_configured"
-        email_error = "SENDGRID_API_KEY или SENDGRID_FROM_EMAIL не настроены"
+        email_error = "SMTP не настроен"
     else:
         html = build_manager_html({
             "name": name, "phone": phone, "service": service,
             "comment": comment, "date": date, "time": time_slot,
         })
-        ok, err = send_via_sendgrid(
-            api_key, from_email, MANAGER_EMAIL,
+        ok, err = send_via_smtp(
+            MANAGER_EMAIL,
             f"Новая заявка с сайта — {name} ({phone})",
             html,
         )

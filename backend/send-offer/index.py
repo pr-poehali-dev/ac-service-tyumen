@@ -1,10 +1,14 @@
 import json
 import os
 import re
-import base64
-import urllib.request
-import urllib.error
+import smtplib
+import ssl
+from email.mime.text import MIMEText
+from email.mime.multipart import MIMEMultipart
+from email.utils import formataddr
 from typing import Any
+
+FROM_NAME = "Страйк Сервис"
 
 
 SERVICES = [
@@ -111,35 +115,39 @@ def build_offer_html(name: str) -> str:
 </body></html>"""
 
 
-def send_via_sendgrid(api_key: str, from_email: str, to_email: str, subject: str, html: str, reply_to: str = None) -> tuple[bool, str]:
-    payload = {
-        "personalizations": [{"to": [{"email": to_email}], "subject": subject}],
-        "from": {"email": from_email, "name": "Страйк Сервис"},
-        "content": [{"type": "text/html", "value": html}],
-    }
-    if reply_to:
-        payload["reply_to"] = {"email": reply_to}
+def send_via_smtp(to_email: str, subject: str, html: str, reply_to: str = None) -> tuple[bool, str]:
+    host = os.environ.get("SMTP_HOST", "").strip()
+    port = int(os.environ.get("SMTP_PORT", "465") or 465)
+    user = os.environ.get("SMTP_USER", "").strip()
+    password = os.environ.get("SMTP_PASSWORD", "").strip()
 
-    data = json.dumps(payload).encode("utf-8")
-    req = urllib.request.Request(
-        "https://api.sendgrid.com/v3/mail/send",
-        data=data,
-        headers={
-            "Authorization": f"Bearer {api_key}",
-            "Content-Type": "application/json",
-        },
-        method="POST",
-    )
+    if not host or not user or not password:
+        return False, "SMTP не настроен"
+
+    msg = MIMEMultipart("alternative")
+    msg["Subject"] = subject
+    msg["From"] = formataddr((FROM_NAME, user))
+    msg["To"] = to_email
+    if reply_to:
+        msg["Reply-To"] = reply_to
+    msg.attach(MIMEText(html, "html", "utf-8"))
+
     try:
-        with urllib.request.urlopen(req, timeout=20) as resp:
-            if 200 <= resp.status < 300:
-                return True, "ok"
-            return False, f"SendGrid HTTP {resp.status}"
-    except urllib.error.HTTPError as e:
-        body = e.read().decode("utf-8", errors="ignore")
-        return False, f"SendGrid {e.code}: {body[:200]}"
+        if port == 465:
+            ctx = ssl.create_default_context()
+            with smtplib.SMTP_SSL(host, port, timeout=20, context=ctx) as server:
+                server.login(user, password)
+                server.sendmail(user, [to_email], msg.as_string())
+        else:
+            with smtplib.SMTP(host, port, timeout=20) as server:
+                server.starttls(context=ssl.create_default_context())
+                server.login(user, password)
+                server.sendmail(user, [to_email], msg.as_string())
+        return True, "ok"
+    except smtplib.SMTPAuthenticationError as e:
+        return False, f"SMTP auth error: {str(e)[:200]}"
     except Exception as e:
-        return False, f"Error: {e}"
+        return False, f"SMTP error: {str(e)[:200]}"
 
 
 def handler(event: dict, context) -> dict:
@@ -164,15 +172,12 @@ def handler(event: dict, context) -> dict:
     if not re.match(r"^[^@\s]+@[^@\s]+\.[^@\s]+$", email):
         return {"statusCode": 400, "headers": CORS_HEADERS, "body": json.dumps({"error": "Некорректный email"})}
 
-    api_key = os.environ.get("SENDGRID_API_KEY", "")
-    from_email = os.environ.get("SENDGRID_FROM_EMAIL", "")
-
-    if not api_key or not from_email:
+    if not os.environ.get("SMTP_HOST") or not os.environ.get("SMTP_USER") or not os.environ.get("SMTP_PASSWORD"):
         return {"statusCode": 500, "headers": CORS_HEADERS, "body": json.dumps({"error": "Email service is not configured"})}
 
     html = build_offer_html(name)
 
-    ok, err = send_via_sendgrid(api_key, from_email, email, "Коммерческое предложение — Страйк Сервис", html, reply_to=MANAGER_EMAIL)
+    ok, err = send_via_smtp(email, "Коммерческое предложение — Страйк Сервис", html, reply_to=MANAGER_EMAIL)
     if not ok:
         return {"statusCode": 502, "headers": CORS_HEADERS, "body": json.dumps({"error": "Не удалось отправить письмо", "details": err})}
 
@@ -184,6 +189,6 @@ def handler(event: dict, context) -> dict:
     <p>Коммерческое предложение уже отправлено клиенту автоматически.</p>
     </body></html>"""
 
-    send_via_sendgrid(api_key, from_email, MANAGER_EMAIL, f"Заявка на КП от {name or email}", manager_html, reply_to=email)
+    send_via_smtp(MANAGER_EMAIL, f"Заявка на КП от {name or email}", manager_html, reply_to=email)
 
     return {"statusCode": 200, "headers": CORS_HEADERS, "body": json.dumps({"success": True})}
