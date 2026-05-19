@@ -35,9 +35,32 @@ export default function Privacy() {
 
           <h2 className="font-oswald text-xl sm:text-2xl font-bold text-foreground mt-8 mb-3">1. Оператор</h2>
           <p>
-            Оператором персональных данных является ООО «Страйк Сервис»,
-            г. Тюмень, ул. Республики, д. 1, e-mail: info@techservice.ru, тел.: +7 (495) 123-45-67.
+            Оператором персональных данных является <strong>ООО «Страйк Сервис»</strong>,
+            адрес: г. Тюмень, ул. Широтная, 165 к.3, e-mail: info@techservice.ru, тел.: +7 (495) 123-45-67.
           </p>
+          <div className="rounded-2xl border border-border bg-muted/40 p-4 sm:p-5 grid grid-cols-1 sm:grid-cols-2 gap-x-6 gap-y-3 text-sm not-prose">
+            <div>
+              <div className="text-foreground/45 text-[11px] uppercase tracking-widest mb-1">Полное наименование</div>
+              <div className="text-foreground/90 font-medium">ООО «Страйк Сервис»</div>
+            </div>
+            <div>
+              <div className="text-foreground/45 text-[11px] uppercase tracking-widest mb-1">ИНН</div>
+              <div className="text-foreground/90 font-medium">7203487449</div>
+            </div>
+            <div>
+              <div className="text-foreground/45 text-[11px] uppercase tracking-widest mb-1">КПП</div>
+              <div className="text-foreground/90 font-medium">720301001</div>
+            </div>
+            <div>
+              <div className="text-foreground/45 text-[11px] uppercase tracking-widest mb-1">ОГРН</div>
+              <div className="text-foreground/90 font-medium">1197232021832</div>
+            </div>
+            <div className="sm:col-span-2">
+              <div className="text-foreground/45 text-[11px] uppercase tracking-widest mb-1">Регистрационный номер лицензии</div>
+              <div className="text-foreground/90 font-medium break-words">72.ОЦ.04.003.Л.000033.04.26</div>
+              <div className="text-foreground/55 text-xs mt-0.5 break-words">ЕРУЛ № Л064-00111-72/04921336</div>
+            </div>
+          </div>
 
           <h2 className="font-oswald text-xl sm:text-2xl font-bold text-foreground mt-8 mb-3">2. Перечень обрабатываемых данных</h2>
           <p>Пользователь, оставляя заявку на сайте, даёт согласие на обработку следующих персональных данных:</p>
