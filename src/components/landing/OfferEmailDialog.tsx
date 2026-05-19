@@ -152,7 +152,7 @@ export default function OfferEmailDialog({ open, onClose }: OfferEmailDialogProp
                   type="tel"
                   value={phone}
                   onChange={(e) => setPhone(e.target.value)}
-                  placeholder="+7 (___) ___-__-__"
+                  placeholder="+7 (932) 624-06-66"
                   className="w-full px-4 py-3 rounded-xl bg-muted/40 border border-border focus:border-neon-blue focus:outline-none transition-colors text-sm"
                   disabled={loading}
                 />

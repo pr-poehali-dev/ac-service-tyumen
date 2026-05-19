@@ -203,7 +203,7 @@ export default function BookingSection() {
                   <label className="block text-xs text-foreground/60 mb-1.5 font-medium">Телефон *</label>
                   <input required value={bookForm.phone}
                     onChange={e => setBookForm(f => ({ ...f, phone: e.target.value }))}
-                    placeholder="+7 (___) ___-__-__"
+                    placeholder="+7 (932) 624-06-66"
                     className="w-full bg-card border border-border rounded-xl px-4 py-3 text-sm text-foreground placeholder-foreground/35 focus:outline-none focus:border-neon-blue/60 focus:bg-neon-blue/5 transition-all" />
                 </div>
                 <div>
