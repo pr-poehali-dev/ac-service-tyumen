@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import Icon from "@/components/ui/icon";
 import { useInView } from "./useInView";
 import { SERVICES, MONTHS, TIME_SLOTS, TAKEN_SLOTS } from "./data";
+import func2url from "../../../backend/func2url.json";
 
 export default function BookingSection() {
   const bookingSection = useInView(0.1);
@@ -14,6 +15,8 @@ export default function BookingSection() {
   const [bookForm, setBookForm] = useState({ name: "", phone: "", service: "", comment: "" });
   const [bookAgree, setBookAgree] = useState(false);
   const [bookSent, setBookSent] = useState(false);
+  const [bookLoading, setBookLoading] = useState(false);
+  const [bookError, setBookError] = useState("");
 
   const today = new Date();
 
@@ -43,9 +46,38 @@ export default function BookingSection() {
     setBookDay(null); setBookTime(null);
   };
 
-  const handleBookSubmit = (e: React.FormEvent) => {
+  const handleBookSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setBookSent(true);
+    if (bookLoading) return;
+
+    setBookLoading(true);
+    setBookError("");
+
+    const dateStr = bookDay ? `${bookDay} ${MONTHS[bookMonth]} ${bookYear}` : "";
+
+    try {
+      const res = await fetch(func2url["booking"], {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          name: bookForm.name.trim(),
+          phone: bookForm.phone.trim(),
+          service: bookForm.service,
+          comment: bookForm.comment.trim(),
+          date: dateStr,
+          time: bookTime || "",
+        }),
+      });
+      const data = await res.json();
+      if (!res.ok || !data.success) {
+        throw new Error(data.error || "Не удалось отправить заявку");
+      }
+      setBookSent(true);
+    } catch (err) {
+      setBookError(err instanceof Error ? err.message : "Ошибка отправки");
+    } finally {
+      setBookLoading(false);
+    }
   };
 
   return (
@@ -77,7 +109,7 @@ export default function BookingSection() {
                 </div>
               </div>
             )}
-            <button onClick={() => { setBookSent(false); setBookDay(null); setBookTime(null); setBookForm({ name: "", phone: "", service: "", comment: "" }); setBookAgree(false); }}
+            <button onClick={() => { setBookSent(false); setBookDay(null); setBookTime(null); setBookForm({ name: "", phone: "", service: "", comment: "" }); setBookAgree(false); setBookError(""); }}
               className="btn-outline mt-6 px-6 py-2.5 rounded-xl text-sm">
               Записаться снова
             </button>
@@ -206,12 +238,27 @@ export default function BookingSection() {
                     </Link>
                   </span>
                 </label>
+                {bookError && (
+                  <div className="text-xs text-red-400 bg-red-500/10 border border-red-500/20 rounded-lg p-3 flex items-start gap-2">
+                    <Icon name="AlertCircle" size={14} className="shrink-0 mt-0.5" />
+                    <span>{bookError}</span>
+                  </div>
+                )}
                 <button type="submit"
-                  disabled={!bookDay || !bookTime || !bookAgree}
+                  disabled={!bookDay || !bookTime || !bookAgree || bookLoading}
                   className={`w-full py-3 sm:py-4 rounded-xl font-oswald font-semibold tracking-wide text-sm transition-all duration-300 flex items-center justify-center gap-2
-                    ${bookDay && bookTime && bookAgree ? "btn-primary" : "bg-muted text-foreground/35 cursor-not-allowed border border-border"}`}>
-                  <Icon name="Send" size={16} />
-                  {!bookDay ? "Сначала выберите дату" : !bookTime ? "Выберите время" : !bookAgree ? "Подтвердите согласие" : "Отправить заявку"}
+                    ${bookDay && bookTime && bookAgree && !bookLoading ? "btn-primary" : "bg-muted text-foreground/35 cursor-not-allowed border border-border"}`}>
+                  {bookLoading ? (
+                    <>
+                      <Icon name="Loader2" size={16} className="animate-spin" />
+                      Отправляем...
+                    </>
+                  ) : (
+                    <>
+                      <Icon name="Send" size={16} />
+                      {!bookDay ? "Сначала выберите дату" : !bookTime ? "Выберите время" : !bookAgree ? "Подтвердите согласие" : "Отправить заявку"}
+                    </>
+                  )}
                 </button>
               </form>
             </div>
