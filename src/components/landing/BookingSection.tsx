@@ -4,6 +4,7 @@ import Icon from "@/components/ui/icon";
 import { useInView } from "./useInView";
 import { SERVICES, MONTHS, TIME_SLOTS, TAKEN_SLOTS } from "./data";
 import func2url from "../../../backend/func2url.json";
+import { formatPhone } from "@/lib/phoneMask";
 
 export default function BookingSection() {
   const bookingSection = useInView(0.1);
@@ -202,8 +203,10 @@ export default function BookingSection() {
                 <div>
                   <label className="block text-xs text-foreground/60 mb-1.5 font-medium">Телефон *</label>
                   <input required value={bookForm.phone}
-                    onChange={e => setBookForm(f => ({ ...f, phone: e.target.value }))}
-                    placeholder="+7 (932) 624-06-66"
+                    onChange={e => setBookForm(f => ({ ...f, phone: formatPhone(e.target.value) }))}
+                    type="tel"
+                    inputMode="tel"
+                    placeholder="+7 (___) ___-__-__"
                     className="w-full bg-card border border-border rounded-xl px-4 py-3 text-sm text-foreground placeholder-foreground/35 focus:outline-none focus:border-neon-blue/60 focus:bg-neon-blue/5 transition-all" />
                 </div>
                 <div>

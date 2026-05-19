@@ -3,6 +3,7 @@ import Icon from "@/components/ui/icon";
 import { Link } from "react-router-dom";
 import { downloadCommercialOffer } from "@/lib/commercialOffer";
 import func2url from "../../../backend/func2url.json";
+import { formatPhone } from "@/lib/phoneMask";
 
 interface OfferEmailDialogProps {
   open: boolean;
@@ -150,9 +151,10 @@ export default function OfferEmailDialog({ open, onClose }: OfferEmailDialogProp
                 <label className="block text-xs text-foreground/60 mb-1.5">Телефон</label>
                 <input
                   type="tel"
+                  inputMode="tel"
                   value={phone}
-                  onChange={(e) => setPhone(e.target.value)}
-                  placeholder="+7 (932) 624-06-66"
+                  onChange={(e) => setPhone(formatPhone(e.target.value))}
+                  placeholder="+7 (___) ___-__-__"
                   className="w-full px-4 py-3 rounded-xl bg-muted/40 border border-border focus:border-neon-blue focus:outline-none transition-colors text-sm"
                   disabled={loading}
                 />
