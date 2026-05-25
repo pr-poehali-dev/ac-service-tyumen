@@ -67,6 +67,22 @@ def handler(event: dict, context) -> dict:
                 )
                 counts = {r[0]: r[1] for r in cur.fetchall()}
 
+                cur.execute(
+                    """SELECT
+                        COUNT(*) FILTER (WHERE created_at >= NOW() - INTERVAL '1 day') AS day,
+                        COUNT(*) FILTER (WHERE created_at >= NOW() - INTERVAL '7 days') AS week,
+                        COUNT(*) FILTER (WHERE created_at >= NOW() - INTERVAL '30 days') AS month,
+                        COUNT(*) AS total,
+                        COUNT(*) FILTER (WHERE email_status = 'sent') AS emails_sent,
+                        COUNT(*) FILTER (WHERE email_status = 'failed' OR email_status = 'not_configured') AS emails_failed
+                    FROM bookings"""
+                )
+                s = cur.fetchone()
+                stats = {
+                    "day": s[0], "week": s[1], "month": s[2], "total": s[3],
+                    "emails_sent": s[4], "emails_failed": s[5],
+                }
+
             items = []
             for r in rows:
                 items.append({
@@ -85,7 +101,7 @@ def handler(event: dict, context) -> dict:
                 })
 
             conn.close()
-            return {"statusCode": 200, "headers": CORS_HEADERS, "body": json.dumps({"items": items, "counts": counts})}
+            return {"statusCode": 200, "headers": CORS_HEADERS, "body": json.dumps({"items": items, "counts": counts, "stats": stats})}
 
         if method == "POST":
             try:

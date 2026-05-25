@@ -41,6 +41,7 @@ export default function AdminPage() {
   const [loginError, setLoginError] = useState("");
   const [items, setItems] = useState<Booking[]>([]);
   const [counts, setCounts] = useState<Record<string, number>>({});
+  const [stats, setStats] = useState({ day: 0, week: 0, month: 0, total: 0, emails_sent: 0, emails_failed: 0 });
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const [filter, setFilter] = useState<string>("");
@@ -66,6 +67,7 @@ export default function AdminPage() {
       if (!res.ok) throw new Error(data.error || "Ошибка");
       setItems(data.items || []);
       setCounts(data.counts || {});
+      if (data.stats) setStats(data.stats);
       setAuthed(true);
     } catch (e) {
       setError(e instanceof Error ? e.message : "Ошибка");
@@ -196,6 +198,25 @@ export default function AdminPage() {
         <div className="mb-6">
           <h1 className="font-oswald text-2xl sm:text-3xl font-black mb-1">Заявки клиентов</h1>
           <p className="text-foreground/55 text-sm">Всего показано: {total}{newCount ? ` • Новых: ${newCount}` : ""}</p>
+        </div>
+
+        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3 mb-6">
+          {[
+            { label: "За сутки", value: stats.day, icon: "Clock", color: "text-neon-blue", bg: "bg-neon-blue/10 border-neon-blue/25" },
+            { label: "За неделю", value: stats.week, icon: "CalendarDays", color: "text-indigo-400", bg: "bg-indigo-500/10 border-indigo-500/25" },
+            { label: "За месяц", value: stats.month, icon: "TrendingUp", color: "text-violet-400", bg: "bg-violet-500/10 border-violet-500/25" },
+            { label: "Всего заявок", value: stats.total, icon: "Database", color: "text-foreground/80", bg: "bg-muted/40 border-border" },
+            { label: "Писем отправлено", value: stats.emails_sent, icon: "MailCheck", color: "text-emerald-400", bg: "bg-emerald-500/10 border-emerald-500/25" },
+            { label: "Писем с ошибкой", value: stats.emails_failed, icon: "MailX", color: stats.emails_failed > 0 ? "text-rose-400" : "text-foreground/50", bg: stats.emails_failed > 0 ? "bg-rose-500/10 border-rose-500/25" : "bg-muted/40 border-border" },
+          ].map((s) => (
+            <div key={s.label} className={`rounded-xl border p-3 sm:p-4 ${s.bg}`}>
+              <div className="flex items-center gap-2 text-foreground/60 text-[11px] uppercase tracking-wider mb-1.5">
+                <Icon name={s.icon} size={13} />
+                <span className="truncate">{s.label}</span>
+              </div>
+              <div className={`font-oswald text-2xl sm:text-3xl font-black ${s.color}`}>{s.value}</div>
+            </div>
+          ))}
         </div>
 
         <div className="flex flex-wrap gap-2 mb-5">
