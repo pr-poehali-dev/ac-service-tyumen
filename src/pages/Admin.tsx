@@ -347,6 +347,14 @@ export default function AdminPage() {
                     <a href={`tel:${b.phone}`} className="px-3 py-1.5 rounded-lg bg-neon-blue text-white text-xs flex items-center gap-1.5 hover:bg-neon-blue/85 transition-colors">
                       <Icon name="Phone" size={13} /> Позвонить
                     </a>
+                    <a href={`https://wa.me/${b.phone.replace(/\D/g, "")}`} target="_blank" rel="noreferrer"
+                      className="px-3 py-1.5 rounded-lg border border-emerald-500/40 text-emerald-400 text-xs flex items-center gap-1.5 hover:bg-emerald-500/10 transition-colors">
+                      <Icon name="MessageCircle" size={13} /> WhatsApp
+                    </a>
+                    <a href={`https://max.ru/+${b.phone.replace(/\D/g, "")}`} target="_blank" rel="noreferrer"
+                      className="px-3 py-1.5 rounded-lg border border-sky-500/40 text-sky-400 text-xs flex items-center gap-1.5 hover:bg-sky-500/10 transition-colors">
+                      <Icon name="Send" size={13} /> MAX
+                    </a>
                     {b.status !== "in_progress" && (
                       <button onClick={() => updateStatus(b.id, "in_progress")} className="px-3 py-1.5 rounded-lg border border-amber-500/40 text-amber-400 text-xs flex items-center gap-1.5 hover:bg-amber-500/10 transition-colors">
                         <Icon name="Clock" size={13} /> В работу
