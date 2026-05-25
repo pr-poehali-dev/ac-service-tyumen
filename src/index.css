@@ -156,6 +156,21 @@
     animation-delay: 0.7s;
   }
 
+  .field {
+    width: 100%;
+    padding: 0.55rem 0.75rem;
+    border-radius: 0.625rem;
+    background: hsl(var(--muted) / 0.4);
+    border: 1px solid hsl(var(--border));
+    font-size: 0.875rem;
+    color: hsl(var(--foreground));
+    transition: border-color 0.15s ease;
+    outline: none;
+  }
+  .field:focus {
+    border-color: var(--neon-blue);
+  }
+
   .btn-primary {
     background: linear-gradient(135deg, var(--neon-blue), #0f766e);
     color: #ffffff;

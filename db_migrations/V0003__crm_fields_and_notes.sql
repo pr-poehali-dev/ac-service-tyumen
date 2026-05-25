@@ -1,0 +1,17 @@
+ALTER TABLE bookings
+  ADD COLUMN IF NOT EXISTS price NUMERIC(12, 2),
+  ADD COLUMN IF NOT EXISTS manager_note TEXT DEFAULT '',
+  ADD COLUMN IF NOT EXISTS address VARCHAR(255) DEFAULT '',
+  ADD COLUMN IF NOT EXISTS scheduled_at TIMESTAMPTZ,
+  ADD COLUMN IF NOT EXISTS assignee VARCHAR(80) DEFAULT '',
+  ADD COLUMN IF NOT EXISTS updated_at TIMESTAMPTZ DEFAULT NOW();
+
+CREATE TABLE IF NOT EXISTS booking_notes (
+  id SERIAL PRIMARY KEY,
+  booking_id INTEGER NOT NULL REFERENCES bookings(id),
+  author VARCHAR(80) DEFAULT 'manager',
+  text TEXT NOT NULL,
+  created_at TIMESTAMPTZ DEFAULT NOW()
+);
+
+CREATE INDEX IF NOT EXISTS idx_booking_notes_booking ON booking_notes(booking_id);

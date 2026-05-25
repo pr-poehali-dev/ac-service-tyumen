@@ -2,6 +2,7 @@ import json
 import os
 import psycopg2
 from datetime import datetime
+from decimal import Decimal
 
 
 CORS_HEADERS = {
@@ -13,6 +14,13 @@ CORS_HEADERS = {
 }
 
 ALLOWED_STATUSES = {"new", "in_progress", "done", "rejected"}
+EDITABLE_FIELDS = {"name", "phone", "service", "address", "price", "manager_note", "assignee", "scheduled_at", "status"}
+
+
+def esc(s) -> str:
+    if s is None:
+        return ""
+    return str(s).replace("'", "''")
 
 
 def check_auth(event: dict) -> bool:
@@ -24,8 +32,50 @@ def check_auth(event: dict) -> bool:
     return pwd == expected
 
 
+def serialize_value(v):
+    if isinstance(v, datetime):
+        return v.isoformat()
+    if isinstance(v, Decimal):
+        return float(v)
+    return v
+
+
+def fetch_booking(cur, booking_id: int) -> dict | None:
+    cur.execute(
+        f"""SELECT id, name, phone, service, comment, booking_date, booking_time,
+                   status, source, created_at, email_status, email_error,
+                   price, manager_note, address, scheduled_at, assignee, updated_at
+            FROM bookings WHERE id = {booking_id}"""
+    )
+    r = cur.fetchone()
+    if not r:
+        return None
+    return {
+        "id": r[0], "name": r[1], "phone": r[2], "service": r[3] or "",
+        "comment": r[4] or "", "date": r[5] or "", "time": r[6] or "",
+        "status": r[7] or "new", "source": r[8] or "site",
+        "created_at": serialize_value(r[9]),
+        "email_status": r[10] or "pending", "email_error": r[11] or "",
+        "price": serialize_value(r[12]), "manager_note": r[13] or "",
+        "address": r[14] or "", "scheduled_at": serialize_value(r[15]),
+        "assignee": r[16] or "", "updated_at": serialize_value(r[17]),
+    }
+
+
+def fetch_notes(cur, booking_id: int) -> list[dict]:
+    cur.execute(
+        f"""SELECT id, author, text, created_at FROM booking_notes
+            WHERE booking_id = {booking_id} ORDER BY created_at DESC"""
+    )
+    return [
+        {"id": r[0], "author": r[1] or "manager", "text": r[2] or "",
+         "created_at": serialize_value(r[3])}
+        for r in cur.fetchall()
+    ]
+
+
 def handler(event: dict, context) -> dict:
-    """Админ-функция: список заявок, смена статуса, удаление. Требует пароль в заголовке X-Admin-Password."""
+    """Админ-функция CRM: заявки, статусы, цены, заметки менеджера, комментарии. Требует X-Admin-Password."""
     method = event.get("httpMethod", "GET")
 
     if method == "OPTIONS":
@@ -47,24 +97,44 @@ def handler(event: dict, context) -> dict:
     try:
         if method == "GET":
             params = event.get("queryStringParameters") or {}
+            booking_id = params.get("id")
+
+            if booking_id:
+                try:
+                    bid = int(booking_id)
+                except Exception:
+                    conn.close()
+                    return {"statusCode": 400, "headers": CORS_HEADERS, "body": json.dumps({"error": "id должен быть числом"})}
+                with conn.cursor() as cur:
+                    booking = fetch_booking(cur, bid)
+                    if not booking:
+                        conn.close()
+                        return {"statusCode": 404, "headers": CORS_HEADERS, "body": json.dumps({"error": "Заявка не найдена"})}
+                    notes = fetch_notes(cur, bid)
+                conn.close()
+                return {"statusCode": 200, "headers": CORS_HEADERS, "body": json.dumps({"item": booking, "notes": notes})}
+
             status_filter = (params.get("status") or "").strip()
-            where = ""
+            search = (params.get("q") or "").strip()
+            where_parts = []
             if status_filter and status_filter in ALLOWED_STATUSES:
-                where = f"WHERE status = '{status_filter}'"
+                where_parts.append(f"status = '{status_filter}'")
+            if search:
+                s = esc(search.lower())
+                where_parts.append(f"(LOWER(name) LIKE '%{s}%' OR phone LIKE '%{s}%' OR LOWER(COALESCE(address, '')) LIKE '%{s}%')")
+            where = "WHERE " + " AND ".join(where_parts) if where_parts else ""
 
             with conn.cursor() as cur:
                 cur.execute(
                     f"""SELECT id, name, phone, service, comment, booking_date, booking_time,
-                               status, source, created_at, email_status, email_error
+                               status, source, created_at, email_status, email_error,
+                               price, manager_note, address, scheduled_at, assignee
                         FROM bookings {where}
-                        ORDER BY created_at DESC
-                        LIMIT 500"""
+                        ORDER BY created_at DESC LIMIT 500"""
                 )
                 rows = cur.fetchall()
 
-                cur.execute(
-                    """SELECT status, COUNT(*) FROM bookings GROUP BY status"""
-                )
+                cur.execute("SELECT status, COUNT(*) FROM bookings GROUP BY status")
                 counts = {r[0]: r[1] for r in cur.fetchall()}
 
                 cur.execute(
@@ -74,30 +144,28 @@ def handler(event: dict, context) -> dict:
                         COUNT(*) FILTER (WHERE created_at >= NOW() - INTERVAL '30 days') AS month,
                         COUNT(*) AS total,
                         COUNT(*) FILTER (WHERE email_status = 'sent') AS emails_sent,
-                        COUNT(*) FILTER (WHERE email_status = 'failed' OR email_status = 'not_configured') AS emails_failed
+                        COUNT(*) FILTER (WHERE email_status = 'failed' OR email_status = 'not_configured') AS emails_failed,
+                        COALESCE(SUM(price) FILTER (WHERE status = 'done'), 0) AS revenue
                     FROM bookings"""
                 )
                 s = cur.fetchone()
                 stats = {
                     "day": s[0], "week": s[1], "month": s[2], "total": s[3],
                     "emails_sent": s[4], "emails_failed": s[5],
+                    "revenue": float(s[6]) if s[6] is not None else 0,
                 }
 
             items = []
             for r in rows:
                 items.append({
-                    "id": r[0],
-                    "name": r[1],
-                    "phone": r[2],
-                    "service": r[3] or "",
-                    "comment": r[4] or "",
-                    "date": r[5] or "",
-                    "time": r[6] or "",
-                    "status": r[7] or "new",
-                    "source": r[8] or "site",
-                    "created_at": r[9].isoformat() if isinstance(r[9], datetime) else str(r[9]),
-                    "email_status": r[10] or "pending",
-                    "email_error": r[11] or "",
+                    "id": r[0], "name": r[1], "phone": r[2], "service": r[3] or "",
+                    "comment": r[4] or "", "date": r[5] or "", "time": r[6] or "",
+                    "status": r[7] or "new", "source": r[8] or "site",
+                    "created_at": serialize_value(r[9]),
+                    "email_status": r[10] or "pending", "email_error": r[11] or "",
+                    "price": serialize_value(r[12]), "manager_note": r[13] or "",
+                    "address": r[14] or "", "scheduled_at": serialize_value(r[15]),
+                    "assignee": r[16] or "",
                 })
 
             conn.close()
@@ -124,14 +192,64 @@ def handler(event: dict, context) -> dict:
                     return {"statusCode": 400, "headers": CORS_HEADERS, "body": json.dumps({"error": "Недопустимый статус"})}
                 with conn.cursor() as cur:
                     cur.execute(
-                        f"UPDATE bookings SET status = '{new_status}' WHERE id = {booking_id}"
+                        f"UPDATE bookings SET status='{new_status}', updated_at=NOW() WHERE id={booking_id}"
                     )
                 conn.close()
                 return {"statusCode": 200, "headers": CORS_HEADERS, "body": json.dumps({"success": True})}
 
+            if action == "update_fields":
+                fields = body.get("fields") or {}
+                set_parts = []
+                for key, val in fields.items():
+                    if key not in EDITABLE_FIELDS:
+                        continue
+                    if key == "status" and val not in ALLOWED_STATUSES:
+                        continue
+                    if val is None or val == "":
+                        if key == "price" or key == "scheduled_at":
+                            set_parts.append(f"{key}=NULL")
+                        else:
+                            set_parts.append(f"{key}=''")
+                    elif key == "price":
+                        try:
+                            num = float(val)
+                            set_parts.append(f"price={num}")
+                        except Exception:
+                            continue
+                    elif key == "scheduled_at":
+                        set_parts.append(f"scheduled_at='{esc(val)}'")
+                    else:
+                        set_parts.append(f"{key}='{esc(val)}'")
+                if not set_parts:
+                    conn.close()
+                    return {"statusCode": 400, "headers": CORS_HEADERS, "body": json.dumps({"error": "Нет полей для обновления"})}
+                set_parts.append("updated_at=NOW()")
+                with conn.cursor() as cur:
+                    cur.execute(f"UPDATE bookings SET {', '.join(set_parts)} WHERE id={booking_id}")
+                    item = fetch_booking(cur, booking_id)
+                conn.close()
+                return {"statusCode": 200, "headers": CORS_HEADERS, "body": json.dumps({"success": True, "item": item})}
+
+            if action == "add_note":
+                text = (body.get("text") or "").strip()
+                author = (body.get("author") or "manager").strip()[:80]
+                if not text:
+                    conn.close()
+                    return {"statusCode": 400, "headers": CORS_HEADERS, "body": json.dumps({"error": "Текст обязателен"})}
+                with conn.cursor() as cur:
+                    cur.execute(
+                        f"""INSERT INTO booking_notes (booking_id, author, text)
+                            VALUES ({booking_id}, '{esc(author)}', '{esc(text)}')
+                            RETURNING id, created_at"""
+                    )
+                    row = cur.fetchone()
+                    note = {"id": row[0], "author": author, "text": text, "created_at": serialize_value(row[1])}
+                conn.close()
+                return {"statusCode": 200, "headers": CORS_HEADERS, "body": json.dumps({"success": True, "note": note})}
+
             if action == "delete":
                 with conn.cursor() as cur:
-                    cur.execute(f"DELETE FROM bookings WHERE id = {booking_id}")
+                    cur.execute(f"UPDATE bookings SET status='rejected', updated_at=NOW() WHERE id={booking_id}")
                 conn.close()
                 return {"statusCode": 200, "headers": CORS_HEADERS, "body": json.dumps({"success": True})}
 
