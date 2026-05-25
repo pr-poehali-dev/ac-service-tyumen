@@ -276,6 +276,10 @@ export default function BookingCard({ bookingId, url, password, onClose, onUpdat
                 className="px-3 py-2 rounded-lg border border-emerald-500/40 text-emerald-400 text-xs flex items-center gap-1.5 hover:bg-emerald-500/10">
                 <Icon name="MessageCircle" size={13} /> WhatsApp
               </a>
+              <a href={`https://max.ru/+${item.phone.replace(/\D/g, "")}`} target="_blank" rel="noreferrer"
+                className="px-3 py-2 rounded-lg border border-sky-500/40 text-sky-400 text-xs flex items-center gap-1.5 hover:bg-sky-500/10">
+                <Icon name="Send" size={13} /> Написать в MAX
+              </a>
               <button onClick={save} disabled={!hasChanges || saving}
                 className={`ml-auto px-4 py-2 rounded-lg text-xs font-semibold flex items-center gap-1.5 transition-colors ${hasChanges && !saving ? "btn-primary" : "bg-muted text-foreground/40 cursor-not-allowed border border-border"}`}>
                 <Icon name={saving ? "Loader2" : "Save"} size={14} className={saving ? "animate-spin" : ""} />
