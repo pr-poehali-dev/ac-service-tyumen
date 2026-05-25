@@ -60,7 +60,7 @@ export default function HeroSections() {
             <div className={`flex flex-wrap items-center gap-3 mb-3 ${heroSection.inView ? 'animate-fade-in-up delay-300' : 'opacity-0'}`}>
               <span className="text-xs text-foreground/55 uppercase tracking-widest">Быстрая связь:</span>
               <a
-                href="https://max.ru/79326240666"
+                href="https://web.max.ru/-71788242076399"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="flex items-center gap-2 px-3 py-2 rounded-lg bg-card border border-border hover:border-amber-400/50 transition-colors group"

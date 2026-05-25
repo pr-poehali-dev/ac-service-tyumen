@@ -24,7 +24,7 @@ export default function ContactsSection() {
               { icon: "Mail", title: "Email", value: "Straikpro72.tmn@yandex.ru", sub: "Ответим за 2 часа", href: "mailto:Straikpro72.tmn@yandex.ru" },
               { icon: "MapPin", title: "Адрес", value: "г. Тюмень, ул. Широтная, 165 к.3", sub: "Головной офис", href: "https://yandex.ru/maps/?text=%D0%B3.%20%D0%A2%D1%8E%D0%BC%D0%B5%D0%BD%D1%8C%2C%20%D1%83%D0%BB.%20%D0%A8%D0%B8%D1%80%D0%BE%D1%82%D0%BD%D0%B0%D1%8F%2C%20165%20%D0%BA.3" },
               { icon: "MessageCircle", title: "Telegram", value: "@Semeon72", sub: "Быстрая связь", href: "https://t.me/Semeon72" },
-              { icon: "max", title: "MAX", value: "+7 (932) 624-06-66", sub: "Российский мессенджер", href: "https://max.ru/79326240666" },
+              { icon: "max", title: "MAX", value: "+7 (932) 624-06-66", sub: "Российский мессенджер", href: "https://web.max.ru/-71788242076399" },
             ].map((c, i) => (
               <a key={i} href={c.href}
                 target={c.href.startsWith("http") ? "_blank" : undefined}
@@ -58,7 +58,7 @@ export default function ContactsSection() {
             <meta itemProp="email" content="Straikpro72.tmn@yandex.ru" />
             <meta itemProp="priceRange" content="₽₽" />
             <meta itemProp="sameAs" content="https://t.me/Semeon72" />
-            <meta itemProp="sameAs" content="https://max.ru/79326240666" />
+            <meta itemProp="sameAs" content="https://web.max.ru/-71788242076399" />
             <meta itemProp="legalName" content='ООО "Страйк Сервис"' />
             <meta itemProp="taxID" content="7203487449" />
             <meta itemProp="vatID" content="7203487449" />
