@@ -52,6 +52,7 @@ export default function BookingCard({ bookingId, url, password, onClose, onUpdat
   const [noteText, setNoteText] = useState("");
   const [error, setError] = useState("");
   const [edits, setEdits] = useState<Partial<Booking>>({});
+  const [copied, setCopied] = useState(false);
 
   const load = async () => {
     setLoading(true);
@@ -296,10 +297,22 @@ export default function BookingCard({ bookingId, url, password, onClose, onUpdat
                 className="px-3 py-2 rounded-lg border border-cyan-500/40 text-cyan-400 text-xs flex items-center gap-1.5 hover:bg-cyan-500/10">
                 <Icon name="Send" size={13} /> Telegram
               </a>
-              <a href={`https://max.ru/+${item.phone.replace(/\D/g, "")}`} target="_blank" rel="noreferrer"
+              <button onClick={async () => {
+                const digits = item.phone.replace(/\D/g, "");
+                const num = digits.startsWith("8") ? "7" + digits.slice(1) : digits;
+                try {
+                  await navigator.clipboard.writeText("+" + num);
+                  setCopied(true);
+                  setTimeout(() => setCopied(false), 2000);
+                } catch {
+                  setError("Не удалось скопировать номер");
+                }
+                window.open("https://max.ru/", "_blank", "noopener,noreferrer");
+              }}
                 className="px-3 py-2 rounded-lg border border-sky-500/40 text-sky-400 text-xs flex items-center gap-1.5 hover:bg-sky-500/10">
-                <Icon name="Send" size={13} /> Написать в MAX
-              </a>
+                <Icon name={copied ? "Check" : "Copy"} size={13} />
+                {copied ? "Номер скопирован!" : "Открыть MAX"}
+              </button>
               <button onClick={save} disabled={!hasChanges || saving}
                 className={`ml-auto px-4 py-2 rounded-lg text-xs font-semibold flex items-center gap-1.5 transition-colors ${hasChanges && !saving ? "btn-primary" : "bg-muted text-foreground/40 cursor-not-allowed border border-border"}`}>
                 <Icon name={saving ? "Loader2" : "Save"} size={14} className={saving ? "animate-spin" : ""} />

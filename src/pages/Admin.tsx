@@ -398,10 +398,16 @@ export default function AdminPage() {
                       className="px-3 py-1.5 rounded-lg border border-emerald-500/40 text-emerald-400 text-xs flex items-center gap-1.5 hover:bg-emerald-500/10 transition-colors">
                       <Icon name="MessageCircle" size={13} /> WhatsApp
                     </a>
-                    <a href={`https://max.ru/+${b.phone.replace(/\D/g, "")}`} target="_blank" rel="noreferrer"
+                    <button onClick={async () => {
+                      const d = b.phone.replace(/\D/g, "");
+                      const num = d.startsWith("8") ? "7" + d.slice(1) : d;
+                      try { await navigator.clipboard.writeText("+" + num); } catch { /* noop */ }
+                      window.open("https://max.ru/", "_blank", "noopener,noreferrer");
+                    }}
+                      title="Скопирует номер и откроет MAX — вставьте его в поиск"
                       className="px-3 py-1.5 rounded-lg border border-sky-500/40 text-sky-400 text-xs flex items-center gap-1.5 hover:bg-sky-500/10 transition-colors">
-                      <Icon name="Send" size={13} /> MAX
-                    </a>
+                      <Icon name="Copy" size={13} /> MAX
+                    </button>
                     {b.status !== "in_progress" && (
                       <button onClick={() => updateStatus(b.id, "in_progress")} className="px-3 py-1.5 rounded-lg border border-amber-500/40 text-amber-400 text-xs flex items-center gap-1.5 hover:bg-amber-500/10 transition-colors">
                         <Icon name="Clock" size={13} /> В работу
