@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import Icon from "@/components/ui/icon";
 import func2url from "../../backend/func2url.json";
 import BookingCard from "@/components/admin/BookingCard";
+import NewBookingDialog from "@/components/admin/NewBookingDialog";
 
 const STATUS_LABELS: Record<string, { label: string; color: string }> = {
   new: { label: "Новая", color: "bg-blue-500/15 text-blue-400 border-blue-500/30" },
@@ -35,6 +36,7 @@ const EMAIL_STATUS_CONF: Record<string, { label: string; icon: string; color: st
   sent: { label: "Письмо отправлено", icon: "MailCheck", color: "text-emerald-400 border-emerald-500/30 bg-emerald-500/10", tip: "Уведомление успешно ушло на почту менеджеру" },
   pending: { label: "Письмо в обработке", icon: "Mail", color: "text-foreground/60 border-border bg-muted/40", tip: "Статус ещё не обновился" },
   failed: { label: "Письмо не отправлено", icon: "MailX", color: "text-rose-400 border-rose-500/30 bg-rose-500/10", tip: "Ошибка при отправке" },
+  not_sent: { label: "Без письма", icon: "MailMinus", color: "text-foreground/50 border-border bg-muted/40", tip: "Заявка создана вручную, письмо не отправлялось" },
   not_configured: { label: "Почта не настроена", icon: "MailWarning", color: "text-amber-400 border-amber-500/30 bg-amber-500/10", tip: "Нужно добавить ключи SENDGRID_API_KEY и SENDGRID_FROM_EMAIL в настройки проекта" },
 };
 
@@ -53,6 +55,7 @@ export default function AdminPage() {
   const [filter, setFilter] = useState<string>("");
   const [search, setSearch] = useState("");
   const [openId, setOpenId] = useState<number | null>(null);
+  const [createOpen, setCreateOpen] = useState(false);
 
   const url = func2url["admin-bookings"];
 
@@ -174,6 +177,14 @@ export default function AdminPage() {
             <span className="font-oswald font-bold text-sm sm:text-base">АДМИН-ПАНЕЛЬ</span>
           </Link>
           <div className="flex items-center gap-2">
+            <button
+              onClick={() => setCreateOpen(true)}
+              className="px-3 py-1.5 rounded-lg btn-primary text-xs sm:text-sm flex items-center gap-1.5"
+              title="Создать заявку вручную"
+            >
+              <Icon name="Plus" size={14} />
+              <span className="hidden sm:inline">Новая заявка</span>
+            </button>
             <button
               onClick={() => load(password, filter, search)}
               disabled={loading}
@@ -383,6 +394,19 @@ export default function AdminPage() {
           password={password}
           onClose={() => setOpenId(null)}
           onUpdated={() => load(password, filter, search)}
+        />
+      )}
+
+      {createOpen && (
+        <NewBookingDialog
+          url={url}
+          password={password}
+          onClose={() => setCreateOpen(false)}
+          onCreated={(id) => {
+            setCreateOpen(false);
+            load(password, filter, search);
+            setOpenId(id);
+          }}
         />
       )}
     </div>

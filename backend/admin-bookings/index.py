@@ -179,6 +179,40 @@ def handler(event: dict, context) -> dict:
                 return {"statusCode": 400, "headers": CORS_HEADERS, "body": json.dumps({"error": "Invalid JSON"})}
 
             action = body.get("action", "update_status")
+
+            if action == "create":
+                name = (body.get("name") or "").strip()[:100]
+                phone = (body.get("phone") or "").strip()[:40]
+                if not name or not phone:
+                    conn.close()
+                    return {"statusCode": 400, "headers": CORS_HEADERS, "body": json.dumps({"error": "Имя и телефон обязательны"})}
+                service = (body.get("service") or "").strip()[:200]
+                address = (body.get("address") or "").strip()[:255]
+                comment = (body.get("comment") or "").strip()[:1000]
+                manager_note = (body.get("manager_note") or "").strip()[:1000]
+                date = (body.get("date") or "").strip()[:50]
+                time_slot = (body.get("time") or "").strip()[:20]
+                price_val = body.get("price")
+                price_sql = "NULL"
+                if price_val not in (None, "", 0):
+                    try:
+                        price_sql = str(float(price_val))
+                    except Exception:
+                        price_sql = "NULL"
+                with conn.cursor() as cur:
+                    cur.execute(
+                        f"""INSERT INTO bookings (name, phone, service, address, comment, manager_note,
+                                                  booking_date, booking_time, price, source, status, email_status)
+                            VALUES ('{esc(name)}', '{esc(phone)}', '{esc(service)}', '{esc(address)}',
+                                    '{esc(comment)}', '{esc(manager_note)}',
+                                    '{esc(date)}', '{esc(time_slot)}', {price_sql}, 'manual', 'new', 'not_sent')
+                            RETURNING id"""
+                    )
+                    new_id = cur.fetchone()[0]
+                    item = fetch_booking(cur, new_id)
+                conn.close()
+                return {"statusCode": 200, "headers": CORS_HEADERS, "body": json.dumps({"success": True, "id": new_id, "item": item})}
+
             booking_id = body.get("id")
 
             if not isinstance(booking_id, int):
