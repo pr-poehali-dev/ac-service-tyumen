@@ -53,18 +53,21 @@ export default function AdminPage() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const [filter, setFilter] = useState<string>("");
+  const [sourceFilter, setSourceFilter] = useState<string>("");
+  const [sourceCounts, setSourceCounts] = useState<Record<string, number>>({});
   const [search, setSearch] = useState("");
   const [openId, setOpenId] = useState<number | null>(null);
   const [createOpen, setCreateOpen] = useState(false);
 
   const url = func2url["admin-bookings"];
 
-  const load = useCallback(async (pwd: string, statusFilter: string, query: string = "") => {
+  const load = useCallback(async (pwd: string, statusFilter: string, query: string = "", src: string = "") => {
     setLoading(true);
     setError("");
     try {
       const qp = new URLSearchParams();
       if (statusFilter) qp.set("status", statusFilter);
+      if (src) qp.set("source", src);
       if (query.trim()) qp.set("q", query.trim());
       const q = qp.toString() ? `?${qp.toString()}` : "";
       const res = await fetch(url + q, {
@@ -81,6 +84,7 @@ export default function AdminPage() {
       if (!res.ok) throw new Error(data.error || "Ошибка");
       setItems(data.items || []);
       setCounts(data.counts || {});
+      setSourceCounts(data.source_counts || {});
       if (data.stats) setStats(data.stats);
       setAuthed(true);
     } catch (e) {
@@ -92,9 +96,9 @@ export default function AdminPage() {
 
   useEffect(() => {
     if (!password) return;
-    const t = setTimeout(() => load(password, filter, search), 250);
+    const t = setTimeout(() => load(password, filter, search, sourceFilter), 250);
     return () => clearTimeout(t);
-  }, [password, filter, search, load]);
+  }, [password, filter, search, sourceFilter, load]);
 
   const handleLogin = (e: React.FormEvent) => {
     e.preventDefault();
@@ -118,7 +122,7 @@ export default function AdminPage() {
         headers: { "Content-Type": "application/json", "X-Admin-Password": password },
         body: JSON.stringify({ action: "update_status", id, status }),
       });
-      load(password, filter, search);
+      load(password, filter, search, sourceFilter);
     } catch (e) {
       setError(e instanceof Error ? e.message : "Ошибка");
     }
@@ -186,7 +190,7 @@ export default function AdminPage() {
               <span className="hidden sm:inline">Новая заявка</span>
             </button>
             <button
-              onClick={() => load(password, filter, search)}
+              onClick={() => load(password, filter, search, sourceFilter)}
               disabled={loading}
               className="p-2 rounded-lg hover:bg-muted text-foreground/70 hover:text-foreground transition-colors"
               title="Обновить"
@@ -266,6 +270,34 @@ export default function AdminPage() {
           ))}
         </div>
 
+        <div className="flex flex-wrap items-center gap-2 mb-5">
+          <span className="text-foreground/45 text-[11px] uppercase tracking-wider mr-1">Источник:</span>
+          <button
+            onClick={() => setSourceFilter("")}
+            className={`px-3 py-1 rounded-lg text-xs border transition-colors flex items-center gap-1.5 ${
+              !sourceFilter ? "bg-neon-blue/15 text-neon-blue border-neon-blue/40" : "border-border text-foreground/60 hover:text-foreground"
+            }`}
+          >
+            Все ({(sourceCounts.site || 0) + (sourceCounts.manual || 0)})
+          </button>
+          <button
+            onClick={() => setSourceFilter("site")}
+            className={`px-3 py-1 rounded-lg text-xs border transition-colors flex items-center gap-1.5 ${
+              sourceFilter === "site" ? "bg-emerald-500/15 text-emerald-400 border-emerald-500/40" : "border-border text-foreground/60 hover:text-foreground"
+            }`}
+          >
+            <Icon name="Globe" size={12} /> С сайта ({sourceCounts.site || 0})
+          </button>
+          <button
+            onClick={() => setSourceFilter("manual")}
+            className={`px-3 py-1 rounded-lg text-xs border transition-colors flex items-center gap-1.5 ${
+              sourceFilter === "manual" ? "bg-violet-500/15 text-violet-400 border-violet-500/40" : "border-border text-foreground/60 hover:text-foreground"
+            }`}
+          >
+            <Icon name="UserPlus" size={12} /> Вручную ({sourceCounts.manual || 0})
+          </button>
+        </div>
+
         {error && (
           <div className="bg-red-500/10 border border-red-500/20 text-red-400 rounded-xl p-3 mb-4 text-sm flex items-center gap-2">
             <Icon name="AlertCircle" size={14} /> {error}
@@ -317,6 +349,10 @@ export default function AdminPage() {
                       </span>
                       <span className={`px-2.5 py-1 rounded-md text-[11px] uppercase tracking-wider font-semibold border ${statusConf.color}`}>
                         {statusConf.label}
+                      </span>
+                      <span title={b.source === "manual" ? "Создана вручную" : "С сайта"}
+                        className={`px-2 py-1 rounded-md text-[11px] font-medium border flex items-center gap-1 ${b.source === "manual" ? "bg-violet-500/10 text-violet-400 border-violet-500/30" : "bg-emerald-500/10 text-emerald-400 border-emerald-500/30"}`}>
+                        <Icon name={b.source === "manual" ? "UserPlus" : "Globe"} size={11} />
                       </span>
                       <span className="text-foreground/45 text-xs hidden sm:inline">#{b.id}</span>
                     </div>
@@ -393,7 +429,7 @@ export default function AdminPage() {
           url={url}
           password={password}
           onClose={() => setOpenId(null)}
-          onUpdated={() => load(password, filter, search)}
+          onUpdated={() => load(password, filter, search, sourceFilter)}
         />
       )}
 
@@ -404,7 +440,7 @@ export default function AdminPage() {
           onClose={() => setCreateOpen(false)}
           onCreated={(id) => {
             setCreateOpen(false);
-            load(password, filter, search);
+            load(password, filter, search, sourceFilter);
             setOpenId(id);
           }}
         />

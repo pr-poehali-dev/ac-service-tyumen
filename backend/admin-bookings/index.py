@@ -115,10 +115,13 @@ def handler(event: dict, context) -> dict:
                 return {"statusCode": 200, "headers": CORS_HEADERS, "body": json.dumps({"item": booking, "notes": notes})}
 
             status_filter = (params.get("status") or "").strip()
+            source_filter = (params.get("source") or "").strip()
             search = (params.get("q") or "").strip()
             where_parts = []
             if status_filter and status_filter in ALLOWED_STATUSES:
                 where_parts.append(f"status = '{status_filter}'")
+            if source_filter in ("site", "manual"):
+                where_parts.append(f"source = '{source_filter}'")
             if search:
                 s = esc(search.lower())
                 where_parts.append(f"(LOWER(name) LIKE '%{s}%' OR phone LIKE '%{s}%' OR LOWER(COALESCE(address, '')) LIKE '%{s}%')")
@@ -136,6 +139,9 @@ def handler(event: dict, context) -> dict:
 
                 cur.execute("SELECT status, COUNT(*) FROM bookings GROUP BY status")
                 counts = {r[0]: r[1] for r in cur.fetchall()}
+
+                cur.execute("SELECT COALESCE(source, 'site'), COUNT(*) FROM bookings GROUP BY source")
+                source_counts = {r[0]: r[1] for r in cur.fetchall()}
 
                 cur.execute(
                     """SELECT
@@ -169,7 +175,7 @@ def handler(event: dict, context) -> dict:
                 })
 
             conn.close()
-            return {"statusCode": 200, "headers": CORS_HEADERS, "body": json.dumps({"items": items, "counts": counts, "stats": stats})}
+            return {"statusCode": 200, "headers": CORS_HEADERS, "body": json.dumps({"items": items, "counts": counts, "source_counts": source_counts, "stats": stats})}
 
         if method == "POST":
             try:
