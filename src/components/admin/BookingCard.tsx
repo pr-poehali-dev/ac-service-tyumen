@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import Icon from "@/components/ui/icon";
+import { SERVICES } from "@/components/landing/data";
 
 export interface Booking {
   id: number;
@@ -183,8 +184,27 @@ export default function BookingCard({ bookingId, url, password, onClose, onUpdat
                   onChange={(e) => change("phone", e.target.value)} />
               </Field>
               <Field label="Услуга" icon="Wrench">
-                <input className="field" value={value("service") as string}
-                  onChange={(e) => change("service", e.target.value)} />
+                <div className="flex gap-1.5">
+                  <select className="field flex-1"
+                    value={SERVICES.some(s => s.title === value("service")) ? (value("service") as string) : "__custom__"}
+                    onChange={(e) => {
+                      if (e.target.value === "__custom__") {
+                        change("service", "");
+                      } else {
+                        change("service", e.target.value);
+                      }
+                    }}>
+                    <option value="__custom__">— Свой вариант —</option>
+                    {SERVICES.map((s) => (
+                      <option key={s.slug} value={s.title}>{s.title}</option>
+                    ))}
+                  </select>
+                </div>
+                {!SERVICES.some(s => s.title === value("service")) && (
+                  <input className="field mt-1.5" placeholder="Введите название услуги"
+                    value={value("service") as string}
+                    onChange={(e) => change("service", e.target.value)} />
+                )}
               </Field>
               <Field label="Адрес выезда" icon="MapPin">
                 <input className="field" placeholder="г. Тюмень, ул..."

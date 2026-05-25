@@ -1,6 +1,7 @@
 import { useState } from "react";
 import Icon from "@/components/ui/icon";
 import { formatPhone, isPhoneValid } from "@/lib/phoneMask";
+import { SERVICES } from "@/components/landing/data";
 
 interface Props {
   url: string;
@@ -85,8 +86,22 @@ export default function NewBookingDialog({ url, password, onClose, onCreated }: 
                 placeholder="+7 (___) ___-__-__" />
             </Field>
             <Field label="Услуга" icon="Wrench">
-              <input className="field" value={service} onChange={(e) => setService(e.target.value)}
-                placeholder="Чистка кондиционера" />
+              <select className="field"
+                value={SERVICES.some(s => s.title === service) ? service : (service ? "__custom__" : "")}
+                onChange={(e) => {
+                  if (e.target.value === "__custom__") setService(" ");
+                  else setService(e.target.value);
+                }}>
+                <option value="">— Выберите услугу —</option>
+                {SERVICES.map((s) => (
+                  <option key={s.slug} value={s.title}>{s.title}</option>
+                ))}
+                <option value="__custom__">Свой вариант...</option>
+              </select>
+              {service && !SERVICES.some(s => s.title === service) && (
+                <input className="field mt-1.5" placeholder="Введите название услуги"
+                  value={service.trim()} onChange={(e) => setService(e.target.value)} autoFocus />
+              )}
             </Field>
             <Field label="Адрес выезда" icon="MapPin">
               <input className="field" value={address} onChange={(e) => setAddress(e.target.value)}
