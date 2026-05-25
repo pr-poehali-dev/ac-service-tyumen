@@ -116,8 +116,12 @@ def build_offer_html(name: str) -> str:
 
 
 def send_via_smtp(to_email: str, subject: str, html: str, reply_to: str = None) -> tuple[bool, str]:
-    host = os.environ.get("SMTP_HOST", "").strip()
-    port = int(os.environ.get("SMTP_PORT", "465") or 465)
+    host = os.environ.get("SMTP_HOST", "").strip() or "smtp.yandex.ru"
+    raw_port = (os.environ.get("SMTP_PORT", "") or "").strip()
+    try:
+        port = int(raw_port) if raw_port else 465
+    except ValueError:
+        port = 465
     user = os.environ.get("SMTP_USER", "").strip()
     password = os.environ.get("SMTP_PASSWORD", "").strip()
 
