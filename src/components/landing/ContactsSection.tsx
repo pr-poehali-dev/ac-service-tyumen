@@ -10,7 +10,7 @@ export default function ContactsSection() {
   return (
     <>
       {/* CONTACTS */}
-      <section id="contacts" ref={contactsSection.ref} className="py-16 sm:py-24 relative">
+      <section id="contacts" ref={contactsSection.ref} className="py-16 sm:py-24 relative overflow-hidden">
         <div className="absolute inset-0 grid-pattern opacity-20" />
         <div className="max-w-7xl mx-auto px-4 sm:px-6">
           <div className={`mb-10 sm:mb-16 ${contactsSection.inView ? 'animate-fade-in-up' : 'opacity-0'}`}>

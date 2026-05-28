@@ -77,17 +77,17 @@ export default function HeroSections() {
               </Link>
             </p>
 
-            <div className={`grid grid-cols-3 gap-3 sm:gap-6 ${heroSection.inView ? 'animate-fade-in-up delay-400' : 'opacity-0'}`}>
+            <div className={`grid grid-cols-3 gap-2 sm:gap-6 ${heroSection.inView ? 'animate-fade-in-up delay-400' : 'opacity-0'}`}>
               {[
                 { num: "10", label: "лет опыта", suffix: "+" },
                 { num: "5000", label: "клиентов", suffix: "+" },
                 { num: "2", label: "часа выезд", suffix: "" },
               ].map((s, i) => (
-                <div key={i}>
-                  <div className="font-oswald text-2xl sm:text-3xl lg:text-4xl font-black text-neon-blue">
+                <div key={i} className="min-w-0">
+                  <div className="font-oswald text-xl sm:text-3xl lg:text-4xl font-black text-neon-blue leading-none">
                     {s.num}<span className="text-neon-green">{s.suffix}</span>
                   </div>
-                  <div className="text-xs sm:text-sm text-foreground/60 mt-1">{s.label}</div>
+                  <div className="text-[11px] sm:text-sm text-foreground/60 mt-1.5 leading-tight">{s.label}</div>
                 </div>
               ))}
             </div>
@@ -112,7 +112,7 @@ export default function HeroSections() {
       </div>
 
       {/* SERVICES */}
-      <section id="services" ref={servicesSection.ref} className="py-16 sm:py-24 relative">
+      <section id="services" ref={servicesSection.ref} className="py-16 sm:py-24 relative overflow-hidden">
         <div className="absolute top-0 right-0 w-96 h-96 bg-neon-blue/5 rounded-full blur-[120px]" />
         <div className="max-w-7xl mx-auto px-4 sm:px-6">
           <div className={`mb-10 sm:mb-16 ${servicesSection.inView ? 'animate-fade-in-up' : 'opacity-0'}`}>
@@ -340,7 +340,7 @@ export default function HeroSections() {
       </section>
 
       {/* REVIEWS */}
-      <section id="reviews" ref={reviewsSection.ref} className="py-16 sm:py-24 relative">
+      <section id="reviews" ref={reviewsSection.ref} className="py-16 sm:py-24 relative overflow-hidden">
         <div className="absolute top-1/2 right-0 w-96 h-96 bg-neon-blue/5 rounded-full blur-[100px]" />
         <div className="max-w-7xl mx-auto px-4 sm:px-6">
           <div className={`mb-10 sm:mb-16 ${reviewsSection.inView ? 'animate-fade-in-up' : 'opacity-0'}`}>
