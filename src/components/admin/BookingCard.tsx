@@ -293,10 +293,6 @@ export default function BookingCard({ bookingId, url, password, onClose, onUpdat
               <a href={`tel:${item.phone}`} className="px-3 py-2 rounded-lg bg-neon-blue text-white text-xs flex items-center gap-1.5 hover:bg-neon-blue/85">
                 <Icon name="Phone" size={13} /> Позвонить
               </a>
-              <a href={`https://t.me/+${item.phone.replace(/\D/g, "")}`} target="_blank" rel="noreferrer"
-                className="px-3 py-2 rounded-lg border border-cyan-500/40 text-cyan-400 text-xs flex items-center gap-1.5 hover:bg-cyan-500/10">
-                <Icon name="Send" size={13} /> Telegram
-              </a>
               <button onClick={async () => {
                 const digits = item.phone.replace(/\D/g, "");
                 const num = digits.startsWith("8") ? "7" + digits.slice(1) : digits;

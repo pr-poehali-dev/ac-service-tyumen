@@ -21,7 +21,6 @@ export default function BlogPostPage() {
   const shareText = `${post.title} — Страйк Сервис`;
 
   const shareLinks = [
-    { name: "Telegram", icon: "Send", color: "#0088cc", url: `https://t.me/share/url?url=${encodeURIComponent(pageUrl)}&text=${encodeURIComponent(shareText)}` },
     { name: "ВКонтакте", icon: "Share2", color: "#0077ff", url: `https://vk.com/share.php?url=${encodeURIComponent(pageUrl)}&title=${encodeURIComponent(shareText)}` },
     { name: "WhatsApp", icon: "MessageCircle", color: "#25d366", url: `https://api.whatsapp.com/send?text=${encodeURIComponent(shareText + " " + pageUrl)}` },
     { name: "Одноклассники", icon: "Users", color: "#ee8208", url: `https://connect.ok.ru/offer?url=${encodeURIComponent(pageUrl)}&title=${encodeURIComponent(shareText)}` },

@@ -30,18 +30,6 @@ export default function FloatingChat() {
           </a>
 
           <a
-            href="https://t.me/Semeon72"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="flex items-center gap-3 pl-3 pr-4 py-2.5 rounded-full bg-card border border-border shadow-xl hover:border-neon-blue/50 hover:-translate-x-1 transition-all group"
-          >
-            <div className="w-9 h-9 rounded-full bg-neon-blue/15 border border-neon-blue/30 flex items-center justify-center">
-              <Icon name="Send" size={16} className="text-neon-blue" />
-            </div>
-            <span className="text-sm font-semibold whitespace-nowrap pr-1">Telegram</span>
-          </a>
-
-          <a
             href="tel:+79326240666"
             className="flex items-center gap-3 pl-3 pr-4 py-2.5 rounded-full bg-card border border-border shadow-xl hover:border-emerald-500/50 hover:-translate-x-1 transition-all group"
           >

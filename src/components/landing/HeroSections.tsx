@@ -69,16 +69,6 @@ export default function HeroSections() {
                 <MaxIcon size={18} />
                 <span className="text-sm font-semibold group-hover:text-amber-400 transition-colors">MAX</span>
               </a>
-              <a
-                href="https://t.me/Semeon72"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="flex items-center gap-2 px-3 py-2 rounded-lg bg-card border border-border hover:border-neon-blue/50 transition-colors group"
-                title="Написать в Telegram"
-              >
-                <Icon name="Send" size={16} className="text-neon-blue" />
-                <span className="text-sm font-semibold group-hover:text-neon-blue transition-colors">Telegram</span>
-              </a>
             </div>
             <p className={`text-xs text-foreground/50 mb-12 sm:mb-16 max-w-lg leading-relaxed ${heroSection.inView ? 'animate-fade-in-up delay-300' : 'opacity-0'}`}>
               Нажимая «Записаться на сервис», вы соглашаетесь с{" "}
