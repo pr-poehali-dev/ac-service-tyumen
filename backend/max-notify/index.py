@@ -21,12 +21,14 @@ def cors_headers() -> dict:
     }
 
 
-def http_request(method: str, url: str, body: dict | None = None) -> tuple[int, dict]:
+def http_request(method: str, url: str, body: dict | None = None, token: str | None = None) -> tuple[int, dict]:
     data = None
     headers = {}
     if body is not None:
         data = json.dumps(body).encode("utf-8")
         headers["Content-Type"] = "application/json"
+    if token:
+        headers["Authorization"] = token
     req = urllib.request.Request(url, data=data, method=method, headers=headers)
     try:
         with urllib.request.urlopen(req, timeout=15) as resp:
@@ -46,33 +48,40 @@ def http_request(method: str, url: str, body: dict | None = None) -> tuple[int, 
 
 
 def get_chat_id_from_updates(token: str) -> tuple[str | None, dict]:
-    """Достаёт chat_id из последнего сообщения боту."""
-    status, data = http_request("GET", f"{MAX_API_BASE}/updates?access_token={token}&limit=100")
-    if status != 200:
-        return None, {"status": status, "response": data}
+    """Достаёт chat_id из последнего сообщения или из списка чатов."""
+    # Способ 1 — updates
+    status, data = http_request("GET", f"{MAX_API_BASE}/updates?limit=100&timeout=0", token=token)
+    if status == 200:
+        updates = data.get("updates") or []
+        for upd in reversed(updates):
+            msg = upd.get("message") or {}
+            recipient = msg.get("recipient") or {}
+            chat_id = recipient.get("chat_id") or recipient.get("user_id")
+            if chat_id:
+                return str(chat_id), {"source": "updates", "updates_count": len(updates)}
+            sender = msg.get("sender") or {}
+            sid = sender.get("user_id")
+            if sid:
+                return str(sid), {"source": "updates_sender", "updates_count": len(updates)}
 
-    updates = data.get("updates") or data.get("result") or []
-    if isinstance(updates, dict):
-        updates = updates.get("updates", [])
+    # Способ 2 — список чатов где бот состоит
+    status2, data2 = http_request("GET", f"{MAX_API_BASE}/chats?count=50", token=token)
+    if status2 == 200:
+        chats = data2.get("chats") or []
+        for ch in chats:
+            chat_id = ch.get("chat_id")
+            if chat_id:
+                return str(chat_id), {"source": "chats", "chats_count": len(chats), "chat_type": ch.get("type")}
+        return None, {"source": "chats_empty", "chats_count": 0, "raw": data2}
 
-    for upd in reversed(updates):
-        msg = upd.get("message") or {}
-        recipient = msg.get("recipient") or {}
-        chat_id = recipient.get("chat_id") or recipient.get("user_id")
-        if chat_id:
-            return str(chat_id), {"status": "found", "updates_count": len(updates)}
-        sender = msg.get("sender") or {}
-        sid = sender.get("user_id")
-        if sid:
-            return str(sid), {"status": "found_sender", "updates_count": len(updates)}
-
-    return None, {"status": "no_messages", "updates_count": len(updates), "raw": data}
+    return None, {"source": "all_failed", "updates_status": status, "chats_status": status2,
+                  "updates_raw": data, "chats_raw": data2}
 
 
 def send_max_message(token: str, chat_id: str, text: str) -> tuple[bool, dict]:
     """Отправка текстового сообщения через MAX Bot API."""
-    url = f"{MAX_API_BASE}/messages?access_token={token}&chat_id={chat_id}"
-    status, data = http_request("POST", url, {"text": text})
+    url = f"{MAX_API_BASE}/messages?chat_id={chat_id}"
+    status, data = http_request("POST", url, {"text": text}, token=token)
     return (200 <= status < 300), {"status": status, "response": data}
 
 
@@ -112,7 +121,7 @@ def handler(event: dict, context) -> dict:
 
     if method == "GET" and action == "diagnose":
         chat_id_env = os.environ.get("MAX_CHAT_ID", "").strip()
-        status, me = http_request("GET", f"{MAX_API_BASE}/me?access_token={token}")
+        status, me = http_request("GET", f"{MAX_API_BASE}/me", token=token)
         chat_id, info = get_chat_id_from_updates(token)
         return {
             "statusCode": 200,
