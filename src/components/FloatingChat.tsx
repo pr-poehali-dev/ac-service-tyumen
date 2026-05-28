@@ -18,7 +18,7 @@ export default function FloatingChat() {
       {open && (
         <div className="flex flex-col gap-2.5 animate-fade-in-up">
           <a
-            href="https://web.max.ru/-71788242076399"
+            href="https://max.ru/id541019342601_bot"
             target="_blank"
             rel="noopener noreferrer"
             className="flex items-center gap-3 pl-3 pr-4 py-2.5 rounded-full bg-card border border-border shadow-xl hover:border-amber-400/50 hover:-translate-x-1 transition-all group"
@@ -26,7 +26,7 @@ export default function FloatingChat() {
             <div className="w-9 h-9 rounded-full flex items-center justify-center">
               <MaxIcon size={28} />
             </div>
-            <span className="text-sm font-semibold whitespace-nowrap pr-1">MAX</span>
+            <span className="text-sm font-semibold whitespace-nowrap pr-1">Написать в MAX</span>
           </a>
 
           <a
