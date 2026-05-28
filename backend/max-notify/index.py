@@ -123,6 +123,8 @@ def handler(event: dict, context) -> dict:
         chat_id_env = os.environ.get("MAX_CHAT_ID", "").strip()
         status, me = http_request("GET", f"{MAX_API_BASE}/me", token=token)
         chat_id, info = get_chat_id_from_updates(token)
+        u_status, u_raw = http_request("GET", f"{MAX_API_BASE}/updates?limit=100&timeout=0&types=message_created", token=token)
+        c_status, c_raw = http_request("GET", f"{MAX_API_BASE}/chats?count=50", token=token)
         return {
             "statusCode": 200,
             "headers": cors_headers(),
@@ -133,6 +135,10 @@ def handler(event: dict, context) -> dict:
                 "chat_id_from_env": chat_id_env or None,
                 "chat_id_from_updates": chat_id,
                 "updates_info": info,
+                "updates_raw_status": u_status,
+                "updates_raw": u_raw,
+                "chats_raw_status": c_status,
+                "chats_raw": c_raw,
             }, ensure_ascii=False),
         }
 
