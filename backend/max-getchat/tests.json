@@ -1,0 +1,12 @@
+{
+  "tests": [
+    {
+      "name": "Get MAX updates",
+      "method": "GET",
+      "path": "/",
+      "expectedStatus": 200,
+      "bodyMatcher": "partial",
+      "expectedBody": {"max_status": "number"}
+    }
+  ]
+}
