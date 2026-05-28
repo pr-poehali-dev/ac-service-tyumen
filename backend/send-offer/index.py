@@ -3,10 +3,37 @@ import os
 import re
 import smtplib
 import ssl
+import urllib.request
+import urllib.error
 from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
 from email.utils import formataddr
 from typing import Any
+
+
+def send_max_offer_notify(name: str, email: str, phone: str) -> tuple[bool, str]:
+    token = os.environ.get("MAX_BOT_TOKEN", "").strip()
+    chat_id = os.environ.get("MAX_CHAT_ID", "").strip()
+    if not token or not chat_id:
+        return False, "MAX не настроен"
+    text = (
+        "📄 Запрос коммерческого предложения\n\n"
+        f"👤 Имя: {name or '—'}\n"
+        f"📧 Email: {email}\n"
+        f"📞 Телефон: {phone or '—'}\n\n"
+        "КП отправлено клиенту на email."
+    )
+    try:
+        body = json.dumps({"text": text}).encode("utf-8")
+        req = urllib.request.Request(
+            f"https://botapi.max.ru/messages?chat_id={chat_id}",
+            data=body, method="POST",
+            headers={"Content-Type": "application/json", "Authorization": token},
+        )
+        with urllib.request.urlopen(req, timeout=10) as resp:
+            return (200 <= resp.status < 300), "ok"
+    except Exception as e:
+        return False, f"MAX error: {str(e)[:200]}"
 
 FROM_NAME = "Страйк Сервис"
 
@@ -194,5 +221,7 @@ def handler(event: dict, context) -> dict:
     </body></html>"""
 
     send_via_smtp(MANAGER_EMAIL, f"Заявка на КП от {name or email}", manager_html, reply_to=email)
+
+    send_max_offer_notify(name, email, phone)
 
     return {"statusCode": 200, "headers": CORS_HEADERS, "body": json.dumps({"success": True})}
