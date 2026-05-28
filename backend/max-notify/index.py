@@ -145,6 +145,22 @@ def handler(event: dict, context) -> dict:
             }, ensure_ascii=False),
         }
 
+    if method == "GET" and action == "subscribe":
+        webhook_url = (params.get("url") or "").strip()
+        if not webhook_url:
+            return {"statusCode": 400, "headers": cors_headers(),
+                    "body": json.dumps({"ok": False, "error": "?url= обязателен"})}
+        status, data = http_request(
+            "POST",
+            f"{MAX_API_BASE}/subscriptions",
+            body={"url": webhook_url, "update_types": ["message_created", "bot_started", "message_callback"]},
+            token=token,
+        )
+        s2_status, s2_raw = http_request("GET", f"{MAX_API_BASE}/subscriptions", token=token)
+        return {"statusCode": 200, "headers": cors_headers(),
+                "body": json.dumps({"subscribe_status": status, "subscribe_response": data,
+                                    "current_subs": s2_raw}, ensure_ascii=False)}
+
     if method == "GET" and action == "test":
         chat_id = os.environ.get("MAX_CHAT_ID", "").strip()
         if not chat_id:
