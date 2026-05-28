@@ -3,12 +3,51 @@ import os
 import re
 import smtplib
 import ssl
+import urllib.request
+import urllib.error
 from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
 from email.utils import formataddr
 from datetime import datetime
 
 import psycopg2
+
+
+def send_max_notification(name: str, phone: str, service: str, comment: str, date: str, time_slot: str, booking_id) -> tuple[bool, str]:
+    token = os.environ.get("MAX_BOT_TOKEN", "").strip()
+    chat_id = os.environ.get("MAX_CHAT_ID", "").strip()
+    if not token or not chat_id:
+        return False, "MAX не настроен"
+    lines = [
+        "🔔 Новая заявка с сайта",
+        "",
+        f"👤 Имя: {name}",
+        f"📞 Телефон: {phone}",
+        f"🔧 Услуга: {service or 'Не указана'}",
+    ]
+    if date or time_slot:
+        lines.append(f"📅 Дата/время: {date or '—'} {time_slot or ''}".strip())
+    if comment:
+        lines.append(f"💬 Комментарий: {comment}")
+    if booking_id:
+        lines.append("")
+        lines.append(f"ID заявки: #{booking_id}")
+    text = "\n".join(lines)
+    try:
+        body = json.dumps({"text": text}).encode("utf-8")
+        req = urllib.request.Request(
+            f"https://botapi.max.ru/messages?chat_id={chat_id}",
+            data=body, method="POST",
+            headers={"Content-Type": "application/json", "Authorization": token},
+        )
+        with urllib.request.urlopen(req, timeout=10) as resp:
+            if 200 <= resp.status < 300:
+                return True, "ok"
+            return False, f"MAX status {resp.status}"
+    except urllib.error.HTTPError as e:
+        return False, f"MAX HTTP {e.code}: {e.read().decode('utf-8', errors='replace')[:200]}"
+    except Exception as e:
+        return False, f"MAX error: {str(e)[:200]}"
 
 
 MANAGER_EMAIL = "Straikpro72.tmn@yandex.ru"
@@ -192,6 +231,10 @@ def handler(event: dict, context) -> dict:
         else:
             email_status = "failed"
             email_error = err
+
+    max_ok, max_err = send_max_notification(name, phone, service, comment, date, time_slot, booking_id)
+    if not max_ok:
+        print(f"MAX notify failed: {max_err}")
 
     if booking_id and db_url:
         try:
