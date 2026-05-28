@@ -1,0 +1,18 @@
+{
+  "tests": [
+    {
+      "name": "OPTIONS preflight",
+      "method": "OPTIONS",
+      "path": "/",
+      "expectedStatus": 200
+    },
+    {
+      "name": "Diagnose",
+      "method": "GET",
+      "path": "/?action=diagnose",
+      "expectedStatus": 200,
+      "bodyMatcher": "partial",
+      "expectedBody": {"token_len": "number"}
+    }
+  ]
+}
