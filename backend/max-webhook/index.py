@@ -51,7 +51,8 @@ GREETING = (
     "• «график» — часы работы\n"
     "• «услуги» — что мы делаем\n"
     "• «контакты» — телефон и email\n\n"
-    "Чтобы вызвать живого менеджера, напишите «менеджер»."
+    "📞 Хотите, чтобы менеджер перезвонил? Просто отправьте свой номер телефона "
+    "(например: +7 900 123-45-67) или напишите «менеджер»."
 )
 
 ANSWERS = [
@@ -149,20 +150,36 @@ def find_answer(text: str) -> str | None:
     return None
 
 
-def notify_manager(token: str, manager_chat_id: str, sender_name: str, sender_id, text: str, username: str = ""):
+def extract_phone(text: str) -> str:
+    digits = re.sub(r"[^\d+]", "", text or "")
+    m = re.search(r"(\+?\d[\d]{9,14})", digits)
+    if not m:
+        return ""
+    num = m.group(1)
+    raw = re.sub(r"\D", "", num)
+    if len(raw) == 11 and raw[0] in ("7", "8"):
+        return "+7" + raw[1:]
+    if len(raw) == 10:
+        return "+7" + raw
+    if num.startswith("+"):
+        return num
+    return "+" + raw
+
+
+def notify_manager(token: str, manager_chat_id: str, sender_name: str, sender_id, text: str, phone: str = ""):
     if not manager_chat_id:
         return
-    if username:
-        link = f"https://max.ru/u/{username}"
+    lines = [
+        "💬 Новое обращение в MAX-боте\n",
+        f"👤 Клиент: {sender_name or '—'}",
+        f"📝 Сообщение: {text[:500]}",
+    ]
+    if phone:
+        lines.append(f"\n📞 Телефон клиента: {phone}")
+        lines.append(f"☎️ Позвонить: tel:{phone}")
     else:
-        link = f"https://max.ru/u/{sender_id}"
-    msg = (
-        "💬 Новое сообщение боту в MAX\n\n"
-        f"👤 Клиент: {sender_name or '—'}\n"
-        f"📝 Текст: {text[:500]}\n\n"
-        f"➡️ Открыть диалог с клиентом:\n{link}"
-    )
-    send_message(token, manager_chat_id, msg)
+        lines.append("\n📞 Телефон клиент пока не оставил — бот запросил его.")
+    send_message(token, manager_chat_id, "\n".join(lines))
 
 
 def handler(event: dict, context) -> dict:
@@ -211,14 +228,25 @@ def handler(event: dict, context) -> dict:
             return {"statusCode": 200, "headers": cors(), "body": json.dumps({"ok": True})}
 
         low = text.lower()
+        phone = extract_phone(text)
 
-        # Запрос менеджера
-        if any(kw in low for kw in MANAGER_KEYWORDS):
+        # Клиент прислал телефон — передаём менеджеру
+        if phone:
             send_message(token, chat_id,
-                "✅ Передал ваше сообщение менеджеру. С вами свяжутся в ближайшее время.\n\n"
+                "✅ Спасибо! Ваш телефон передан менеджеру — мы перезвоним в ближайшее время.\n\n"
                 "Для срочной связи: +7 (932) 624-06-66")
             if str(sender_id) != str(manager_chat):
-                notify_manager(token, manager_chat, sender_name, sender_id, text, sender_username)
+                notify_manager(token, manager_chat, sender_name, sender_id, text, phone)
+            return {"statusCode": 200, "headers": cors(), "body": json.dumps({"ok": True})}
+
+        # Запрос менеджера — просим телефон
+        if any(kw in low for kw in MANAGER_KEYWORDS):
+            send_message(token, chat_id,
+                "Конечно! Оставьте, пожалуйста, ваш номер телефона 📞 — и менеджер перезвонит вам в ближайшее время.\n\n"
+                "Например: +7 900 123-45-67\n\n"
+                "Или позвоните нам сами: +7 (932) 624-06-66")
+            if str(sender_id) != str(manager_chat):
+                notify_manager(token, manager_chat, sender_name, sender_id, text, "")
             return {"statusCode": 200, "headers": cors(), "body": json.dumps({"ok": True})}
 
         # FAQ-ответ
@@ -229,10 +257,11 @@ def handler(event: dict, context) -> dict:
             send_message(token, chat_id,
                 "Я бот «Страйк Сервис» 🤖 Понимаю ключевые слова:\n"
                 "цена • выезд • адрес • гарантия • график • услуги • контакты • записаться\n\n"
-                "Если нужен живой ответ — напишите «менеджер» или позвоните +7 (932) 624-06-66.")
+                "Хотите, чтобы менеджер перезвонил? Оставьте номер телефона или напишите «менеджер».\n"
+                "Срочная связь: +7 (932) 624-06-66.")
             # Дублируем менеджеру что был непонятый запрос
             if str(sender_id) != str(manager_chat):
-                notify_manager(token, manager_chat, sender_name, sender_id, text, sender_username)
+                notify_manager(token, manager_chat, sender_name, sender_id, text, "")
 
         return {"statusCode": 200, "headers": cors(), "body": json.dumps({"ok": True})}
 
