@@ -149,14 +149,18 @@ def find_answer(text: str) -> str | None:
     return None
 
 
-def notify_manager(token: str, manager_chat_id: str, sender_name: str, sender_id, text: str):
+def notify_manager(token: str, manager_chat_id: str, sender_name: str, sender_id, text: str, username: str = ""):
     if not manager_chat_id:
         return
+    if username:
+        link = f"https://max.ru/u/{username}"
+    else:
+        link = f"https://max.ru/u/{sender_id}"
     msg = (
         "💬 Новое сообщение боту в MAX\n\n"
-        f"👤 От: {sender_name or '—'} (id {sender_id})\n"
+        f"👤 Клиент: {sender_name or '—'}\n"
         f"📝 Текст: {text[:500]}\n\n"
-        "Ответьте клиенту напрямую через MAX."
+        f"➡️ Открыть диалог с клиентом:\n{link}"
     )
     send_message(token, manager_chat_id, msg)
 
@@ -192,6 +196,7 @@ def handler(event: dict, context) -> dict:
         chat_id = recipient.get("chat_id") or sender.get("user_id")
         sender_id = sender.get("user_id")
         sender_name = sender.get("name") or sender.get("first_name") or "—"
+        sender_username = sender.get("username") or ""
 
         # Не отвечаем самому себе
         if sender.get("is_bot"):
@@ -213,7 +218,7 @@ def handler(event: dict, context) -> dict:
                 "✅ Передал ваше сообщение менеджеру. С вами свяжутся в ближайшее время.\n\n"
                 "Для срочной связи: +7 (932) 624-06-66")
             if str(sender_id) != str(manager_chat):
-                notify_manager(token, manager_chat, sender_name, sender_id, text)
+                notify_manager(token, manager_chat, sender_name, sender_id, text, sender_username)
             return {"statusCode": 200, "headers": cors(), "body": json.dumps({"ok": True})}
 
         # FAQ-ответ
@@ -227,7 +232,7 @@ def handler(event: dict, context) -> dict:
                 "Если нужен живой ответ — напишите «менеджер» или позвоните +7 (932) 624-06-66.")
             # Дублируем менеджеру что был непонятый запрос
             if str(sender_id) != str(manager_chat):
-                notify_manager(token, manager_chat, sender_name, sender_id, text)
+                notify_manager(token, manager_chat, sender_name, sender_id, text, sender_username)
 
         return {"statusCode": 200, "headers": cors(), "body": json.dumps({"ok": True})}
 
