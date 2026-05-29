@@ -18,7 +18,7 @@ export default function FloatingChat() {
       {open && (
         <div className="flex flex-col gap-2.5 animate-fade-in-up">
           <a
-            href="https://max.ru/u/id541019342601_bot"
+            href="https://max.ru/id541019342601_bot"
             target="_blank"
             rel="noopener noreferrer"
             className="flex items-center gap-3 pl-3 pr-4 py-2.5 rounded-full bg-card border border-border shadow-xl hover:border-amber-400/50 hover:-translate-x-1 transition-all group"
