@@ -8,9 +8,96 @@ import os
 import re
 import urllib.request
 import urllib.error
+import psycopg2
 
 
 MAX_API_BASE = "https://botapi.max.ru"
+
+
+def db_conn():
+    return psycopg2.connect(os.environ["DATABASE_URL"])
+
+
+def esc(v: str) -> str:
+    if v is None:
+        return "NULL"
+    return "'" + str(v).replace("'", "''") + "'"
+
+
+def get_session(user_id) -> dict:
+    conn = db_conn()
+    try:
+        cur = conn.cursor()
+        cur.execute(
+            f"SELECT step, service, client_name, phone, preferred_time FROM max_bot_sessions WHERE user_id = {int(user_id)}"
+        )
+        row = cur.fetchone()
+        if not row:
+            return {"step": "idle", "service": None, "client_name": None, "phone": None, "preferred_time": None}
+        return {"step": row[0], "service": row[1], "client_name": row[2], "phone": row[3], "preferred_time": row[4]}
+    finally:
+        conn.close()
+
+
+def save_session(user_id, chat_id, step, service=None, client_name=None, phone=None, preferred_time=None):
+    conn = db_conn()
+    try:
+        cur = conn.cursor()
+        cur.execute(
+            f"""INSERT INTO max_bot_sessions (user_id, chat_id, step, service, client_name, phone, preferred_time, updated_at)
+                VALUES ({int(user_id)}, {int(chat_id)}, {esc(step)}, {esc(service)}, {esc(client_name)}, {esc(phone)}, {esc(preferred_time)}, NOW())
+                ON CONFLICT (user_id) DO UPDATE SET
+                    chat_id = EXCLUDED.chat_id, step = EXCLUDED.step, service = EXCLUDED.service,
+                    client_name = EXCLUDED.client_name, phone = EXCLUDED.phone,
+                    preferred_time = EXCLUDED.preferred_time, updated_at = NOW()"""
+        )
+        conn.commit()
+    finally:
+        conn.close()
+
+
+def reset_session(user_id, chat_id):
+    save_session(user_id, chat_id, "idle", None, None, None, None)
+
+
+SERVICE_OPTIONS = [
+    "Техобслуживание кондиционера",
+    "Монтаж/установка кондиционера",
+    "Покупка кондиционера",
+    "Ремонт / гарантийный сервис",
+    "Экстренный выезд",
+    "Дезинфекция вентиляции",
+]
+
+
+def services_text() -> str:
+    lines = "\n".join(f"{i}. {s}" for i, s in enumerate(SERVICE_OPTIONS, 1))
+    return (
+        "Отлично! Давайте оформим заявку 📝\n\n"
+        "Какая услуга вас интересует? Напишите номер или название:\n\n"
+        f"{lines}"
+    )
+
+
+def match_service(text: str) -> str | None:
+    t = text.strip().lower()
+    if t.isdigit():
+        idx = int(t)
+        if 1 <= idx <= len(SERVICE_OPTIONS):
+            return SERVICE_OPTIONS[idx - 1]
+    keymap = {
+        "Техобслуживание кондиционера": ["обслуж", "то ", "техобслуж", "профилакт", "чистк"],
+        "Монтаж/установка кондиционера": ["монтаж", "установ", "поставить", "повесить"],
+        "Покупка кондиционера": ["купить", "покупк", "приобрест", "продаж"],
+        "Ремонт / гарантийный сервис": ["ремонт", "почин", "не работает", "сломал", "гаранти", "не охлаж", "течет", "течёт"],
+        "Экстренный выезд": ["экстрен", "срочн", "авари", "сейчас"],
+        "Дезинфекция вентиляции": ["дезинфек", "вентиляц", "воздуховод", "запах"],
+    }
+    for service, kws in keymap.items():
+        for kw in kws:
+            if kw in t:
+                return service
+    return None
 
 
 def cors() -> dict:
@@ -51,8 +138,7 @@ GREETING = (
     "• «график» — часы работы\n"
     "• «услуги» — что мы делаем\n"
     "• «контакты» — телефон и email\n\n"
-    "📞 Хотите, чтобы менеджер перезвонил? Просто отправьте свой номер телефона "
-    "(например: +7 900 123-45-67) или напишите «менеджер»."
+    "📝 Чтобы оставить заявку и чтобы менеджер перезвонил — напишите «заявка» или «менеджер»."
 )
 
 ANSWERS = [
@@ -182,6 +268,22 @@ def notify_manager(token: str, manager_chat_id: str, sender_name: str, sender_id
     send_message(token, manager_chat_id, "\n".join(lines))
 
 
+def notify_lead(token: str, manager_chat_id: str, sess: dict, sender_name: str):
+    if not manager_chat_id:
+        return
+    phone = sess.get("phone") or ""
+    lines = [
+        "🔥 НОВАЯ ЗАЯВКА из MAX-бота\n",
+        f"🛠 Услуга: {sess.get('service') or '—'}",
+        f"👤 Имя: {sess.get('client_name') or sender_name or '—'}",
+        f"📞 Телефон: {phone or '—'}",
+        f"🕒 Удобное время: {sess.get('preferred_time') or '—'}",
+    ]
+    if phone:
+        lines.append(f"\n☎️ Позвонить: tel:{phone}")
+    send_message(token, manager_chat_id, "\n".join(lines))
+
+
 def handler(event: dict, context) -> dict:
     if event.get("httpMethod") == "OPTIONS":
         return {"statusCode": 200, "headers": cors(), "body": ""}
@@ -222,32 +324,96 @@ def handler(event: dict, context) -> dict:
         if not chat_id:
             return {"statusCode": 200, "headers": cors(), "body": json.dumps({"ok": True})}
 
+        ok_resp = {"statusCode": 200, "headers": cors(), "body": json.dumps({"ok": True})}
+
         # Старт диалога
         if update_type == "bot_started" or not text:
+            reset_session(sender_id, chat_id)
             send_message(token, chat_id, GREETING)
-            return {"statusCode": 200, "headers": cors(), "body": json.dumps({"ok": True})}
+            return ok_resp
 
         low = text.lower()
-        phone = extract_phone(text)
 
-        # Клиент прислал телефон — передаём менеджеру
+        try:
+            sess = get_session(sender_id)
+        except Exception:
+            sess = {"step": "idle"}
+        step = sess.get("step", "idle")
+
+        # Отмена в любой момент
+        if low in ("отмена", "отменить", "стоп", "/cancel", "хватит"):
+            reset_session(sender_id, chat_id)
+            send_message(token, chat_id, "Заявка отменена. Если что — пишите «заявка», и начнём заново 🙂")
+            return ok_resp
+
+        START_LEAD_KW = ["заявка", "заявку", "оставить заявку", "записать", "запись", "записаться", "оформить"]
+
+        # === Пошаговый сбор заявки ===
+        if step == "service":
+            service = match_service(text)
+            if not service:
+                send_message(token, chat_id,
+                    "Не совсем понял услугу 🤔 Напишите, пожалуйста, номер из списка (1–6) или название:\n\n"
+                    + "\n".join(f"{i}. {s}" for i, s in enumerate(SERVICE_OPTIONS, 1)))
+                return ok_resp
+            save_session(sender_id, chat_id, "name", service=service)
+            send_message(token, chat_id, f"Записал: «{service}» ✅\n\nКак к вам обращаться? Напишите ваше имя.")
+            return ok_resp
+
+        if step == "name":
+            name = text.strip()[:80]
+            save_session(sender_id, chat_id, "phone", service=sess.get("service"), client_name=name)
+            send_message(token, chat_id,
+                f"Приятно познакомиться, {name}! 📞\n\nОставьте номер телефона для связи (например: +7 900 123-45-67).")
+            return ok_resp
+
+        if step == "phone":
+            phone = extract_phone(text)
+            if not phone:
+                send_message(token, chat_id,
+                    "Не похоже на номер телефона 🤔 Напишите его в формате +7 900 123-45-67.")
+                return ok_resp
+            save_session(sender_id, chat_id, "time",
+                         service=sess.get("service"), client_name=sess.get("client_name"), phone=phone)
+            send_message(token, chat_id,
+                "Отлично! 🕒 В какое время вам удобно, чтобы менеджер перезвонил?\n\n"
+                "Например: «сегодня после 18:00» или «завтра утром». Можно написать «в любое».")
+            return ok_resp
+
+        if step == "time":
+            pref = text.strip()[:120]
+            sess["preferred_time"] = pref
+            sess["step"] = "idle"
+            save_session(sender_id, chat_id, "idle",
+                         service=sess.get("service"), client_name=sess.get("client_name"),
+                         phone=sess.get("phone"), preferred_time=pref)
+            send_message(token, chat_id,
+                "Спасибо! 🎉 Заявка оформлена.\n\n"
+                f"🛠 Услуга: {sess.get('service')}\n"
+                f"👤 Имя: {sess.get('client_name')}\n"
+                f"📞 Телефон: {sess.get('phone')}\n"
+                f"🕒 Время: {pref}\n\n"
+                "Менеджер свяжется с вами в указанное время. Срочная связь: +7 (932) 624-06-66.")
+            if str(sender_id) != str(manager_chat):
+                notify_lead(token, manager_chat, sess, sender_name)
+            reset_session(sender_id, chat_id)
+            return ok_resp
+
+        # === Старт заявки ===
+        if any(kw in low for kw in START_LEAD_KW) or any(kw in low for kw in MANAGER_KEYWORDS):
+            save_session(sender_id, chat_id, "service")
+            send_message(token, chat_id, services_text())
+            return ok_resp
+
+        # Клиент сразу прислал телефон вне сценария
+        phone = extract_phone(text)
         if phone:
             send_message(token, chat_id,
                 "✅ Спасибо! Ваш телефон передан менеджеру — мы перезвоним в ближайшее время.\n\n"
                 "Для срочной связи: +7 (932) 624-06-66")
             if str(sender_id) != str(manager_chat):
                 notify_manager(token, manager_chat, sender_name, sender_id, text, phone)
-            return {"statusCode": 200, "headers": cors(), "body": json.dumps({"ok": True})}
-
-        # Запрос менеджера — просим телефон
-        if any(kw in low for kw in MANAGER_KEYWORDS):
-            send_message(token, chat_id,
-                "Конечно! Оставьте, пожалуйста, ваш номер телефона 📞 — и менеджер перезвонит вам в ближайшее время.\n\n"
-                "Например: +7 900 123-45-67\n\n"
-                "Или позвоните нам сами: +7 (932) 624-06-66")
-            if str(sender_id) != str(manager_chat):
-                notify_manager(token, manager_chat, sender_name, sender_id, text, "")
-            return {"statusCode": 200, "headers": cors(), "body": json.dumps({"ok": True})}
+            return ok_resp
 
         # FAQ-ответ
         answer = find_answer(text)
@@ -256,13 +422,12 @@ def handler(event: dict, context) -> dict:
         else:
             send_message(token, chat_id,
                 "Я бот «Страйк Сервис» 🤖 Понимаю ключевые слова:\n"
-                "цена • выезд • адрес • гарантия • график • услуги • контакты • записаться\n\n"
-                "Хотите, чтобы менеджер перезвонил? Оставьте номер телефона или напишите «менеджер».\n"
+                "цена • выезд • адрес • гарантия • график • услуги • контакты\n\n"
+                "📝 Хотите оставить заявку? Напишите «заявка» — задам пару вопросов и передам менеджеру.\n"
                 "Срочная связь: +7 (932) 624-06-66.")
-            # Дублируем менеджеру что был непонятый запрос
             if str(sender_id) != str(manager_chat):
                 notify_manager(token, manager_chat, sender_name, sender_id, text, "")
 
-        return {"statusCode": 200, "headers": cors(), "body": json.dumps({"ok": True})}
+        return ok_resp
 
     return {"statusCode": 200, "headers": cors(), "body": json.dumps({"ok": True})}
