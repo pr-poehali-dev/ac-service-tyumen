@@ -1,0 +1,25 @@
+{
+  "tests": [
+    {
+      "name": "OPTIONS",
+      "method": "OPTIONS",
+      "path": "/",
+      "expectedStatus": 200
+    },
+    {
+      "name": "List articles",
+      "method": "GET",
+      "path": "/",
+      "expectedStatus": 200,
+      "expectedBody": {"articles": "array"},
+      "bodyMatcher": "partial"
+    },
+    {
+      "name": "Generate forbidden without password",
+      "method": "POST",
+      "path": "/",
+      "body": {"action": "generate", "topic": "test"},
+      "expectedStatus": 403
+    }
+  ]
+}

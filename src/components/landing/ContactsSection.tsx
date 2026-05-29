@@ -3,6 +3,7 @@ import Icon from "@/components/ui/icon";
 import MaxIcon from "@/components/ui/max-icon";
 import { useInView } from "./useInView";
 import { NAV_ITEMS } from "./data";
+import { SEO_LANDINGS } from "@/lib/seoPages";
 
 export default function ContactsSection() {
   const contactsSection = useInView(0.1);
@@ -145,6 +146,15 @@ export default function ContactsSection() {
               <Link to="/privacy" className="hover:text-foreground transition-colors">Согласие на обработку ПД</Link>
             </div>
             <div className="text-xs text-foreground/40">© 2026 Страйк Сервис. Все права защищены.</div>
+          </div>
+
+          <div className="border-t border-border/60 pt-6">
+            <div className="text-foreground/40 text-[10px] uppercase tracking-widest mb-3">Популярные услуги в Тюмени</div>
+            <div className="flex flex-wrap gap-x-4 gap-y-2 text-xs sm:text-sm text-foreground/55 mb-6">
+              {SEO_LANDINGS.map(l => (
+                <Link key={l.slug} to={`/tyumen/${l.slug}`} className="hover:text-neon-blue transition-colors">{l.h1}</Link>
+              ))}
+            </div>
           </div>
 
           <div className="border-t border-border/60 pt-6">

@@ -5,20 +5,72 @@
     <changefreq>weekly</changefreq>
     <priority>1.0</priority>
   </url>
+
   <url>
-    <loc>https://straikservis.ru/privacy</loc>
-    <changefreq>yearly</changefreq>
-    <priority>0.3</priority>
+    <loc>https://straikservis.ru/tyumen/remont-konditsionerov-tyumen</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://straikservis.ru/tyumen/montazh-konditsionerov-tyumen</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://straikservis.ru/tyumen/obsluzhivanie-konditsionerov-tyumen</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://straikservis.ru/tyumen/zapravka-konditsionera-freonom-tyumen</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
   </url>
 
-  <url><loc>https://straikservis.ru/uslugi/to-konditsionerov</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
-  <url><loc>https://straikservis.ru/uslugi/montazh</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
-  <url><loc>https://straikservis.ru/uslugi/kupit</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
-  <url><loc>https://straikservis.ru/uslugi/garantiyniy-servis</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
-  <url><loc>https://straikservis.ru/uslugi/ekstrenniy-vyezd</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
-  <url><loc>https://straikservis.ru/uslugi/dezinfektsiya</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url>
+    <loc>https://straikservis.ru/uslugi/to-konditsionerov</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://straikservis.ru/uslugi/montazh</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://straikservis.ru/uslugi/kupit</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://straikservis.ru/uslugi/garantiyniy-servis</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://straikservis.ru/uslugi/ekstrenniy-vyezd</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://straikservis.ru/uslugi/dezinfektsiya</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
 
-  <url><loc>https://straikservis.ru/blog/regulyarnoe-to-konditsionerov</loc><changefreq>monthly</changefreq><priority>0.6</priority></url>
-  <url><loc>https://straikservis.ru/blog/priznaki-polomki-konditsionera</loc><changefreq>monthly</changefreq><priority>0.6</priority></url>
-  <url><loc>https://straikservis.ru/blog/iot-datchiki-i-umnye-konditsionery</loc><changefreq>monthly</changefreq><priority>0.6</priority></url>
+  <url>
+    <loc>https://straikservis.ru/blog/regulyarnoe-to-konditsionerov</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://straikservis.ru/blog/priznaki-polomki-konditsionera</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://straikservis.ru/blog/iot-datchiki-i-umnye-konditsionery</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
 </urlset>

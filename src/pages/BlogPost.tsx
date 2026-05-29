@@ -3,18 +3,73 @@ import { Link, useParams, Navigate } from "react-router-dom";
 import Icon from "@/components/ui/icon";
 import Navbar from "@/components/landing/Navbar";
 import { BLOG_POSTS } from "@/components/landing/data";
+import func2url from "../../backend/func2url.json";
 import { toast } from "sonner";
+
+const FALLBACK_IMG = "https://cdn.poehali.dev/projects/1ca52ef0-91c2-41c6-b9e5-c074d8171504/files/9d752c0a-3126-44f4-a2c7-ff8ccba804b5.jpg";
+
+interface BlogPostData {
+  slug: string;
+  title: string;
+  category: string;
+  date: string;
+  read: string;
+  image: string;
+  seoText: string;
+  seoQueries: string[];
+  intro: string;
+  sections: { heading: string; body: string }[];
+}
 
 export default function BlogPostPage() {
   const { slug } = useParams<{ slug: string }>();
-  const post = BLOG_POSTS.find(p => p.slug === slug);
+  const staticPost = BLOG_POSTS.find(p => p.slug === slug);
   const [copied, setCopied] = useState(false);
+  const [apiPost, setApiPost] = useState<BlogPostData | null>(null);
+  const [notFound, setNotFound] = useState(false);
+  const [loading, setLoading] = useState(!staticPost);
 
   useEffect(() => {
     window.scrollTo(0, 0);
   }, [slug]);
 
-  if (!post) return <Navigate to="/" replace />;
+  useEffect(() => {
+    if (staticPost || !slug) return;
+    setLoading(true);
+    fetch(`${func2url["seo-articles"]}?slug=${encodeURIComponent(slug)}`)
+      .then(async (res) => {
+        if (!res.ok) throw new Error("not found");
+        return res.json();
+      })
+      .then((data) => {
+        setApiPost({
+          slug: data.slug,
+          title: data.title,
+          category: data.category || "Статья",
+          date: data.date || "",
+          read: "5 мин",
+          image: data.image || FALLBACK_IMG,
+          seoText: data.seoText || "",
+          seoQueries: data.keywords ? data.keywords.split(",").map((s: string) => s.trim()).filter(Boolean) : [],
+          intro: data.intro || "",
+          sections: Array.isArray(data.sections) ? data.sections : [],
+        });
+      })
+      .catch(() => setNotFound(true))
+      .finally(() => setLoading(false));
+  }, [slug, staticPost]);
+
+  const post = staticPost || apiPost;
+
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-background flex items-center justify-center">
+        <Icon name="Loader2" size={32} className="text-neon-blue animate-spin" />
+      </div>
+    );
+  }
+
+  if (notFound || !post) return <Navigate to="/" replace />;
 
   const otherPosts = BLOG_POSTS.filter(p => p.slug !== slug);
   const pageUrl = typeof window !== "undefined" ? window.location.href : "";

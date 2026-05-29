@@ -4,6 +4,7 @@ import Icon from "@/components/ui/icon";
 import func2url from "../../backend/func2url.json";
 import BookingCard from "@/components/admin/BookingCard";
 import NewBookingDialog from "@/components/admin/NewBookingDialog";
+import SeoArticleGenerator from "@/components/admin/SeoArticleGenerator";
 
 const STATUS_LABELS: Record<string, { label: string; color: string }> = {
   new: { label: "Новая", color: "bg-blue-500/15 text-blue-400 border-blue-500/30" },
@@ -209,6 +210,8 @@ export default function AdminPage() {
       </header>
 
       <main className="max-w-7xl mx-auto px-4 sm:px-6 py-6 sm:py-8">
+        <SeoArticleGenerator password={password} />
+
         <div className="mb-6">
           <h1 className="font-oswald text-2xl sm:text-3xl font-black mb-1">Заявки клиентов</h1>
           <p className="text-foreground/55 text-sm">Всего показано: {total}{newCount ? ` • Новых: ${newCount}` : ""}</p>
