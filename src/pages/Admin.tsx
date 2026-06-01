@@ -239,7 +239,7 @@ export default function AdminPage() {
           ))}
         </div>
 
-        <DailyChart daily={daily} />
+        <DailyChart daily={daily} sourceCounts={sourceCounts} />
 
         <div className="relative mb-4">
           <Icon name="Search" size={16} className="absolute left-3 top-1/2 -translate-y-1/2 text-foreground/45" />

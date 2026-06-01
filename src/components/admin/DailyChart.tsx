@@ -7,11 +7,28 @@ interface DailyPoint {
 
 const WEEKDAYS = ["Вс", "Пн", "Вт", "Ср", "Чт", "Пт", "Сб"];
 
-export default function DailyChart({ daily }: { daily: DailyPoint[] }) {
+const SOURCE_CONF: Record<string, { label: string; icon: string; color: string; bar: string }> = {
+  site: { label: "С сайта", icon: "Globe", color: "text-emerald-400", bar: "bg-emerald-400" },
+  manual: { label: "Вручную", icon: "PenLine", color: "text-amber-400", bar: "bg-amber-400" },
+  avito: { label: "Авито", icon: "ShoppingBag", color: "text-green-500", bar: "bg-green-500" },
+};
+
+export default function DailyChart({
+  daily,
+  sourceCounts,
+}: {
+  daily: DailyPoint[];
+  sourceCounts?: Record<string, number>;
+}) {
   if (!daily || daily.length === 0) return null;
 
   const max = Math.max(...daily.map((d) => d.count), 1);
   const totalPeriod = daily.reduce((sum, d) => sum + d.count, 0);
+
+  const sources = Object.entries(sourceCounts || {})
+    .filter(([, v]) => v > 0)
+    .sort((a, b) => b[1] - a[1]);
+  const sourceTotal = sources.reduce((sum, [, v]) => sum + v, 0);
 
   const fmt = (iso: string) => {
     const dt = new Date(iso + "T00:00:00");
@@ -56,6 +73,34 @@ export default function DailyChart({ daily }: { daily: DailyPoint[] }) {
           );
         })}
       </div>
+
+      {sources.length > 0 && (
+        <div className="mt-6 pt-5 border-t border-border">
+          <div className="text-foreground/40 text-[10px] uppercase tracking-widest mb-3">
+            Откуда приходят заявки
+          </div>
+          <div className="space-y-2.5">
+            {sources.map(([key, value]) => {
+              const conf = SOURCE_CONF[key] || { label: key, icon: "HelpCircle", color: "text-foreground/70", bar: "bg-foreground/40" };
+              const pct = sourceTotal ? Math.round((value / sourceTotal) * 100) : 0;
+              return (
+                <div key={key} className="flex items-center gap-3">
+                  <div className={`flex items-center gap-1.5 w-28 shrink-0 text-xs ${conf.color}`}>
+                    <Icon name={conf.icon} size={13} />
+                    {conf.label}
+                  </div>
+                  <div className="flex-1 h-2.5 rounded-full bg-muted overflow-hidden">
+                    <div className={`h-full rounded-full ${conf.bar}`} style={{ width: `${pct}%` }} />
+                  </div>
+                  <div className="w-20 shrink-0 text-right text-xs text-foreground/70">
+                    <span className="font-semibold text-foreground/90">{value}</span> · {pct}%
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+        </div>
+      )}
     </div>
   );
 }
