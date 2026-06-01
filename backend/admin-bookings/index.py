@@ -161,6 +161,19 @@ def handler(event: dict, context) -> dict:
                     "revenue": float(s[6]) if s[6] is not None else 0,
                 }
 
+                cur.execute(
+                    """SELECT to_char(d::date, 'YYYY-MM-DD') AS day,
+                              COUNT(b.id) AS cnt
+                       FROM generate_series(
+                            (NOW() - INTERVAL '13 days')::date,
+                            NOW()::date,
+                            INTERVAL '1 day'
+                       ) AS d
+                       LEFT JOIN bookings b ON b.created_at::date = d::date
+                       GROUP BY d ORDER BY d"""
+                )
+                daily = [{"date": r[0], "count": r[1]} for r in cur.fetchall()]
+
             items = []
             for r in rows:
                 items.append({
@@ -175,7 +188,7 @@ def handler(event: dict, context) -> dict:
                 })
 
             conn.close()
-            return {"statusCode": 200, "headers": CORS_HEADERS, "body": json.dumps({"items": items, "counts": counts, "source_counts": source_counts, "stats": stats})}
+            return {"statusCode": 200, "headers": CORS_HEADERS, "body": json.dumps({"items": items, "counts": counts, "source_counts": source_counts, "stats": stats, "daily": daily})}
 
         if method == "POST":
             try:

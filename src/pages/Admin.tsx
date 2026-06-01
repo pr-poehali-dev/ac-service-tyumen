@@ -5,6 +5,7 @@ import func2url from "../../backend/func2url.json";
 import BookingCard from "@/components/admin/BookingCard";
 import NewBookingDialog from "@/components/admin/NewBookingDialog";
 import SeoArticleGenerator from "@/components/admin/SeoArticleGenerator";
+import DailyChart from "@/components/admin/DailyChart";
 
 const STATUS_LABELS: Record<string, { label: string; color: string }> = {
   new: { label: "Новая", color: "bg-blue-500/15 text-blue-400 border-blue-500/30" },
@@ -51,6 +52,7 @@ export default function AdminPage() {
   const [items, setItems] = useState<Booking[]>([]);
   const [counts, setCounts] = useState<Record<string, number>>({});
   const [stats, setStats] = useState({ day: 0, week: 0, month: 0, total: 0, emails_sent: 0, emails_failed: 0, revenue: 0 });
+  const [daily, setDaily] = useState<{ date: string; count: number }[]>([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const [filter, setFilter] = useState<string>("");
@@ -87,6 +89,7 @@ export default function AdminPage() {
       setCounts(data.counts || {});
       setSourceCounts(data.source_counts || {});
       if (data.stats) setStats(data.stats);
+      if (data.daily) setDaily(data.daily);
       setAuthed(true);
     } catch (e) {
       setError(e instanceof Error ? e.message : "Ошибка");
@@ -235,6 +238,8 @@ export default function AdminPage() {
             </div>
           ))}
         </div>
+
+        <DailyChart daily={daily} />
 
         <div className="relative mb-4">
           <Icon name="Search" size={16} className="absolute left-3 top-1/2 -translate-y-1/2 text-foreground/45" />
