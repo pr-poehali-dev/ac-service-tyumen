@@ -5,6 +5,7 @@ import { useInView } from "./useInView";
 import { SERVICES, MONTHS, TIME_SLOTS, TAKEN_SLOTS } from "./data";
 import func2url from "../../../backend/func2url.json";
 import { formatPhone, isPhoneValid } from "@/lib/phoneMask";
+import { reachGoal } from "@/lib/metrika";
 
 export default function BookingSection() {
   const bookingSection = useInView(0.1);
@@ -74,6 +75,7 @@ export default function BookingSection() {
         throw new Error(data.error || "Не удалось отправить заявку");
       }
       setBookSent(true);
+      reachGoal("booking_sent", { service: bookForm.service || "не указана" });
     } catch (err) {
       setBookError(err instanceof Error ? err.message : "Ошибка отправки");
     } finally {

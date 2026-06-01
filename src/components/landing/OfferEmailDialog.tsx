@@ -4,6 +4,7 @@ import { Link } from "react-router-dom";
 import { downloadCommercialOffer } from "@/lib/commercialOffer";
 import func2url from "../../../backend/func2url.json";
 import { formatPhone, isPhoneValid } from "@/lib/phoneMask";
+import { reachGoal } from "@/lib/metrika";
 
 interface OfferEmailDialogProps {
   open: boolean;
@@ -65,6 +66,7 @@ export default function OfferEmailDialog({ open, onClose }: OfferEmailDialogProp
         throw new Error(data.error || "Не удалось отправить");
       }
       setStatus("success");
+      reachGoal("offer_requested");
     } catch (err) {
       setStatus("error");
       setErrorMsg(err instanceof Error ? err.message : "Ошибка отправки");
